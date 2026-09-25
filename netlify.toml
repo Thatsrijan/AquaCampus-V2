@@ -13,45 +13,46 @@
 
 [[redirects]]
   from = "/home"
-  to = "/Homepage.html"
+  to = "/Frontend/Homepage.html"
   status = 200
 
 [[redirects]]
   from = "/alerts"
-  to = "/Campus Alerts.html"
+  to = "/Frontend/Campus%20Alerts.html"
   status = 200
 
 [[redirects]]
   from = "/profile"
-  to = "/Profile and Settings.html"
+  to = "/Frontend/Profile%20and%20Settings.html"
   status = 200
 
 [[redirects]]
   from = "/filter"
-  to = "/Filter Stations.html"
+  to = "/Frontend/Filter%20Stations.html"
   status = 200
 
 [[redirects]]
   from = "/nearby"
-  to = "/Nearby Water Stations.html"
+  to = "/Frontend/Nearby%20Water%20Stations.html"
   status = 200
 
 [[redirects]]
   from = "/search"
-  to = "/Search Buildings.html"
+  to = "/Frontend/Search%20Buildings.html"
   status = 200
 
 [[redirects]]
   from = "/ar"
-  to = "/AR Navigation.html"
+  to = "/Frontend/AR%20Navigation.html"
   status = 200
 
 [[redirects]]
   from = "/telemetry"
-  to = "/Water Quality Telemetry.html"
+  to = "/Frontend/Water%20Quality%20Telemetry.html"
   status = 200
 
 [[redirects]]
   from = "/capacity"
-  to = "/Water Quality and Capacity.html"
+  to = "/Frontend/Water%20Quality%20and%20Capacity.html"
   status = 200
+
