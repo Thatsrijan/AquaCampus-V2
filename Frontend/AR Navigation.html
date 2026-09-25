@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><link href="logo.svg" rel="icon" type="image/svg+xml"/><link href="logo.svg" rel="apple-touch-icon"/><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-error-container": "#ffdad6", "primary": "#c3f5ff", "primary-fixed-dim": "#00daf3", "surface-tint": "#00daf3", "on-surface-variant": "#bac9cc", "on-tertiary-fixed": "#002113", "secondary-container": "#3626ce", "inverse-primary": "#006875", "outline-variant": "#3b494c", "on-primary-fixed": "#001f24", "tertiary-fixed-dim": "#4edea3", "inverse-on-surface": "#283044", "on-secondary-fixed-variant": "#3323cc", "on-tertiary-fixed-variant": "#005236", "on-secondary-container": "#b3b1ff", "error-container": "#93000a", "tertiary": "#a8ffd2", "error": "#ffb4ab", "on-primary": "#00363d", "surface-container-highest": "#2d3449", "surface-container-high": "#222a3d", "on-error": "#690005", "on-surface": "#dae2fd", "surface-dim": "#0b1326", "on-primary-fixed-variant": "#004f58", "surface-bright": "#31394d", "secondary-fixed": "#e2dfff", "surface-container-lowest": "#060e20", "on-secondary-fixed": "#0f0069", "on-tertiary": "#003824", "primary-container": "#00e5ff", "surface-container-low": "#131b2e", "on-secondary": "#1d00a5", "surface": "#0b1326", "tertiary-fixed": "#6ffbbe", "surface-container": "#171f33", "surface-variant": "#2d3449", "on-background": "#dae2fd", "background": "#0b1326", "secondary-fixed-dim": "#c3c0ff", "inverse-surface": "#dae2fd", "outline": "#849396", "on-primary-container": "#00626e", "on-tertiary-container": "#006645", "tertiary-container": "#5be9ad", "primary-fixed": "#9cf0ff", "secondary": "#c3c0ff" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xs": "0.25rem", "margin": "1.25rem", "space-xl": "2.25rem", "space-sm": "0.5rem", "gutter": "1rem", "space-md": "1rem", "space-lg": "1.5rem" }, "fontFamily": { "label-sm": ["Plus Jakarta Sans"], "metric-stat": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "display-hero-mobile": ["Plus Jakarta Sans"], "caption": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "display-hero": ["Plus Jakarta Sans"] }, "fontSize": { "label-sm": ["11px", { "lineHeight": "14px", "fontWeight": "600" }], "metric-stat": ["32px", { "lineHeight": "38px", "fontWeight": "800" }], "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "600" }], "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }], "label-md": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "display-hero-mobile": ["34px", { "lineHeight": "42px", "fontWeight": "700" }], "caption": ["10px", { "lineHeight": "12px", "fontWeight": "500" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }], "display-hero": ["48px", { "lineHeight": "56px", "fontWeight": "700" }] } } } };</script><style>@layer base{html,body{width:100%;min-height:100%;margin:0;padding:0;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<link href="glass-ui.css" rel="stylesheet"/><script defer="True" src="glass-ui.js"></script></head><body class="bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen selection:bg-primary-container selection:text-on-primary-container relative overflow-x-hidden"><div class="fixed inset-0 pointer-events-none z-0 overflow-hidden"><div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-primary-container/15 blur-[100px]"></div><div class="absolute top-1/3 -right-32 w-96 h-96 rounded-full bg-secondary-container/20 blur-[120px]"></div><div class="absolute -bottom-32 left-1/4 w-96 h-96 rounded-full bg-tertiary/10 blur-[110px]"></div></div><header class="fixed top-0 inset-x-0 z-50 pt-safe bg-surface/60 backdrop-blur-2xl shadow-[0_4px_24px_rgba(0,0,0,0.3)] glass-header"><div class="h-16 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="AquaCampus Logo" class="h-8 w-auto object-contain" src="logo.svg"/><div class="flex flex-col min-w-0"><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-primary text-[18px]">water_drop</span><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight truncate">AquaCampus</span></div><span class="font-caption text-caption text-on-surface-variant truncate">Campus Map</span></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><a aria-label="Search and Filter" class="w-11 h-11 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 active:scale-95 transition-all text-on-surface" href="Filter Stations.html"><span class="material-symbols-outlined text-[22px]">tune</span></a><a aria-label="Profile" class="w-11 h-11 flex items-center justify-center rounded-full bg-white/5 active:scale-95 transition-all" href="Profile and Settings.html"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="Profile.jpg"/></a></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-28 bg-surface z-10"><div class="flex flex-col w-full text-on-surface select-none pb-8">
+<!-- Top Utility & Mode Switch Bar -->
+<section class="px-margin pt-2 pb-3 flex flex-col gap-3">
+<div class="flex items-center justify-between gap-2">
+<a class="group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container/60 backdrop-blur-xl hover:bg-surface-container-high transition-all active:scale-95 shadow-sm text-on-surface" href="index.html">
+<span class="material-symbols-outlined text-[18px] text-primary transition-transform group-hover:-translate-x-0.5">arrow_back_ios_new</span>
+<span class="font-label-md text-label-md font-semibold tracking-tight">Campus Map</span>
+</a>
+<!-- View Switcher Segmented Control -->
+<div class="flex p-1 rounded-full bg-surface-container-lowest/80 backdrop-blur-2xl shadow-inner" id="viewModeGroup">
+<button class="px-3 py-1 rounded-full text-primary font-label-sm text-label-sm font-semibold bg-surface-container-highest shadow-[0_2px_12px_rgba(0,218,243,0.25)] transition-all" id="btnArCam" type="button">
+          AR Live Cam
+        </button>
+<button class="px-3 py-1 rounded-full text-on-surface-variant font-label-sm text-label-sm font-medium hover:text-on-surface transition-all" id="btn3dMesh" type="button">
+          3D Mesh
+        </button>
+</div>
+</div>
+<!-- Compass & Precision Sensor Strip -->
+<div class="flex items-center justify-between px-3 py-2 rounded-xl bg-surface-container-low/70 backdrop-blur-xl">
+<div class="flex items-center gap-2 min-w-0">
+<div class="relative flex items-center justify-center w-5 h-5 rounded-full bg-primary-container/20">
+<span class="material-symbols-outlined text-primary text-[14px] animate-spin" style="animation-duration: 8s;">explore</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">Calibrated • Heading <strong class="text-on-surface font-semibold">NE 42°</strong></span>
+</div>
+<div class="flex items-center gap-1.5 flex-shrink-0">
+<span class="inline-block w-2 h-2 rounded-full bg-tertiary-container shadow-[0_0_8px_rgba(91,233,173,0.8)]"></span>
+<span class="font-caption text-caption text-tertiary font-semibold tracking-wide uppercase">RTK Dual-GPS</span>
+</div>
+</div>
+</section>
+<!-- AR / 3D Isometric Spatial Viewport -->
+<section class="relative px-margin">
+<div class="relative w-full h-[330px] rounded-3xl overflow-hidden bg-surface-container-lowest shadow-[0_16px_40px_rgba(0,0,0,0.5)]">
+<!-- Simulated Camera Scrim & Spatial Grid -->
+<div class="absolute inset-0 bg-gradient-to-b from-surface-container-lowest/60 via-transparent to-surface-container-lowest/90 z-10 pointer-events-none"></div>
+<!-- Living Campus Canvas Background -->
+<div class="absolute inset-0 z-0 opacity-80 mix-blend-screen scale-105">
+<svg class="w-full h-full" fill="none" viewbox="0 0 380 340" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<lineargradient id="neonPath" x1="0%" x2="100%" y1="100%" y2="0%">
+<stop offset="0%" stop-color="#00daf3" stop-opacity="0.9"></stop>
+<stop offset="60%" stop-color="#00e5ff" stop-opacity="1"></stop>
+<stop offset="100%" stop-color="#3626ce" stop-opacity="0.8"></stop>
+</lineargradient>
+<filter height="140%" id="cyanGlow" width="140%" x="-20%" y="-20%">
+<fegaussianblur result="blur" stddeviation="6"></fegaussianblur>
+<fecomposite in="SourceGraphic" in2="blur" operator="over"></fecomposite>
+</filter>
+<radialgradient cx="50%" cy="50%" id="meshFloor" r="50%">
+<stop offset="0%" stop-color="#171f33" stop-opacity="0.8"></stop>
+<stop offset="100%" stop-color="#060e20" stop-opacity="0"></stop>
+</radialgradient>
+</defs>
+<!-- Perspective Grid Mesh Floor -->
+<ellipse cx="190" cy="220" fill="url(#meshFloor)" rx="180" ry="100"></ellipse>
+<g opacity="0.22" stroke="#849396" stroke-dasharray="3 3" stroke-width="0.75">
+<path d="M20 230 L360 230"></path>
+<path d="M40 260 L340 260"></path>
+<path d="M70 290 L310 290"></path>
+<path d="M190 120 L40 310"></path>
+<path d="M190 120 L110 310"></path>
+<path d="M190 120 L190 310"></path>
+<path d="M190 120 L270 310"></path>
+<path d="M190 120 L340 310"></path>
+</g>
+<!-- Stylized Isometric Low-Poly Building Blocks -->
+<!-- Science Block (Left) -->
+<g opacity="0.65" transform="translate(45, 145)">
+<polygon fill="#222a3d" points="40,0 80,18 40,36 0,18"></polygon>
+<polygon fill="#171f33" points="0,18 40,36 40,75 0,57"></polygon>
+<polygon fill="#2d3449" points="40,36 80,18 80,57 40,75"></polygon>
+<path d="M15 28 L35 38" opacity="0.6" stroke="#00daf3" stroke-width="1.5"></path>
+</g>
+<!-- Library 2F Destination Hub (Right Elevated) -->
+<g opacity="0.9" transform="translate(240, 70)">
+<polygon fill="#2d3449" points="50,0 100,22 50,44 0,22"></polygon>
+<polygon fill="#171f33" points="0,22 50,44 50,95 0,73"></polygon>
+<polygon fill="#222a3d" points="50,44 100,22 100,73 50,95"></polygon>
+<polygon fill="#3626ce" opacity="0.3" points="40,25 75,40 40,55 5,40"></polygon>
+<circle cx="50" cy="40" fill="#00e5ff" opacity="0.15" r="16"></circle>
+</g>
+<!-- Glowing Spline Route (Snaking perspective trajectory) -->
+<path d="M190 320 C185 270, 150 240, 155 200 C160 160, 210 150, 230 130 C245 115, 275 125, 290 110" filter="url(#cyanGlow)" stroke="url(#neonPath)" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"></path>
+<path d="M190 320 C185 270, 150 240, 155 200 C160 160, 210 150, 230 130 C245 115, 275 125, 290 110" opacity="0.8" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<!-- Real-Time Walking Pulse Orb -->
+<circle cx="160" cy="190" fill="#00e5ff" r="5">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="4;8;4"></animate>
+<animate attributename="opacity" dur="2s" repeatcount="indefinite" values="1;0.4;1"></animate>
+</circle>
+</svg>
+</div>
+<!-- AR HUD Reticle / Viewfinder Corner Brackets -->
+<div class="absolute inset-4 pointer-events-none z-20 flex flex-col justify-between">
+<div class="flex justify-between">
+<div class="w-4 h-4 border-l-2 border-t-2 border-primary/50 rounded-tl-lg"></div>
+<div class="w-4 h-4 border-r-2 border-t-2 border-primary/50 rounded-tr-lg"></div>
+</div>
+<div class="flex justify-between items-end">
+<div class="w-4 h-4 border-l-2 border-b-2 border-primary/50 rounded-bl-lg"></div>
+<div class="w-4 h-4 border-r-2 border-b-2 border-primary/50 rounded-br-lg"></div>
+</div>
+</div>
+<!-- Floating Waypoint Marker 1 (Atrium) -->
+<div class="absolute top-[52%] left-[28%] z-20 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-none">
+<div class="px-2.5 py-1 rounded-full bg-surface-container-highest/90 backdrop-blur-md shadow-lg flex items-center gap-1.5 animate-bounce" style="animation-duration: 3s;">
+<span class="material-symbols-outlined text-primary text-[13px]">turn_right</span>
+<span class="font-caption text-caption text-on-surface font-semibold tracking-tight">Turn at Atrium (45m)</span>
+</div>
+<div class="w-1.5 h-1.5 rounded-full bg-primary mt-1 shadow-[0_0_8px_#00e5ff]"></div>
+</div>
+<!-- Destination Floating Pin Marker 2 (Target HydroStation) -->
+<div class="absolute top-[22%] right-[14%] z-20 flex flex-col items-center">
+<div class="px-3 py-1.5 rounded-2xl bg-primary/20 backdrop-blur-xl shadow-[0_8px_20px_rgba(0,229,255,0.35)] flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-container shadow-[0_0_10px_#00daf3] animate-ping"></div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm font-bold text-on-primary-container leading-none">Library 2F Station</span>
+<span class="font-caption text-caption text-primary leading-none mt-0.5">Pristine • Chilled</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[24px] -mt-1 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">arrow_drop_down</span>
+</div>
+<!-- Top Overlay: Live Turn Prompt Pill -->
+<div class="absolute top-3 inset-x-3 z-20 flex items-center justify-between">
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high/85 backdrop-blur-2xl shadow-md">
+<div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[16px] font-bold">turn_slight_right</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">In 45m: Turn Right</span>
+<span class="font-caption text-caption text-on-surface-variant">Pass Central Atrium arch</span>
+</div>
+</div>
+<!-- Dynamic Pitch / Speed Badge -->
+<div class="px-2.5 py-1 rounded-full bg-surface-container-high/80 backdrop-blur-md flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[13px] text-tertiary">speed</span>
+<span class="font-caption text-caption font-semibold text-on-surface">1.2 m/s</span>
+</div>
+</div>
+<!-- Bottom Overlay: Vertical Level Switcher Badge (G -> 2F) -->
+<div class="absolute bottom-3 left-3 z-20 flex items-center gap-1 p-1 rounded-full bg-surface-container-lowest/80 backdrop-blur-xl">
+<span class="px-2 py-0.5 rounded-full text-on-surface-variant font-caption text-caption">G</span>
+<span class="material-symbols-outlined text-[12px] text-on-surface-variant">arrow_forward</span>
+<span class="px-2 py-0.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm font-bold shadow-sm">2F</span>
+</div>
+<!-- Re-center Reticle Quick Action -->
+<button aria-label="Recenter Camera" class="absolute bottom-3 right-3 z-20 w-8 h-8 rounded-full bg-surface-container-high/80 backdrop-blur-xl flex items-center justify-center text-on-surface active:scale-90 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]">my_location</span>
+</button>
+</div>
+</section>
+<!-- Bottom Interactive Drawer: Fluid Navigation Card -->
+<section class="px-margin -mt-4 relative z-30 flex flex-col gap-3">
+<div class="w-full rounded-3xl p-5 bg-surface-container/85 backdrop-blur-2xl shadow-[0_16px_48px_rgba(0,0,0,0.4)] flex flex-col gap-4">
+<!-- Pull Bar Indicator -->
+<div class="w-10 h-1 rounded-full bg-outline-variant/60 mx-auto -mt-1"></div>
+<!-- Metrics Triad (Distance / Walk Time / Estimated Arrival) -->
+<div class="grid grid-cols-3 gap-2 text-center pb-1">
+<div class="flex flex-col items-center justify-center p-2 rounded-2xl bg-surface-container-low/60">
+<span class="font-caption text-caption text-on-surface-variant uppercase tracking-wider">Distance</span>
+<span class="font-metric-stat text-metric-stat font-extrabold text-primary tracking-tight">180<span class="font-label-md text-label-md font-medium text-on-surface-variant ml-0.5">m</span></span>
+<span class="font-caption text-caption text-tertiary font-medium">Clear corridor</span>
+</div>
+<div class="flex flex-col items-center justify-center p-2 rounded-2xl bg-surface-container-low/60">
+<span class="font-caption text-caption text-on-surface-variant uppercase tracking-wider">Walk Time</span>
+<span class="font-metric-stat text-metric-stat font-extrabold text-on-surface tracking-tight">2.5<span class="font-label-md text-label-md font-medium text-on-surface-variant ml-0.5">m</span></span>
+<div class="flex items-center gap-1 font-caption text-caption text-on-surface-variant">
+<span class="material-symbols-outlined text-[12px]">footprint</span>
+<span>~230 steps</span>
+</div>
+</div>
+<div class="flex flex-col items-center justify-center p-2 rounded-2xl bg-surface-container-low/60">
+<span class="font-caption text-caption text-on-surface-variant uppercase tracking-wider">Arrival</span>
+<span class="font-metric-stat text-metric-stat font-extrabold text-on-surface tracking-tight">11:42</span>
+<span class="font-caption text-caption text-primary font-medium">On pace</span>
+</div>
+</div>
+<!-- Actionable Walking Prompt Banner -->
+<div class="flex items-start gap-3 p-3.5 rounded-2xl bg-surface-container-high/60 backdrop-blur-md">
+<div class="w-8 h-8 rounded-xl bg-primary-container/25 flex items-center justify-center flex-shrink-0 text-primary mt-0.5">
+<span class="material-symbols-outlined text-[20px]">stairs</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Step 1: North Science Walkway</span>
+<p class="font-body-md text-body-md text-on-surface-variant leading-snug mt-0.5">
+            Continue 45m through Science Archway, then take East Glass Staircase to Level 2.
+          </p>
+</div>
+</div>
+<!-- Destination Water Station Live Vital Snapshot -->
+<div class="p-3.5 rounded-2xl bg-surface-container-lowest/70 backdrop-blur-xl flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">water_bottle</span>
+<span class="font-label-md text-label-md font-bold text-on-surface">Library 2F • West Alcove</span>
+</div>
+<div class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-tertiary/15 text-tertiary">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span class="font-caption text-caption font-semibold">Active • Calibrated</span>
+</div>
+</div>
+<!-- Telemetry Chips Row -->
+<div class="grid grid-cols-3 gap-2">
+<div class="flex items-center gap-1.5 px-2 py-1.5 rounded-xl bg-surface-container-low">
+<span class="material-symbols-outlined text-primary text-[15px]">ac_unit</span>
+<div class="flex flex-col">
+<span class="font-caption text-caption text-on-surface-variant">Temp</span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">14°C Chilled</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 px-2 py-1.5 rounded-xl bg-surface-container-low">
+<span class="material-symbols-outlined text-tertiary text-[15px]">verified</span>
+<div class="flex flex-col">
+<span class="font-caption text-caption text-on-surface-variant">Filter</span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">98% Pure</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 px-2 py-1.5 rounded-xl bg-surface-container-low">
+<span class="material-symbols-outlined text-secondary-fixed-dim text-[15px]">group</span>
+<div class="flex flex-col">
+<span class="font-caption text-caption text-on-surface-variant">Wait</span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">0 in line</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Primary & Auxiliary Navigation Actions -->
+<div class="flex flex-col gap-2.5 pt-1">
+<!-- High-Impact Radiant Primary CTA -->
+<button class="group w-full h-14 rounded-2xl bg-gradient-to-r from-primary via-primary-container to-surface-tint text-on-primary font-headline-sm text-headline-sm font-bold flex items-center justify-center gap-2 shadow-[0_8px_24px_rgba(0,229,255,0.35)] active:scale-[0.98] transition-all" id="startWalkBtn" type="button">
+<span class="material-symbols-outlined text-[24px] group-hover:animate-pulse">navigation</span>
+<span id="walkBtnText">Start AR Walk</span>
+<span class="material-symbols-outlined text-[20px] transition-transform group-hover:translate-x-1">arrow_forward</span>
+</button>
+<!-- Secondary Utility Row -->
+<div class="grid grid-cols-2 gap-2">
+<button class="h-11 rounded-xl bg-surface-container-high/80 hover:bg-surface-container-highest active:scale-95 text-on-surface font-label-md text-label-md font-semibold flex items-center justify-center gap-1.5 transition-all" id="voiceGuidanceBtn" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary" id="voiceIcon">volume_up</span>
+<span id="voiceText">Audio Voice: On</span>
+</button>
+<button class="h-11 rounded-xl bg-surface-container-high/80 hover:bg-surface-container-highest active:scale-95 text-on-surface font-label-md text-label-md font-semibold flex items-center justify-center gap-1.5 transition-all" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary">share</span>
+<span>Share Walk</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive State Controller Script -->
+<script>
+    (function initWayfindingInteractions() {
+      const btnAr = document.getElementById('btnArCam');
+      const btn3d = document.getElementById('btn3dMesh');
+      const startBtn = document.getElementById('startWalkBtn');
+      const walkBtnText = document.getElementById('walkBtnText');
+      const voiceBtn = document.getElementById('voiceGuidanceBtn');
+      const voiceIcon = document.getElementById('voiceIcon');
+      const voiceText = document.getElementById('voiceText');
+
+      let isNavigating = false;
+      let isVoiceActive = true;
+
+      if (btnAr && btn3d) {
+        btnAr.addEventListener('click', () => {
+          btnAr.className = "px-3 py-1 rounded-full text-primary font-label-sm text-label-sm font-semibold bg-surface-container-highest shadow-[0_2px_12px_rgba(0,218,243,0.25)] transition-all";
+          btn3d.className = "px-3 py-1 rounded-full text-on-surface-variant font-label-sm text-label-sm font-medium hover:text-on-surface transition-all";
+        });
+
+        btn3d.addEventListener('click', () => {
+          btn3d.className = "px-3 py-1 rounded-full text-primary font-label-sm text-label-sm font-semibold bg-surface-container-highest shadow-[0_2px_12px_rgba(0,218,243,0.25)] transition-all";
+          btnAr.className = "px-3 py-1 rounded-full text-on-surface-variant font-label-sm text-label-sm font-medium hover:text-on-surface transition-all";
+        });
+      }
+
+      if (startBtn && walkBtnText) {
+        startBtn.addEventListener('click', () => {
+          isNavigating = !isNavigating;
+          if (isNavigating) {
+            walkBtnText.textContent = "Active Guidance &bull; 180m";
+            startBtn.classList.add("shadow-[0_0_32px_rgba(0,229,255,0.6)]");
+          } else {
+            walkBtnText.textContent = "Start AR Walk";
+            startBtn.classList.remove("shadow-[0_0_32px_rgba(0,229,255,0.6)]");
+          }
+        });
+      }
+
+      if (voiceBtn && voiceIcon && voiceText) {
+        voiceBtn.addEventListener('click', () => {
+          isVoiceActive = !isVoiceActive;
+          if (isVoiceActive) {
+            voiceIcon.textContent = "volume_up";
+            voiceIcon.classList.add("text-primary");
+            voiceIcon.classList.remove("text-outline");
+            voiceText.textContent = "Audio Voice: On";
+          } else {
+            voiceIcon.textContent = "volume_off";
+            voiceIcon.classList.remove("text-primary");
+            voiceIcon.classList.add("text-outline");
+            voiceText.textContent = "Audio Muted";
+          }
+        });
+      }
+    })();
+  </script>
+</div></main><div class="fixed bottom-0 inset-x-0 z-50 pb-safe pointer-events-none flex justify-center"><nav class="pointer-events-auto mb-4 mx-margin w-full max-w-sm h-16 rounded-full bg-surface-container-high/65 backdrop-blur-2xl shadow-[0_12px_36px_rgba(0,0,0,0.45)] px-space-md flex items-center justify-around glass-nav" data-active-classes="text-primary font-label-md bg-white/10 shadow-[0_2px_12px_rgba(0,218,243,0.2)]"><a aria-current="page" class="flex flex-col items-center justify-center gap-1 min-w-[56px] h-12 rounded-full transition-all active:scale-95 text-primary font-label-md bg-white/10 shadow-[0_2px_12px_rgba(0,218,243,0.2)]" data-path="campus-map" href="index.html"><span class="material-symbols-outlined text-[22px]">map</span><span class="font-label-sm text-label-sm">Map</span></a><a class="flex flex-col items-center justify-center gap-1 min-w-[56px] h-12 rounded-full text-on-surface-variant hover:text-on-surface transition-all active:scale-95 relative" data-path="notifications" href="Campus Alerts.html"><div class="relative flex items-center justify-center"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-primary-container ring-2 ring-surface"></span></div><span class="font-label-sm text-label-sm">Alerts</span></a><a class="flex flex-col items-center justify-center gap-1 min-w-[56px] h-12 rounded-full text-on-surface-variant hover:text-on-surface transition-all active:scale-95" data-path="student-profile" href="Profile and Settings.html"><span class="material-symbols-outlined text-[22px]">account_circle</span><span class="font-label-sm text-label-sm">Profile</span></a></nav></div></body></html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><link href="logo.svg" rel="icon" type="image/svg+xml"/><link href="logo.svg" rel="apple-touch-icon"/><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-error-container": "#ffdad6", "primary": "#c3f5ff", "primary-fixed-dim": "#00daf3", "surface-tint": "#00daf3", "on-surface-variant": "#bac9cc", "on-tertiary-fixed": "#002113", "secondary-container": "#3626ce", "inverse-primary": "#006875", "outline-variant": "#3b494c", "on-primary-fixed": "#001f24", "tertiary-fixed-dim": "#4edea3", "inverse-on-surface": "#283044", "on-secondary-fixed-variant": "#3323cc", "on-tertiary-fixed-variant": "#005236", "on-secondary-container": "#b3b1ff", "error-container": "#93000a", "tertiary": "#a8ffd2", "error": "#ffb4ab", "on-primary": "#00363d", "surface-container-highest": "#2d3449", "surface-container-high": "#222a3d", "on-error": "#690005", "on-surface": "#dae2fd", "surface-dim": "#0b1326", "on-primary-fixed-variant": "#004f58", "surface-bright": "#31394d", "secondary-fixed": "#e2dfff", "surface-container-lowest": "#060e20", "on-secondary-fixed": "#0f0069", "on-tertiary": "#003824", "primary-container": "#00e5ff", "surface-container-low": "#131b2e", "on-secondary": "#1d00a5", "surface": "#0b1326", "tertiary-fixed": "#6ffbbe", "surface-container": "#171f33", "surface-variant": "#2d3449", "on-background": "#dae2fd", "background": "#0b1326", "secondary-fixed-dim": "#c3c0ff", "inverse-surface": "#dae2fd", "outline": "#849396", "on-primary-container": "#00626e", "on-tertiary-container": "#006645", "tertiary-container": "#5be9ad", "primary-fixed": "#9cf0ff", "secondary": "#c3c0ff" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xs": "0.25rem", "margin": "1.25rem", "space-xl": "2.25rem", "space-sm": "0.5rem", "gutter": "1rem", "space-md": "1rem", "space-lg": "1.5rem" }, "fontFamily": { "label-sm": ["Plus Jakarta Sans"], "metric-stat": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "display-hero-mobile": ["Plus Jakarta Sans"], "caption": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "display-hero": ["Plus Jakarta Sans"] }, "fontSize": { "label-sm": ["11px", { "lineHeight": "14px", "fontWeight": "600" }], "metric-stat": ["32px", { "lineHeight": "38px", "fontWeight": "800" }], "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "600" }], "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }], "label-md": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "display-hero-mobile": ["34px", { "lineHeight": "42px", "fontWeight": "700" }], "caption": ["10px", { "lineHeight": "12px", "fontWeight": "500" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }], "display-hero": ["48px", { "lineHeight": "56px", "fontWeight": "700" }] } } } };</script><style>@layer base{html,body{width:100%;min-height:100%;margin:0;padding:0;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<link href="glass-ui.css" rel="stylesheet"/><script defer="True" src="glass-ui.js"></script></head><body class="bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen selection:bg-primary-container selection:text-on-primary-container relative overflow-x-hidden"><div class="fixed inset-0 pointer-events-none z-0 overflow-hidden"><div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-primary-container/15 blur-[100px]"></div><div class="absolute top-1/3 -right-32 w-96 h-96 rounded-full bg-secondary-container/20 blur-[120px]"></div><div class="absolute -bottom-32 left-1/4 w-96 h-96 rounded-full bg-tertiary/10 blur-[110px]"></div></div><header class="fixed top-0 inset-x-0 z-50 pt-safe bg-surface/60 backdrop-blur-2xl shadow-[0_4px_24px_rgba(0,0,0,0.3)] glass-header"><div class="h-16 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="AquaCampus Logo" class="h-8 w-auto object-contain" src="logo.svg"/><div class="flex flex-col min-w-0"><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-primary text-[18px]">water_drop</span><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight truncate">AquaCampus</span></div><span class="font-caption text-caption text-on-surface-variant truncate">Campus Map</span></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><a aria-label="Search and Filter" class="w-11 h-11 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 active:scale-95 transition-all text-on-surface" href="Filter Stations.html"><span class="material-symbols-outlined text-[22px]">tune</span></a><a aria-label="Profile" class="w-11 h-11 flex items-center justify-center rounded-full bg-white/5 active:scale-95 transition-all" href="Profile and Settings.html"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="Profile.jpg"/></a></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-28 bg-surface z-10"><div class="flex flex-col w-full relative">
+<!-- Upper Map Underlay Peek (Upper 18-20% context) -->
+<div class="relative w-full h-32 overflow-hidden select-none pointer-events-none">
+<div class="w-full h-44 -mt-6 bg-cover bg-center filter blur-xs brightness-75 contrast-125" data-location="Stanford University Campus, California" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCclyXAW4fBfh8G0RrxtWCuW5RpCFFsIvEfIZJC1SDhvxnanuRD_zNvpcDEn-gGwxJ0CKrhJKgKS4AtI5W_733TvGMn3KKZudBCRGbUdPk9H3u72Ju8J1yU4Vi7qH2JjhLS39TDp2Qi50nyzzRLz2Habam6aYtuadOGtW1MrLbw68BaiwY2xSj0XAFj-e5515tfhSYIti9-xAqZXw0uBlI_wBhMZ4LbGnstnjivEHtTfMr0wVDgd5D5')"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-surface/40 via-surface/70 to-surface"></div>
+<!-- Floating Telemetry Map Pins (Contextual background preview) -->
+<div class="absolute top-4 left-8 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high/90 backdrop-blur-md shadow-lg shadow-black/40">
+<span class="w-2 h-2 rounded-full bg-tertiary shadow-[0_0_8px_#5be9ad] animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-surface">Sci Quad #01</span>
+<span class="font-caption text-caption text-primary">99.4%</span>
+</div>
+<div class="absolute top-6 right-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high/90 backdrop-blur-md shadow-lg shadow-black/40">
+<span class="w-2 h-2 rounded-full bg-tertiary shadow-[0_0_8px_#5be9ad]"></span>
+<span class="font-label-sm text-label-sm text-on-surface">Eng Hall B</span>
+<span class="font-caption text-caption text-tertiary">Cold</span>
+</div>
+<div class="absolute bottom-2 left-1/3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high/90 backdrop-blur-md opacity-80">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Lib Stacks 2F</span>
+</div>
+</div>
+<!-- Focused Search Apple Glass Bottom Sheet (Covers lower viewport) -->
+<div class="relative w-full -mt-4 rounded-t-[32px] bg-surface-container/90 backdrop-blur-3xl shadow-[0_-12px_40px_rgba(0,0,0,0.65)] flex flex-col z-20 pb-10">
+<!-- Glass Specular Highlight Accent -->
+<div class="absolute top-0 inset-x-8 h-px bg-gradient-to-r from-transparent via-primary-container/40 to-transparent"></div>
+<!-- Sheet Grabber Handle -->
+<div class="w-full flex justify-center pt-3 pb-2 cursor-grab active:cursor-grabbing">
+<div class="w-10 h-1.5 rounded-full bg-on-surface-variant/30 hover:bg-on-surface-variant/50 transition-colors"></div>
+</div>
+<!-- Interactive Search Bar Header -->
+<div class="px-margin pt-1 pb-3 flex items-center gap-space-sm">
+<div class="relative flex-1 flex items-center">
+<!-- Input Container with Ambient Glow -->
+<div class="w-full h-12 rounded-2xl bg-surface-container-highest/70 backdrop-blur-xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.08),0_0_20px_rgba(0,229,255,0.12)] flex items-center px-3.5 gap-2.5 group focus-within:shadow-[0_0_24px_rgba(0,229,255,0.25)] transition-all">
+<span class="material-symbols-outlined text-primary-container text-[20px] transition-transform group-focus-within:scale-110">search</span>
+<div class="flex-1 flex items-center min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface tracking-tight" id="search-prefix">Sci</span>
+<!-- Blinking iOS-Style Cursor -->
+<span class="w-[2px] h-5 bg-primary-container rounded-full ml-0.5 animate-[pulse_1s_infinite]"></span>
+<input aria-label="Search campus water stations" class="opacity-0 absolute inset-0 w-full h-full cursor-text" id="live-search-input" type="text" value="Sci"/>
+</div>
+<!-- Clear Button -->
+<button aria-label="Clear search" class="w-6 h-6 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all" type="button">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+</div>
+</div>
+<!-- Cancel / Dismiss Action -->
+<button class="font-headline-sm text-headline-sm text-primary hover:text-primary-container transition-colors px-1 py-2 active:scale-95" type="button">
+        Cancel
+      </button>
+</div>
+<!-- Horizontal Auto-Complete & Filter Smart Pills -->
+<div class="w-full overflow-x-auto px-margin pb-3 pt-1 flex items-center gap-2 no-scrollbar">
+<button class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-container/20 text-primary shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)] active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary-container">science</span>
+<span class="font-label-md text-label-md">Science Quad</span>
+</button>
+<button class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high/80 text-on-surface-variant hover:text-on-surface active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px]">memory</span>
+<span class="font-label-md text-label-md">Engineering Hall</span>
+</button>
+<button class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high/80 text-on-surface-variant hover:text-on-surface active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px]">local_library</span>
+<span class="font-label-md text-label-md">Library 2F</span>
+</button>
+<button class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high/80 text-on-surface-variant hover:text-on-surface active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px]">biotech</span>
+<span class="font-label-md text-label-md">Bio-Chem Atrium</span>
+</button>
+</div>
+<!-- Search Results / Scroll Container -->
+<div class="px-margin flex flex-col gap-5 overflow-y-auto max-h-[calc(78vh-140px)] pr-1">
+<!-- Recent Searches & Quick Pins Tray -->
+<div class="flex flex-col gap-2 pt-1">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Recents &amp; Saved</span>
+<button class="font-label-sm text-label-sm text-primary/80 hover:text-primary" type="button">Clear</button>
+</div>
+<div class="flex flex-wrap gap-2">
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-surface-container-high/60 hover:bg-surface-container-high transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant group-hover:text-primary">history</span>
+<span class="font-label-md text-label-md text-on-surface">Main Library 2F</span>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-surface-container-high/60 hover:bg-surface-container-high transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant group-hover:text-primary">history</span>
+<span class="font-label-md text-label-md text-on-surface">Student Union Hub</span>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-secondary-container/25 text-on-secondary-container hover:bg-secondary-container/35 transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[14px] text-secondary">star</span>
+<span class="font-label-md text-label-md text-on-surface">Eng Quad #04</span>
+</div>
+</div>
+</div>
+<!-- SECTION 1: CAMPUS BUILDINGS & QUADS -->
+<div class="flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-primary-container">apartment</span>
+            Campus Buildings &amp; Quads
+          </span>
+<span class="font-caption text-caption text-primary">3 Matches</span>
+</div>
+<div class="flex flex-col gap-2">
+<!-- Item 1: Science Center & North Quad -->
+<div class="group relative rounded-2xl bg-surface-container-high/60 hover:bg-surface-container-high/90 active:scale-[0.99] transition-all p-3.5 flex items-start gap-3 cursor-pointer shadow-sm">
+<div class="w-10 h-10 rounded-xl bg-primary-container/15 flex items-center justify-center text-primary-container flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]">domain</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface truncate">
+<span class="text-primary-container font-semibold bg-primary-container/20 px-1 py-0.5 rounded">Sci</span>ence Center &amp; North Quad
+                </h4>
+<div class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-tertiary/15 text-tertiary flex-shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span class="font-caption text-caption">4 Online</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate mt-0.5">
+                4 Hydration Points • All Pristine 99.2 • 85m away
+              </p>
+<div class="flex items-center gap-2 mt-2">
+<span class="px-2 py-0.5 rounded-md bg-surface-variant font-caption text-caption text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-tertiary">eco</span> 99.8% Purity
+                </span>
+<span class="px-2 py-0.5 rounded-md bg-surface-variant font-caption text-caption text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-primary">thermostat</span> 12°C Chilled
+                </span>
+<span class="px-2 py-0.5 rounded-md bg-surface-variant font-caption text-caption text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-on-surface-variant">timer</span> 0m wait
+                </span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px] self-center group-hover:translate-x-0.5 transition-transform">chevron_right</span>
+</div>
+<!-- Item 2: Health & Biomedical Sciences Building -->
+<div class="group relative rounded-2xl bg-surface-container-high/60 hover:bg-surface-container-high/90 active:scale-[0.99] transition-all p-3.5 flex items-start gap-3 cursor-pointer shadow-sm">
+<div class="w-10 h-10 rounded-xl bg-surface-variant flex items-center justify-center text-primary flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]">medical_services</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface truncate">
+                  Health &amp; Biomedical <span class="text-primary-container font-semibold bg-primary-container/20 px-1 py-0.5 rounded">Sci</span>ences
+                </h4>
+<div class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-container/15 text-primary flex-shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+<span class="font-caption text-caption">2 UV-C</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate mt-0.5">
+                2 High-flow UV-C Stations • 260m away
+              </p>
+<div class="flex items-center gap-2 mt-2">
+<span class="px-2 py-0.5 rounded-md bg-surface-variant font-caption text-caption text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-primary">water_ph</span> 7.3 pH Neutral
+                </span>
+<span class="px-2 py-0.5 rounded-md bg-surface-variant font-caption text-caption text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-tertiary">bolt</span> Ultra Fast 2.1L/m
+                </span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px] self-center group-hover:translate-x-0.5 transition-transform">chevron_right</span>
+</div>
+<!-- Item 3: Engineering Quad & Robotics Wing -->
+<div class="group relative rounded-2xl bg-surface-container-high/60 hover:bg-surface-container-high/90 active:scale-[0.99] transition-all p-3.5 flex items-start gap-3 cursor-pointer shadow-sm">
+<div class="w-10 h-10 rounded-xl bg-surface-variant flex items-center justify-center text-secondary flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]">engineering</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface truncate">
+                  Engineering Quad &amp; Robotics Wing
+                </h4>
+<div class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container/20 text-on-secondary-container flex-shrink-0">
+<span class="font-caption text-caption">3 Dispensers</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate mt-0.5">
+                3 Dispensers • 1 Advisory • 120m away
+              </p>
+<div class="flex items-center gap-2 mt-2">
+<span class="px-2 py-0.5 rounded-md bg-secondary-container/20 font-caption text-caption text-on-secondary-container flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">info</span> Filter replacement scheduled
+                </span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px] self-center group-hover:translate-x-0.5 transition-transform">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- SECTION 2: LAB ZONES & RESEARCH FLOORS -->
+<div class="flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-tertiary">biotech</span>
+            Lab Zones &amp; Research Floors
+          </span>
+<span class="font-caption text-caption text-tertiary">Pure Grade</span>
+</div>
+<div class="flex flex-col gap-2">
+<!-- Item 1: Bio-Sci Materials Lab -->
+<div class="group relative rounded-2xl bg-surface-container-high/60 hover:bg-surface-container-high/90 active:scale-[0.99] transition-all p-3.5 flex items-start gap-3 cursor-pointer shadow-sm">
+<div class="w-10 h-10 rounded-xl bg-tertiary/15 flex items-center justify-center text-tertiary flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]">smb_share</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface truncate">
+                  Bio-<span class="text-primary-container font-semibold bg-primary-container/20 px-1 py-0.5 rounded">Sci</span> Materials Laboratory 3F
+                </h4>
+<span class="font-label-sm text-label-sm text-tertiary bg-tertiary/10 px-2 py-0.5 rounded-md">98% Filter</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate mt-0.5">
+                Nano-carbon filtered cold tap • Research grade
+              </p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px] self-center group-hover:translate-x-0.5 transition-transform">chevron_right</span>
+</div>
+<!-- Item 2: Computer Science Concourse Hub -->
+<div class="group relative rounded-2xl bg-surface-container-high/60 hover:bg-surface-container-high/90 active:scale-[0.99] transition-all p-3.5 flex items-start gap-3 cursor-pointer shadow-sm">
+<div class="w-10 h-10 rounded-xl bg-primary-container/15 flex items-center justify-center text-primary flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]">terminal</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface truncate">
+                  Computer <span class="text-primary-container font-semibold bg-primary-container/20 px-1 py-0.5 rounded">Sci</span>ence Concourse Hub
+                </h4>
+<span class="font-label-sm text-label-sm text-primary bg-primary/10 px-2 py-0.5 rounded-md">Sparkling Tap</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate mt-0.5">
+                Chilled sparkling &amp; ambient tap • 0 min wait • 140m
+              </p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px] self-center group-hover:translate-x-0.5 transition-transform">chevron_right</span>
+</div>
+<!-- Item 3: Robotics Research Lab -->
+<div class="group relative rounded-2xl bg-surface-container-high/60 hover:bg-surface-container-high/90 active:scale-[0.99] transition-all p-3.5 flex items-start gap-3 cursor-pointer shadow-sm">
+<div class="w-10 h-10 rounded-xl bg-surface-variant flex items-center justify-center text-on-surface-variant flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]">precision_manufacturing</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface truncate">
+                  Robotics Research Lab - Basement B1
+                </h4>
+<span class="font-caption text-caption text-on-surface-variant">Level B1</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate mt-0.5">
+                Sub-basement cleanroom dispenser • 1.2 L/min
+              </p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px] self-center group-hover:translate-x-0.5 transition-transform">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- SECTION 3: SPECIFIC FLOORS & WATER HUBS -->
+<div class="flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-secondary">layers</span>
+            Specific Floors &amp; Skybridges
+          </span>
+<span class="font-caption text-caption text-on-surface-variant">Levels 2–4</span>
+</div>
+<div class="flex flex-col gap-2">
+<!-- Science Tower Skybridge -->
+<div class="group relative rounded-2xl bg-surface-container-high/60 hover:bg-surface-container-high/90 active:scale-[0.99] transition-all p-3.5 flex items-start gap-3 cursor-pointer shadow-sm">
+<div class="w-10 h-10 rounded-xl bg-primary-container/15 flex items-center justify-center text-primary flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]">wb_twilight</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface truncate">
+<span class="text-primary-container font-semibold bg-primary-container/20 px-1 py-0.5 rounded">Sci</span>ence Tower - 4F Skybridge
+                </h4>
+<span class="font-label-sm text-label-sm text-primary bg-primary/10 px-2 py-0.5 rounded-md">Panoramic</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate mt-0.5">
+                Level 4 Skybridge Lounge • 14°C Crisp Chilled
+              </p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px] self-center group-hover:translate-x-0.5 transition-transform">chevron_right</span>
+</div>
+<!-- Main Library 2F -->
+<div class="group relative rounded-2xl bg-surface-container-high/60 hover:bg-surface-container-high/90 active:scale-[0.99] transition-all p-3.5 flex items-start gap-3 cursor-pointer shadow-sm">
+<div class="w-10 h-10 rounded-xl bg-surface-variant flex items-center justify-center text-tertiary flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]">local_library</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface truncate">
+                  Main Library - 2F Silent HydroStation
+                </h4>
+<span class="font-label-sm text-label-sm text-tertiary bg-tertiary/10 px-2 py-0.5 rounded-md">Ultra Pure</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate mt-0.5">
+                Level 2 North Wing Stacks • Ultra-pure 42 ppm
+              </p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px] self-center group-hover:translate-x-0.5 transition-transform">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Quick Action: Report Missing Station or Filter Degradation -->
+<div class="my-2 p-4 rounded-2xl bg-gradient-to-r from-surface-container-high via-surface-container-highest to-surface-container-high flex items-center justify-between gap-3 shadow-md">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-9 h-9 rounded-xl bg-primary-container/20 flex items-center justify-center text-primary-container flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">add_location_alt</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate">Can't find your fountain?</span>
+<span class="font-caption text-caption text-on-surface-variant truncate">Submit telemetry or suggest a hydration point</span>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-xl bg-primary text-on-primary font-label-sm text-label-sm hover:brightness-110 active:scale-95 transition-all flex-shrink-0" type="button">
+          Suggest
+        </button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    const input = document.getElementById('live-search-input');
+    const prefix = document.getElementById('search-prefix');
+    if (!input || !prefix) return;
+
+    input.addEventListener('input', (e) => {
+      const val = e.target.value;
+      prefix.textContent = val.length > 0 ? val : '';
+    });
+  })();
+</script></main><div class="fixed bottom-0 inset-x-0 z-50 pb-safe pointer-events-none flex justify-center"><nav class="pointer-events-auto mb-4 mx-margin w-full max-w-sm h-16 rounded-full bg-surface-container-high/65 backdrop-blur-2xl shadow-[0_12px_36px_rgba(0,0,0,0.45)] px-space-md flex items-center justify-around glass-nav" data-active-classes="text-primary font-label-md bg-white/10 shadow-[0_2px_12px_rgba(0,218,243,0.2)]"><a aria-current="page" class="flex flex-col items-center justify-center gap-1 min-w-[56px] h-12 rounded-full transition-all active:scale-95 text-primary font-label-md bg-white/10 shadow-[0_2px_12px_rgba(0,218,243,0.2)]" data-path="campus-map" href="index.html"><span class="material-symbols-outlined text-[22px]">map</span><span class="font-label-sm text-label-sm">Map</span></a><a class="flex flex-col items-center justify-center gap-1 min-w-[56px] h-12 rounded-full text-on-surface-variant hover:text-on-surface transition-all active:scale-95 relative" data-path="notifications" href="Campus Alerts.html"><div class="relative flex items-center justify-center"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-primary-container ring-2 ring-surface"></span></div><span class="font-label-sm text-label-sm">Alerts</span></a><a class="flex flex-col items-center justify-center gap-1 min-w-[56px] h-12 rounded-full text-on-surface-variant hover:text-on-surface transition-all active:scale-95" data-path="student-profile" href="Profile and Settings.html"><span class="material-symbols-outlined text-[22px]">account_circle</span><span class="font-label-sm text-label-sm">Profile</span></a></nav></div></body></html>

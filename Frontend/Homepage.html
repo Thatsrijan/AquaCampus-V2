@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><link href="logo.svg" rel="icon" type="image/svg+xml"/><link href="logo.svg" rel="apple-touch-icon"/><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-error-container": "#ffdad6", "primary": "#c3f5ff", "primary-fixed-dim": "#00daf3", "surface-tint": "#00daf3", "on-surface-variant": "#bac9cc", "on-tertiary-fixed": "#002113", "secondary-container": "#3626ce", "inverse-primary": "#006875", "outline-variant": "#3b494c", "on-primary-fixed": "#001f24", "tertiary-fixed-dim": "#4edea3", "inverse-on-surface": "#283044", "on-secondary-fixed-variant": "#3323cc", "on-tertiary-fixed-variant": "#005236", "on-secondary-container": "#b3b1ff", "error-container": "#93000a", "tertiary": "#a8ffd2", "error": "#ffb4ab", "on-primary": "#00363d", "surface-container-highest": "#2d3449", "surface-container-high": "#222a3d", "on-error": "#690005", "on-surface": "#dae2fd", "surface-dim": "#0b1326", "on-primary-fixed-variant": "#004f58", "surface-bright": "#31394d", "secondary-fixed": "#e2dfff", "surface-container-lowest": "#060e20", "on-secondary-fixed": "#0f0069", "on-tertiary": "#003824", "primary-container": "#00e5ff", "surface-container-low": "#131b2e", "on-secondary": "#1d00a5", "surface": "#0b1326", "tertiary-fixed": "#6ffbbe", "surface-container": "#171f33", "surface-variant": "#2d3449", "on-background": "#dae2fd", "background": "#0b1326", "secondary-fixed-dim": "#c3c0ff", "inverse-surface": "#dae2fd", "outline": "#849396", "on-primary-container": "#00626e", "on-tertiary-container": "#006645", "tertiary-container": "#5be9ad", "primary-fixed": "#9cf0ff", "secondary": "#c3c0ff" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xs": "0.25rem", "margin": "1.25rem", "space-xl": "2.25rem", "space-sm": "0.5rem", "gutter": "1rem", "space-md": "1rem", "space-lg": "1.5rem" }, "fontFamily": { "label-sm": ["Plus Jakarta Sans"], "metric-stat": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "display-hero-mobile": ["Plus Jakarta Sans"], "caption": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "display-hero": ["Plus Jakarta Sans"] }, "fontSize": { "label-sm": ["11px", { "lineHeight": "14px", "fontWeight": "600" }], "metric-stat": ["32px", { "lineHeight": "38px", "fontWeight": "800" }], "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "600" }], "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }], "label-md": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "display-hero-mobile": ["34px", { "lineHeight": "42px", "fontWeight": "700" }], "caption": ["10px", { "lineHeight": "12px", "fontWeight": "500" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }], "display-hero": ["48px", { "lineHeight": "56px", "fontWeight": "700" }] } } } };</script><style>@layer base{html,body{width:100%;min-height:100%;margin:0;padding:0;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<link href="glass-ui.css" rel="stylesheet"/><script defer="True" src="glass-ui.js"></script></head><body class="bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen selection:bg-primary-container selection:text-on-primary-container relative overflow-x-hidden"><div class="fixed inset-0 pointer-events-none z-0 overflow-hidden"><div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-primary-container/15 blur-[100px]"></div><div class="absolute top-1/3 -right-32 w-96 h-96 rounded-full bg-secondary-container/20 blur-[120px]"></div><div class="absolute -bottom-32 left-1/4 w-96 h-96 rounded-full bg-tertiary/10 blur-[110px]"></div></div><header class="fixed top-0 inset-x-0 z-50 pt-safe bg-surface/60 backdrop-blur-2xl shadow-[0_4px_24px_rgba(0,0,0,0.3)] glass-header"><div class="h-16 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="AquaCampus Logo" class="h-8 w-auto object-contain" src="logo.svg"/><div class="flex flex-col min-w-0"><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-primary text-[18px]">water_drop</span><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight truncate">AquaCampus</span></div><span class="font-caption text-caption text-on-surface-variant truncate">Campus Map</span></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><a aria-label="Search and Filter" class="w-11 h-11 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 active:scale-95 transition-all text-on-surface" href="Filter Stations.html"><span class="material-symbols-outlined text-[22px]">tune</span></a><a aria-label="Profile" class="w-11 h-11 flex items-center justify-center rounded-full bg-white/5 active:scale-95 transition-all" href="Profile and Settings.html"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="Profile.jpg"/></a></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-28 bg-surface z-10"><div class="flex flex-col w-full relative select-none">
+<!-- Dynamic Ambient Liquid Background Orbs for the Screen -->
+<div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+<div class="absolute top-24 left-1/2 -translate-x-1/2 w-80 h-80 rounded-full bg-primary-container/10 blur-[120px] transition-all duration-700" id="ambientLight"></div>
+<div class="absolute top-96 -right-16 w-72 h-72 rounded-full bg-secondary-container/20 blur-[100px]"></div>
+<div class="absolute bottom-20 -left-20 w-80 h-80 rounded-full bg-tertiary/10 blur-[110px]"></div>
+</div>
+<!-- Top Glass Filter Pills Ribbon -->
+<div class="w-full px-margin py-space-sm z-30">
+<div class="flex items-center gap-space-sm overflow-x-auto no-scrollbar py-1">
+<button class="filter-btn active flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-xl text-primary font-label-sm text-label-sm shadow-md transition-all shrink-0 active:scale-95" data-filter="all" type="button">
+<a class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container-high/60 backdrop-blur-xl text-on-surface-variant font-label-sm text-label-sm shadow-sm transition-all shrink-0 hover:text-on-surface active:scale-95" href="Nearby Water Stations.html"><span class="material-symbols-outlined text-[16px] text-primary">near_me</span><span>Nearby Stations</span></a>
+<a class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container-high/60 backdrop-blur-xl text-on-surface-variant font-label-sm text-label-sm shadow-sm transition-all shrink-0 hover:text-on-surface active:scale-95" href="Search Buildings.html"><span class="material-symbols-outlined text-[16px] text-primary-fixed-dim">search</span><span>Search Quads</span></a>
+<span class="material-symbols-outlined text-[16px]">water</span>
+<span>All Points (18)</span>
+</button>
+<button class="filter-btn flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container-high/60 backdrop-blur-xl text-on-surface-variant font-label-sm text-label-sm shadow-sm transition-all shrink-0 hover:text-on-surface active:scale-95" data-filter="chilled" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">ac_unit</span>
+<span>Chilled Water</span>
+</button>
+<button class="filter-btn flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container-high/60 backdrop-blur-xl text-on-surface-variant font-label-sm text-label-sm shadow-sm transition-all shrink-0 hover:text-on-surface active:scale-95" data-filter="bottle" type="button">
+<span class="material-symbols-outlined text-[16px] text-tertiary">valve</span>
+<span>Bottle Refill</span>
+</button>
+<button class="filter-btn flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container-high/60 backdrop-blur-xl text-on-surface-variant font-label-sm text-label-sm shadow-sm transition-all shrink-0 hover:text-on-surface active:scale-95" data-filter="alert" type="button">
+<span class="w-2 h-2 rounded-full bg-error animate-ping"></span>
+<span>Alerts (2)</span>
+</button>
+</div>
+</div>
+<!-- Main Map Container Stage -->
+<div class="relative w-full px-margin pb-4 z-20">
+<div class="relative w-full h-[360px] rounded-3xl overflow-hidden bg-surface-container-lowest/80 backdrop-blur-2xl shadow-2xl transition-all flex flex-col justify-between p-4">
+<!-- Vector Stylized Campus Map Layout (Inline SVG overlay for crystal sharp high-DPI rendering) -->
+<svg class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-85" fill="none" viewbox="0 0 380 360" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<radialgradient cx="50%" cy="50%" id="campusGlow" r="50%">
+<stop offset="0%" stop-color="#00E5FF" stop-opacity="0.15"></stop>
+<stop offset="100%" stop-color="#00E5FF" stop-opacity="0"></stop>
+</radialgradient>
+<lineargradient id="pathGradient" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#00daf3" stop-opacity="0.35"></stop>
+<stop offset="100%" stop-color="#4edea3" stop-opacity="0.25"></stop>
+</lineargradient>
+</defs>
+<rect fill="#0B1326" fill-opacity="0.7" height="360" width="380"></rect>
+<circle cx="190" cy="180" fill="url(#campusGlow)" r="160"></circle>
+<!-- Grid Lines for Precision Feel -->
+<g opacity="0.4" stroke="#3B494C" stroke-dasharray="3 3" stroke-width="0.5">
+<line x1="20" x2="20" y1="0" y2="360"></line>
+<line x1="100" x2="100" y1="0" y2="360"></line>
+<line x1="190" x2="190" y1="0" y2="360"></line>
+<line x1="280" x2="280" y1="0" y2="360"></line>
+<line x1="360" x2="360" y1="0" y2="360"></line>
+<line x1="0" x2="380" y1="60" y2="60"></line>
+<line x1="0" x2="380" y1="140" y2="140"></line>
+<line x1="0" x2="380" y1="220" y2="220"></line>
+<line x1="0" x2="380" y1="300" y2="300"></line>
+</g>
+<!-- Campus Roadways & Paths -->
+<path d="M-10 180 C 80 170, 130 190, 190 180 C 260 170, 310 140, 390 130" fill="none" stroke="url(#pathGradient)" stroke-linecap="round" stroke-width="6"></path>
+<path d="M190 -10 C 185 80, 195 120, 190 180 C 185 240, 180 290, 190 370" fill="none" stroke="url(#pathGradient)" stroke-linecap="round" stroke-width="5"></path>
+<path d="M60 70 L 160 140" opacity="0.5" stroke="#00DAF3" stroke-dasharray="4 4" stroke-width="2"></path>
+<path d="M220 220 L 320 270" opacity="0.5" stroke="#00DAF3" stroke-dasharray="4 4" stroke-width="2"></path>
+<path d="M160 210 Q 190 260 220 290" opacity="0.6" stroke="#4EDEA3" stroke-linecap="round" stroke-width="3"></path>
+<!-- University Campus Sector Outlines (Glass Block Style) -->
+<!-- Engineering Quad -->
+<rect fill="#131B2E" fill-opacity="0.85" height="65" rx="14" width="95" x="35" y="45"></rect>
+<text fill="#BAC9CC" font-family="Plus Jakarta Sans" font-size="9" font-weight="600" letter-spacing="0.5" x="45" y="75">ENG QUAD</text>
+<text fill="#00DAF3" font-family="Plus Jakarta Sans" font-size="8" x="45" y="90">Robotics Wing</text>
+<!-- Library Plaza -->
+<rect fill="#171F33" fill-opacity="0.9" height="75" rx="14" width="105" x="235" y="45"></rect>
+<text fill="#C3F5FF" font-family="Plus Jakarta Sans" font-size="9" font-weight="700" letter-spacing="0.5" x="247" y="75">LIBRARY PLAZA</text>
+<text fill="#A8FFD2" font-family="Plus Jakarta Sans" font-size="8" x="247" y="90">2F HydroStation</text>
+<!-- Student Union Hub -->
+<rect fill="#131B2E" fill-opacity="0.85" height="80" rx="14" width="100" x="40" y="225"></rect>
+<text fill="#BAC9CC" font-family="Plus Jakarta Sans" font-size="9" font-weight="600" letter-spacing="0.5" x="50" y="255">STUDENT UNION</text>
+<text fill="#FFB4AB" font-family="Plus Jakarta Sans" font-size="8" x="50" y="270">Central Food Court</text>
+<!-- Science Concourse -->
+<rect fill="#171F33" fill-opacity="0.9" height="75" rx="14" width="105" x="235" y="215"></rect>
+<text fill="#BAC9CC" font-family="Plus Jakarta Sans" font-size="9" font-weight="600" letter-spacing="0.5" x="245" y="245">SCIENCE CONCOURSE</text>
+<text fill="#BAC9CC" font-family="Plus Jakarta Sans" font-size="8" x="245" y="260">Bio-Chem atrium</text>
+<!-- Dorm North Sector -->
+<rect fill="#131B2E" fill-opacity="0.7" height="40" rx="10" width="80" x="140" y="15"></rect>
+<text fill="#849396" font-family="Plus Jakarta Sans" font-size="8" font-weight="600" x="148" y="38">NORTH RESIDENCES</text>
+<!-- Central Eco Basin Lawn -->
+<ellipse cx="190" cy="180" fill="#003824" fill-opacity="0.5" rx="30" ry="22"></ellipse>
+<circle cx="190" cy="180" fill="#4EDEA3" fill-opacity="0.4" r="8"></circle>
+</svg>
+<!-- Map HUD / Live Campus Compass & GPS Status -->
+<div class="relative z-10 flex items-center justify-between">
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high/80 backdrop-blur-xl shadow-md">
+<div class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></div>
+<span class="font-caption text-caption text-on-surface uppercase tracking-wider">Live Campus Telemetry</span>
+</div>
+<div class="flex items-center gap-1.5">
+<button aria-label="Re-center map" class="w-8 h-8 rounded-full bg-surface-container-high/80 backdrop-blur-xl flex items-center justify-center text-primary shadow-md active:scale-90 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]">my_location</span>
+</button>
+<button aria-label="Layer options" class="w-8 h-8 rounded-full bg-surface-container-high/80 backdrop-blur-xl flex items-center justify-center text-on-surface-variant shadow-md active:scale-90 transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]">layers</span>
+</button>
+</div>
+</div>
+<!-- Interactive Water Point Pins -->
+<!-- 1. Green Pin: Library 2F (Selected initially) -->
+<button aria-label="Select Library 2F HydroStation" class="absolute top-[80px] right-[55px] z-20 group -translate-x-1/2 -translate-y-1/2 focus:outline-none" id="pin-library" onclick="selectStation('library')" type="button">
+<div class="relative flex items-center justify-center">
+<span class="absolute -inset-2 rounded-full bg-tertiary-container/30 blur-sm scale-125 animate-pulse"></span>
+<div class="relative w-9 h-9 rounded-2xl bg-tertiary-container/90 backdrop-blur-md flex items-center justify-center shadow-lg transition-transform group-hover:scale-110 active:scale-95">
+<span class="material-symbols-outlined text-on-tertiary-container text-[20px]" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+</div>
+<span class="absolute -bottom-5 px-1.5 py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-[9px] font-bold text-tertiary whitespace-nowrap shadow">98% Pure</span>
+</div>
+</button>
+<!-- 2. Amber Pin: Science Concourse -->
+<button aria-label="Select Science Concourse Fountain" class="absolute bottom-[95px] right-[65px] z-20 group -translate-x-1/2 -translate-y-1/2 focus:outline-none" id="pin-science" onclick="selectStation('science')" type="button">
+<div class="relative flex items-center justify-center">
+<div class="w-8 h-8 rounded-2xl bg-amber-400/90 backdrop-blur-md flex items-center justify-center shadow-md transition-transform group-hover:scale-110 active:scale-95">
+<span class="material-symbols-outlined text-surface-container-lowest text-[18px]" style="font-variation-settings: 'FILL' 1;">water_bottle</span>
+</div>
+<span class="absolute -bottom-4 px-1.5 py-0.2 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-[8px] font-medium text-amber-300 whitespace-nowrap shadow">82% Fair</span>
+</div>
+</button>
+<!-- 3. Orange Pin: Dorm Hall North Dispenser -->
+<button aria-label="Select Dorm Hall North Dispenser" class="absolute top-[48px] left-[175px] z-20 group -translate-x-1/2 -translate-y-1/2 focus:outline-none" id="pin-dorm" onclick="selectStation('dorm')" type="button">
+<div class="relative flex items-center justify-center">
+<div class="w-7 h-7 rounded-xl bg-orange-400/85 backdrop-blur-md flex items-center justify-center shadow-md transition-transform group-hover:scale-110 active:scale-95">
+<span class="material-symbols-outlined text-surface-container-lowest text-[16px]">device_thermostat</span>
+</div>
+<span class="absolute -bottom-4 px-1 py-0.2 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-[8px] font-medium text-orange-300 whitespace-nowrap shadow">64%</span>
+</div>
+</button>
+<!-- 4. Pulsing Red Pin with Alert: Student Union Hub #4 -->
+<button aria-label="Select Student Union Hub" class="absolute bottom-[75px] left-[85px] z-20 group -translate-x-1/2 -translate-y-1/2 focus:outline-none" id="pin-union" onclick="selectStation('union')" type="button">
+<div class="relative flex items-center justify-center">
+<!-- Multi-tier Pulsing Ripples -->
+<span class="absolute w-12 h-12 rounded-full bg-error/30 animate-ping"></span>
+<span class="absolute w-8 h-8 rounded-full bg-error/40 animate-pulse"></span>
+<div class="relative w-9 h-9 rounded-2xl bg-error text-on-error flex items-center justify-center shadow-xl transition-transform group-hover:scale-110 active:scale-95">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<span class="absolute -bottom-5 px-1.5 py-0.5 rounded-full bg-error-container text-[9px] font-bold text-on-error-container whitespace-nowrap shadow">Offline (Alert)</span>
+</div>
+</button>
+<!-- Map Base Water Legend Pill -->
+<div class="relative z-10 flex items-center justify-between px-3 py-1.5 rounded-2xl bg-surface-container-high/70 backdrop-blur-xl">
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="font-caption text-caption text-on-surface-variant">Pristine</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-amber-400"></span>
+<span class="font-caption text-caption text-on-surface-variant">Fair</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-orange-400"></span>
+<span class="font-caption text-caption text-on-surface-variant">Service Soon</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="font-caption text-caption text-on-surface-variant">Out</span>
+</div>
+</div>
+<span class="font-caption text-caption text-primary flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]">touch_app</span> Tap Pin
+        </span>
+</div>
+</div>
+</div>
+<!-- Real-Time Selected Water Station Glass Detail Card -->
+<div class="w-full px-margin pb-5 z-20" id="station-card-container">
+<div class="relative w-full rounded-3xl p-5 bg-surface-container-high/85 backdrop-blur-2xl shadow-[0_16px_40px_rgba(0,0,0,0.45)] transition-all overflow-hidden" style="box-shadow: inset 0 1px 1px 0 rgba(255,255,255,0.2), 0 12px 32px 0 rgba(0,0,0,0.35);">
+<!-- Liquid Specular Sheen Effect -->
+<div class="absolute -top-16 -right-16 w-44 h-44 rounded-full bg-primary-container/15 blur-2xl pointer-events-none"></div>
+<!-- Station Header & Quick Info -->
+<div class="flex items-start justify-between gap-2 mb-3">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2 mb-0.5">
+<span class="px-2 py-0.5 rounded-md bg-tertiary/20 text-tertiary font-label-sm text-label-sm" id="stationStatusBadge">Pristine Grade • 98%</span>
+<span class="font-caption text-caption text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-tertiary">check_circle</span> Verified
+            </span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight truncate" id="stationName">Library 2F HydroStation</h2>
+<p class="font-caption text-caption text-on-surface-variant flex items-center gap-1 mt-0.5" id="stationLocation">
+<span class="material-symbols-outlined text-[13px] text-primary">pin_drop</span> East Wing near Silent Study Pods
+          </p>
+</div>
+<div class="flex flex-col items-end shrink-0">
+<button class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-primary-container/20 hover:bg-primary-container/30 active:scale-95 text-primary font-label-sm text-label-sm shadow-sm transition-all" onclick="openRatingModal()" style="box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);" type="button">
+<span class="material-symbols-outlined text-[16px]">rate_review</span>
+<span>Report</span>
+</button>
+<span class="font-caption text-caption text-on-surface-variant mt-1.5" id="stationSanitized">Sanitized 28m ago</span>
+</div>
+</div>
+<!-- Real-Time Metrics Bento Grid -->
+<div class="grid grid-cols-3 gap-2.5 my-3">
+<!-- Temp Metric -->
+<div class="flex flex-col p-3 rounded-2xl bg-surface-container/70 backdrop-blur-md shadow-inner">
+<div class="flex items-center justify-between text-on-surface-variant mb-1">
+<span class="font-caption text-caption">Temp</span>
+<span class="material-symbols-outlined text-[16px] text-primary" id="tempIcon">device_thermostat</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-primary tracking-tight" id="stationTemp">14°C</span>
+<span class="font-caption text-caption text-on-surface-variant" id="tempDesc">Chilled</span>
+</div>
+<!-- Hygiene Ring Metric -->
+<div class="flex flex-col p-3 rounded-2xl bg-surface-container/70 backdrop-blur-md shadow-inner">
+<div class="flex items-center justify-between text-on-surface-variant mb-1">
+<span class="font-caption text-caption">Hygiene</span>
+<span class="material-symbols-outlined text-[16px] text-tertiary">health_and_safety</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-tertiary tracking-tight" id="stationRating">4.9<span class="text-caption font-normal text-on-surface-variant">/5</span></span>
+<span class="font-caption text-caption text-tertiary-fixed-dim" id="complaintsCount">0 complaints</span>
+</div>
+<!-- TDS Purity Metric -->
+<div class="flex flex-col p-3 rounded-2xl bg-surface-container/70 backdrop-blur-md shadow-inner">
+<div class="flex items-center justify-between text-on-surface-variant mb-1">
+<span class="font-caption text-caption">TDS Purity</span>
+<span class="material-symbols-outlined text-[16px] text-primary-fixed-dim">science</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface tracking-tight" id="stationTDS">42 <span class="text-caption font-normal text-on-surface-variant">ppm</span></span>
+<span class="font-caption text-caption text-on-surface-variant" id="tdsDesc">Alpine Grade</span>
+</div>
+</div>
+<!-- Secondary Metrics Row: Filter Health & Flow Rate Progress -->
+<div class="flex flex-col gap-2 pt-1">
+<!-- Filter Lifespan Progress -->
+<div class="flex items-center justify-between text-caption font-caption">
+<span class="text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-primary">filter_alt</span> Nano-Filter Lifespan
+          </span>
+<span class="text-primary font-medium" id="filterPercent">92% (Optimal)</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full rounded-full bg-gradient-to-r from-primary via-tertiary to-primary-container transition-all duration-500" id="filterBar" style="width: 92%;"></div>
+</div>
+<!-- Flow Rate & Bottle Refill Counter -->
+<div class="flex items-center justify-between text-caption font-caption pt-1 text-on-surface-variant">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">speed</span> Flow Rate: <strong class="text-on-surface font-semibold" id="flowRate">2.1 L/min</strong>
+</span>
+<span class="flex items-center gap-1 text-tertiary">
+<span class="material-symbols-outlined text-[14px]">compost</span> 1,482 bottles saved this wk
+          </span>
+</div>
+</div>
+<!-- Quick Action Controls inside Card -->
+<div class="flex items-center gap-2 mt-4 pt-3">
+<button class="flex-1 h-10 rounded-xl bg-white/10 hover:bg-white/15 active:scale-98 transition-all flex items-center justify-center gap-1.5 text-on-surface font-label-md text-label-md" onclick="alertNotification('Directions set to Library 2F!')" style="box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">directions_walk</span>
+<span>Walk (3 min)</span>
+</button>
+<a class="h-10 px-3 rounded-xl bg-primary-container/20 hover:bg-primary-container/30 active:scale-98 transition-all flex items-center justify-center gap-1 text-primary font-label-md text-label-md" href="AR Navigation.html" style="box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);">
+<span class="material-symbols-outlined text-[18px]">view_in_ar</span>
+<span>AR</span>
+</a>
+<a class="h-10 px-3 rounded-xl bg-white/5 hover:bg-white/10 active:scale-98 transition-all flex items-center justify-center gap-1 text-tertiary font-label-md text-label-md" href="Water Quality Telemetry.html" style="box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);">
+<span class="material-symbols-outlined text-[18px]">sensors</span>
+<span>Telemetry</span>
+</a>
+<button class="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 active:scale-90 transition-all flex items-center justify-center text-on-surface-variant hover:text-primary" onclick="alertNotification('Saved to your favorite fountains!')" type="button">
+<span class="material-symbols-outlined text-[20px]">bookmark</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Campus Community Activity Feed Snippet -->
+<div class="w-full px-margin pb-10 z-20">
+<div class="flex items-center justify-between mb-2">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Recent Student Sips</h3>
+<span class="font-caption text-caption text-primary">Verified Reviews</span>
+</div>
+<div class="space-y-2">
+<div class="p-3 rounded-2xl bg-surface-container/60 backdrop-blur-xl flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container/20 flex items-center justify-center text-primary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[16px]">person</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-medium truncate">Marcus K. • Bio Major</span>
+<span class="font-caption text-caption text-on-surface-variant">14m ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-xs mt-0.5 line-clamp-1">
+            "Library 2F fountain is ice cold today! No metallic taste, perfect bottle filler sensor."
+          </p>
+</div>
+</div>
+<div class="p-3 rounded-2xl bg-surface-container/60 backdrop-blur-xl flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-error/20 flex items-center justify-center text-error shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[16px]">priority_high</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-error font-medium truncate">Elena V. • Arch Studio</span>
+<span class="font-caption text-caption text-on-surface-variant">42m ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-xs mt-0.5 line-clamp-1">
+            "Student Union #4 stream is spitting aerated foam. Reported maintenance flag."
+          </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating Liquid Action Button (Rate & Report) -->
+<div class="fixed bottom-24 right-5 z-40">
+<button aria-label="Rate and Report Water Station" class="group relative flex items-center gap-2 pl-4 pr-5 h-13 py-3 rounded-full bg-primary/20 hover:bg-primary/30 active:scale-95 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,218,243,0.35)] transition-all" onclick="openRatingModal()" style="box-shadow: inset 0 1px 1.5px 0 rgba(255,255,255,0.7), 0 10px 28px rgba(0,218,243,0.3);" type="button">
+<span class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shadow">
+<span class="material-symbols-outlined text-[20px] font-bold">add</span>
+</span>
+<div class="flex flex-col text-left">
+<span class="font-label-sm text-label-sm text-primary font-bold tracking-tight">Rate &amp; Report</span>
+<span class="font-caption text-caption text-on-surface-variant text-[9px] -mt-0.5">Tap station review</span>
+</div>
+</button>
+</div>
+<!-- Apple-Style Liquid Glass Modal Sheet (Rate & Report) -->
+<div class="fixed inset-0 z-50 bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300 flex items-end justify-center" id="ratingModalBackdrop">
+<div class="w-full max-w-lg rounded-t-[32px] p-6 bg-surface-container-high/90 backdrop-blur-3xl shadow-[0_-12px_48px_rgba(0,0,0,0.6)] transform translate-y-full transition-transform duration-300 ease-out max-h-[777px] overflow-y-auto" id="ratingModalSheet" style="box-shadow: inset 0 1px 1px 0 rgba(255,255,255,0.4);">
+<!-- Modal Top Drag Handle -->
+<div class="w-full flex justify-center pb-3 cursor-grab" onclick="closeRatingModal()">
+<div class="w-10 h-1.5 rounded-full bg-white/40"></div>
+</div>
+<!-- Sheet Header -->
+<div class="flex items-center justify-between pb-3">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">water_drop</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Rate &amp; Report Station</h2>
+</div>
+<p class="font-caption text-caption text-on-surface-variant mt-0.5">Real-time crowdsourced quality checks</p>
+</div>
+<button class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/15 text-on-surface flex items-center justify-center active:scale-90 transition-all" onclick="closeRatingModal()" type="button">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Target Station Pill Selector -->
+<div class="p-2.5 rounded-2xl bg-surface-container-lowest/80 backdrop-blur-md flex items-center justify-between my-2">
+<div class="flex items-center gap-2 min-w-0">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary shrink-0"></span>
+<span class="font-label-md text-label-md text-on-surface truncate font-semibold" id="modalTargetStationName">Library 2F HydroStation</span>
+</div>
+<span class="px-2 py-0.5 rounded-md bg-white/10 text-[10px] font-medium text-primary shrink-0">Change</span>
+</div>
+<!-- Custom Apple-Inspired Glass Sliders Form -->
+<form class="space-y-4 pt-2" id="ratingForm" onsubmit="handleFormSubmit(event)">
+<!-- Slider 1: Taste & Freshness -->
+<div class="space-y-1.5 p-3.5 rounded-2xl bg-surface-container/50 backdrop-blur-md">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[16px]">clean_hands</span>
+              Taste &amp; Freshness
+            </label>
+<span class="px-2 py-0.5 rounded-full bg-primary/20 text-primary font-label-sm text-label-sm" id="tasteValue">4.8 / 5.0</span>
+</div>
+<input class="w-full accent-primary h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer" max="5" min="1" oninput="document.getElementById('tasteValue').textContent = parseFloat(this.value).toFixed(1) + ' / 5.0'" step="0.1" type="range" value="4.8"/>
+<div class="flex justify-between text-[10px] text-on-surface-variant font-caption">
+<span>Tastes Flat/Mineral</span>
+<span>Neutral</span>
+<span>Crisp Glacier</span>
+</div>
+</div>
+<!-- Slider 2: Cleanliness & Hygiene -->
+<div class="space-y-1.5 p-3.5 rounded-2xl bg-surface-container/50 backdrop-blur-md">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-tertiary text-[16px]">verified</span>
+              Basin &amp; Spout Cleanliness
+            </label>
+<span class="px-2 py-0.5 rounded-full bg-tertiary/20 text-tertiary font-label-sm text-label-sm" id="cleanValue">5.0 / 5.0</span>
+</div>
+<input class="w-full accent-tertiary h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer" max="5" min="1" oninput="document.getElementById('cleanValue').textContent = parseFloat(this.value).toFixed(1) + ' / 5.0'" step="0.1" type="range" value="5.0"/>
+<div class="flex justify-between text-[10px] text-on-surface-variant font-caption">
+<span>Needs Scrub</span>
+<span>Acceptable</span>
+<span>Sparkling Clean</span>
+</div>
+</div>
+<!-- Slider 3: Water Pressure & Flow -->
+<div class="space-y-1.5 p-3.5 rounded-2xl bg-surface-container/50 backdrop-blur-md">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary-fixed-dim text-[16px]">waterfall_chart</span>
+              Dispense Pressure
+            </label>
+<span class="px-2 py-0.5 rounded-full bg-primary-fixed-dim/20 text-primary-fixed-dim font-label-sm text-label-sm" id="flowValue">4.5 / 5.0</span>
+</div>
+<input class="w-full accent-primary-fixed-dim h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer" max="5" min="1" oninput="document.getElementById('flowValue').textContent = parseFloat(this.value).toFixed(1) + ' / 5.0'" step="0.1" type="range" value="4.5"/>
+<div class="flex justify-between text-[10px] text-on-surface-variant font-caption">
+<span>Trickle</span>
+<span>Moderate</span>
+<span>Fast Stream</span>
+</div>
+</div>
+<!-- Quick Issue Chips -->
+<div class="space-y-1.5">
+<label class="font-label-sm text-label-sm text-on-surface-variant block">Quick Issue Tags (Optional)</label>
+<div class="flex flex-wrap gap-2">
+<button class="tag-chip px-2.5 py-1 rounded-full bg-surface-container/80 text-on-surface-variant text-caption font-caption hover:bg-white/10 active:scale-95 transition-all" onclick="toggleTag(this)" type="button">Filter Light On</button>
+<button class="tag-chip px-2.5 py-1 rounded-full bg-surface-container/80 text-on-surface-variant text-caption font-caption hover:bg-white/10 active:scale-95 transition-all" onclick="toggleTag(this)" type="button">Warm Water</button>
+<button class="tag-chip px-2.5 py-1 rounded-full bg-surface-container/80 text-on-surface-variant text-caption font-caption hover:bg-white/10 active:scale-95 transition-all" onclick="toggleTag(this)" type="button">Nozzle Splatter</button>
+<button class="tag-chip px-2.5 py-1 rounded-full bg-surface-container/80 text-on-surface-variant text-caption font-caption hover:bg-white/10 active:scale-95 transition-all" onclick="toggleTag(this)" type="button">Drain Clogged</button>
+</div>
+</div>
+<!-- Textarea notes -->
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Observations &amp; Notes</label>
+<textarea class="w-full rounded-2xl p-3 bg-surface-container/60 text-on-surface placeholder:text-on-surface-variant/50 text-body-md font-body-md focus:outline-none focus:ring-1 focus:ring-primary/40 resize-none" placeholder="e.g., Sensor is ultra responsive, water feels icy cold and refreshing..." rows="2"></textarea>
+</div>
+<!-- Submit Button with Specular Highlights -->
+<button class="w-full h-12 rounded-2xl bg-primary-container hover:bg-primary active:scale-98 text-on-primary-container font-headline-sm text-headline-sm flex items-center justify-center gap-2 shadow-lg transition-all" id="submitBtn" style="box-shadow: inset 0 1px 1.5px 0 rgba(255,255,255,0.7), 0 8px 24px rgba(0,229,255,0.3);" type="submit">
+<span class="material-symbols-outlined text-[20px]">send</span>
+<span>Submit Rating &amp; Feedback</span>
+</button>
+</form>
+</div>
+</div>
+<!-- Transient Toast Message -->
+<div class="fixed top-20 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-full bg-surface-container-highest/90 backdrop-blur-2xl text-on-surface font-label-md text-label-md flex items-center gap-2 shadow-2xl opacity-0 pointer-events-none transition-all duration-300" id="toastNotification">
+<span class="material-symbols-outlined text-primary text-[18px]" id="toastIcon">check_circle</span>
+<span id="toastMsg">Feedback submitted to Campus Operations!</span>
+</div>
+</div>
+<script>
+  // Campus Stations Data Model
+  const stations = {
+    library: {
+      name: 'Library 2F HydroStation',
+      location: 'East Wing near Silent Study Pods',
+      statusBadge: 'Pristine Grade • 98%',
+      statusBadgeClass: 'bg-tertiary/20 text-tertiary',
+      temp: '14°C',
+      tempDesc: 'Chilled',
+      tempIcon: 'ac_unit',
+      rating: '4.9',
+      complaints: '0 complaints',
+      tds: '42',
+      tdsDesc: 'Alpine Grade',
+      filterPercent: '92% (Optimal)',
+      filterWidth: '92%',
+      flowRate: '2.1 L/min',
+      sanitized: 'Sanitized 28m ago',
+      glowColor: 'bg-tertiary/15'
+    },
+    science: {
+      name: 'Science Concourse Fountain',
+      location: 'Bio-Chemistry Ground Level Atrium',
+      statusBadge: 'Fair Quality • 82%',
+      statusBadgeClass: 'bg-amber-400/20 text-amber-300',
+      temp: '18°C',
+      tempDesc: 'Slightly Cool',
+      tempIcon: 'device_thermostat',
+      rating: '4.1',
+      complaints: '3 minor flags',
+      tds: '115',
+      tdsDesc: 'Standard City Tap',
+      filterPercent: '58% (Moderate)',
+      filterWidth: '58%',
+      flowRate: '1.7 L/min',
+      sanitized: 'Sanitized 2h ago',
+      glowColor: 'bg-amber-400/15'
+    },
+    dorm: {
+      name: 'Dorm Hall North Dispenser',
+      location: 'Building B Lobby Vending Cove',
+      statusBadge: 'Service Needed • 64%',
+      statusBadgeClass: 'bg-orange-400/20 text-orange-300',
+      temp: '22°C',
+      tempDesc: 'Ambient / Warm',
+      tempIcon: 'thermostat',
+      rating: '3.2',
+      complaints: '7 complaints',
+      tds: '185',
+      tdsDesc: 'Filter Expiring Soon',
+      filterPercent: '24% (Low Life)',
+      filterWidth: '24%',
+      flowRate: '1.2 L/min',
+      sanitized: 'Sanitized Yesterday',
+      glowColor: 'bg-orange-400/15'
+    },
+    union: {
+      name: 'Student Union Hub #4',
+      location: 'Food Court Level 1 near Escalators',
+      statusBadge: 'Out of Order • 28%',
+      statusBadgeClass: 'bg-error/20 text-error',
+      temp: '--',
+      tempDesc: 'Dispenser Locked',
+      tempIcon: 'error_outline',
+      rating: '1.8',
+      complaints: '12 flags (Threshold Met)',
+      tds: '260',
+      tdsDesc: 'Maintenance En Route',
+      filterPercent: '4% (Exhausted)',
+      filterWidth: '4%',
+      flowRate: '0.0 L/min',
+      sanitized: 'Crew Dispatched',
+      glowColor: 'bg-error/20'
+    }
+  };
+
+  let activeStationKey = 'library';
+
+  function selectStation(key) {
+    const data = stations[key];
+    if (!data) return;
+    activeStationKey = key;
+
+    // Update DOM UI elements with fluid transition
+    document.getElementById('stationName').textContent = data.name;
+    document.getElementById('stationLocation').innerHTML = `<span class="material-symbols-outlined text-[13px] text-primary">pin_drop</span> ${data.location}`;
+    
+    const badge = document.getElementById('stationStatusBadge');
+    badge.textContent = data.statusBadge;
+    badge.className = `px-2 py-0.5 rounded-md font-label-sm text-label-sm ${data.statusBadgeClass}`;
+
+    document.getElementById('stationTemp').textContent = data.temp;
+    document.getElementById('tempDesc').textContent = data.tempDesc;
+    document.getElementById('tempIcon').textContent = data.tempIcon;
+
+    document.getElementById('stationRating').innerHTML = `${data.rating}<span class="text-caption font-normal text-on-surface-variant">/5</span>`;
+    document.getElementById('complaintsCount').textContent = data.complaints;
+
+    document.getElementById('stationTDS').innerHTML = `${data.tds} <span class="text-caption font-normal text-on-surface-variant">ppm</span>`;
+    document.getElementById('tdsDesc').textContent = data.tdsDesc;
+
+    document.getElementById('filterPercent').textContent = data.filterPercent;
+    document.getElementById('filterBar').style.width = data.filterWidth;
+    document.getElementById('flowRate').textContent = data.flowRate;
+    document.getElementById('stationSanitized').textContent = data.sanitized;
+
+    // Update Modal Target
+    document.getElementById('modalTargetStationName').textContent = data.name;
+
+    // Highlight active pin
+    ['library', 'science', 'dorm', 'union'].forEach(k => {
+      const pin = document.getElementById(`pin-${k}`);
+      if (pin) {
+        if (k === key) {
+          pin.classList.add('scale-125');
+        } else {
+          pin.classList.remove('scale-125');
+        }
+      }
+    });
+
+    // Provide micro haptic visual feedback
+    const container = document.getElementById('station-card-container');
+    container.classList.add('opacity-80', 'scale-[0.99]');
+    setTimeout(() => {
+      container.classList.remove('opacity-80', 'scale-[0.99]');
+    }, 150);
+  }
+
+  // Modal Sheet Controls
+  function openRatingModal() {
+    const backdrop = document.getElementById('ratingModalBackdrop');
+    const sheet = document.getElementById('ratingModalSheet');
+    backdrop.classList.remove('opacity-0', 'pointer-events-none');
+    backdrop.classList.add('opacity-100', 'pointer-events-auto');
+    sheet.classList.remove('translate-y-full');
+    sheet.classList.add('translate-y-0');
+  }
+
+  function closeRatingModal() {
+    const backdrop = document.getElementById('ratingModalBackdrop');
+    const sheet = document.getElementById('ratingModalSheet');
+    backdrop.classList.remove('opacity-100', 'pointer-events-auto');
+    backdrop.classList.add('opacity-0', 'pointer-events-none');
+    sheet.classList.remove('translate-y-0');
+    sheet.classList.add('translate-y-full');
+  }
+
+  function toggleTag(btn) {
+    if (btn.classList.contains('bg-primary-container/30')) {
+      btn.classList.remove('bg-primary-container/30', 'text-primary');
+      btn.classList.add('bg-surface-container/80', 'text-on-surface-variant');
+    } else {
+      btn.classList.add('bg-primary-container/30', 'text-primary');
+      btn.classList.remove('bg-surface-container/80', 'text-on-surface-variant');
+    }
+  }
+
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.innerHTML = `<span class="material-symbols-outlined text-[20px] animate-spin">progress_activity</span><span>Syncing Telemetry...</span>`;
+    
+    setTimeout(() => {
+      closeRatingModal();
+      btn.innerHTML = `<span class="material-symbols-outlined text-[20px]">send</span><span>Submit Rating & Feedback</span>`;
+      alertNotification('Thank you! Feedback recorded for ' + stations[activeStationKey].name);
+    }, 800);
+  }
+
+  function alertNotification(msg) {
+    const toast = document.getElementById('toastNotification');
+    const toastMsg = document.getElementById('toastMsg');
+    toastMsg.textContent = msg;
+    toast.classList.remove('opacity-0', 'pointer-events-none');
+    toast.classList.add('opacity-100', 'translate-y-2');
+    setTimeout(() => {
+      toast.classList.remove('opacity-100', 'translate-y-2');
+      toast.classList.add('opacity-0', 'pointer-events-none');
+    }, 3200);
+  }
+
+  // Filter Buttons Interaction
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.remove('bg-white/20', 'text-primary');
+        b.classList.add('bg-surface-container-high/60', 'text-on-surface-variant');
+      });
+      btn.classList.remove('bg-surface-container-high/60', 'text-on-surface-variant');
+      btn.classList.add('bg-white/20', 'text-primary');
+
+      const filter = btn.getAttribute('data-filter');
+      if (filter === 'alert') {
+        selectStation('union');
+      } else if (filter === 'chilled') {
+        selectStation('library');
+      } else if (filter === 'bottle') {
+        selectStation('science');
+      } else {
+        selectStation('library');
+      }
+    });
+  });
+
+  // Modal Backdrop click to dismiss
+  document.getElementById('ratingModalBackdrop').addEventListener('click', (e) => {
+    if (e.target.id === 'ratingModalBackdrop') {
+      closeRatingModal();
+    }
+  });
+</script></main><div class="fixed bottom-0 inset-x-0 z-50 pb-safe pointer-events-none flex justify-center"><nav class="pointer-events-auto mb-4 mx-margin w-full max-w-sm h-16 rounded-full bg-surface-container-high/65 backdrop-blur-2xl shadow-[0_12px_36px_rgba(0,0,0,0.45)] px-space-md flex items-center justify-around glass-nav" data-active-classes="text-primary font-label-md bg-white/10 shadow-[0_2px_12px_rgba(0,218,243,0.2)]"><a aria-current="page" class="flex flex-col items-center justify-center gap-1 min-w-[56px] h-12 rounded-full transition-all active:scale-95 text-primary font-label-md bg-white/10 shadow-[0_2px_12px_rgba(0,218,243,0.2)]" data-path="campus-map" href="index.html"><span class="material-symbols-outlined text-[22px]">map</span><span class="font-label-sm text-label-sm">Map</span></a><a class="flex flex-col items-center justify-center gap-1 min-w-[56px] h-12 rounded-full text-on-surface-variant hover:text-on-surface transition-all active:scale-95 relative" data-path="notifications" href="Campus Alerts.html"><div class="relative flex items-center justify-center"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-primary-container ring-2 ring-surface"></span></div><span class="font-label-sm text-label-sm">Alerts</span></a><a class="flex flex-col items-center justify-center gap-1 min-w-[56px] h-12 rounded-full text-on-surface-variant hover:text-on-surface transition-all active:scale-95" data-path="student-profile" href="Profile and Settings.html"><span class="material-symbols-outlined text-[22px]">account_circle</span><span class="font-label-sm text-label-sm">Profile</span></a></nav></div></body></html>

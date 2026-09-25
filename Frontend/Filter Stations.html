@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><link href="logo.svg" rel="icon" type="image/svg+xml"/><link href="logo.svg" rel="apple-touch-icon"/><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-error-container": "#ffdad6", "primary": "#c3f5ff", "primary-fixed-dim": "#00daf3", "surface-tint": "#00daf3", "on-surface-variant": "#bac9cc", "on-tertiary-fixed": "#002113", "secondary-container": "#3626ce", "inverse-primary": "#006875", "outline-variant": "#3b494c", "on-primary-fixed": "#001f24", "tertiary-fixed-dim": "#4edea3", "inverse-on-surface": "#283044", "on-secondary-fixed-variant": "#3323cc", "on-tertiary-fixed-variant": "#005236", "on-secondary-container": "#b3b1ff", "error-container": "#93000a", "tertiary": "#a8ffd2", "error": "#ffb4ab", "on-primary": "#00363d", "surface-container-highest": "#2d3449", "surface-container-high": "#222a3d", "on-error": "#690005", "on-surface": "#dae2fd", "surface-dim": "#0b1326", "on-primary-fixed-variant": "#004f58", "surface-bright": "#31394d", "secondary-fixed": "#e2dfff", "surface-container-lowest": "#060e20", "on-secondary-fixed": "#0f0069", "on-tertiary": "#003824", "primary-container": "#00e5ff", "surface-container-low": "#131b2e", "on-secondary": "#1d00a5", "surface": "#0b1326", "tertiary-fixed": "#6ffbbe", "surface-container": "#171f33", "surface-variant": "#2d3449", "on-background": "#dae2fd", "background": "#0b1326", "secondary-fixed-dim": "#c3c0ff", "inverse-surface": "#dae2fd", "outline": "#849396", "on-primary-container": "#00626e", "on-tertiary-container": "#006645", "tertiary-container": "#5be9ad", "primary-fixed": "#9cf0ff", "secondary": "#c3c0ff" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xs": "0.25rem", "margin": "1.25rem", "space-xl": "2.25rem", "space-sm": "0.5rem", "gutter": "1rem", "space-md": "1rem", "space-lg": "1.5rem" }, "fontFamily": { "label-sm": ["Plus Jakarta Sans"], "metric-stat": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "display-hero-mobile": ["Plus Jakarta Sans"], "caption": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "display-hero": ["Plus Jakarta Sans"] }, "fontSize": { "label-sm": ["11px", { "lineHeight": "14px", "fontWeight": "600" }], "metric-stat": ["32px", { "lineHeight": "38px", "fontWeight": "800" }], "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "600" }], "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }], "label-md": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "display-hero-mobile": ["34px", { "lineHeight": "42px", "fontWeight": "700" }], "caption": ["10px", { "lineHeight": "12px", "fontWeight": "500" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }], "display-hero": ["48px", { "lineHeight": "56px", "fontWeight": "700" }] } } } };</script><style>@layer base{html,body{width:100%;min-height:100%;margin:0;padding:0;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<link href="glass-ui.css" rel="stylesheet"/><script defer="True" src="glass-ui.js"></script></head><body class="bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen selection:bg-primary-container selection:text-on-primary-container relative overflow-x-hidden"><div class="fixed inset-0 pointer-events-none z-0 overflow-hidden"><div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-primary-container/15 blur-[100px]"></div><div class="absolute top-1/3 -right-32 w-96 h-96 rounded-full bg-secondary-container/20 blur-[120px]"></div><div class="absolute -bottom-32 left-1/4 w-96 h-96 rounded-full bg-tertiary/10 blur-[110px]"></div></div><header class="fixed top-0 inset-x-0 z-50 pt-safe bg-surface/60 backdrop-blur-2xl shadow-[0_4px_24px_rgba(0,0,0,0.3)] glass-header"><div class="h-16 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="AquaCampus Logo" class="h-8 w-auto object-contain" src="logo.svg"/><div class="flex flex-col min-w-0"><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-primary text-[18px]">water_drop</span><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight truncate">AquaCampus</span></div><span class="font-caption text-caption text-on-surface-variant truncate">Campus Map</span></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><a aria-label="Search and Filter" class="w-11 h-11 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 active:scale-95 transition-all text-on-surface" href="Filter Stations.html"><span class="material-symbols-outlined text-[22px]">tune</span></a><a aria-label="Profile" class="w-11 h-11 flex items-center justify-center rounded-full bg-white/5 active:scale-95 transition-all" href="Profile and Settings.html"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="Profile.jpg"/></a></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-28 bg-surface z-10"><div class="flex flex-col w-full relative">
+<!-- Realistic Blurred Dimmed Map Canvas Behind Bottom Sheet -->
+<div class="relative w-full h-44 overflow-hidden -mb-6 pointer-events-none select-none">
+<div class="w-full h-72 bg-cover bg-center filter blur-md scale-105 opacity-40" data-location="Stanford University Campus, California" style=""></div>
+<div class="absolute inset-0 bg-gradient-to-b from-surface-dim/40 via-surface-dim/75 to-surface-dim"></div>
+<!-- Floating Map Indicator Peeking Out -->
+<div class="absolute top-4 left-6 flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high/70 backdrop-blur-xl shadow-lg">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container animate-ping"></span>
+<span class="w-2 h-2 rounded-full bg-primary-container -ml-3.5"></span>
+<span class="font-label-sm text-label-sm text-primary">Live Sensor Mesh Active</span>
+</div>
+<div class="absolute top-4 right-6 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high/70 backdrop-blur-xl shadow-lg">
+<span class="material-symbols-outlined text-[16px] text-tertiary">verified</span>
+<span class="font-label-sm text-label-sm text-tertiary">38 Campus Hubs</span>
+</div>
+</div>
+<!-- Main Glass Modal Sheet Container -->
+<div class="relative z-20 w-full bg-surface-container-low/90 backdrop-blur-3xl rounded-t-[32px] shadow-[0_-12px_48px_rgba(0,0,0,0.65)] flex flex-col pt-3 pb-8">
+<!-- Sheet Grab Pill & Header Bar -->
+<div class="flex flex-col items-center px-margin pt-1 pb-4">
+<div class="w-12 h-1.5 rounded-full bg-white/25 active:bg-white/40 mb-3 transition-colors cursor-grab"></div>
+<div class="w-full flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-primary-container/20 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Filter Water Points</h1>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<p class="font-label-sm text-label-sm text-on-surface-variant" id="matchCounter">18 stations matching filters</p>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 active:scale-95 transition-all text-on-surface-variant hover:text-primary font-label-md text-label-md" id="resetAllBtn" type="button">
+            Reset
+          </button>
+<a aria-label="Close Filter Sheet" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 active:scale-95 transition-all flex items-center justify-center text-on-surface-variant" href="index.html">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Scrollable Content Stack -->
+<div class="flex flex-col gap-6 px-margin">
+<!-- 1. Campus Building Predictive Search Bar -->
+<div class="flex flex-col gap-2.5">
+<label class="font-label-md text-label-md text-on-surface-variant flex items-center justify-between" for="campusSearch">
+<span>Search Campus Building / Quad</span>
+<span class="font-caption text-caption text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">my_location</span> Auto-located
+          </span>
+</label>
+<div class="relative w-full">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-primary">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="w-full h-12 pl-11 pr-10 rounded-2xl bg-surface-container-high/80 text-on-surface placeholder:text-on-surface-variant/50 font-body-md text-body-md focus:outline-none focus:bg-surface-container-highest transition-all shadow-inner" id="campusSearch" placeholder="Engineering Quad, Green Library, Union..." type="text" value="Engineering"/>
+<button class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-on-surface-variant hover:text-on-surface" id="clearSearchInput" type="button">
+<span class="material-symbols-outlined text-[18px]">cancel</span>
+</button>
+</div>
+<!-- Predictive Chips Dropdown Carousel -->
+<div class="flex items-center gap-2 overflow-x-auto pb-1 pt-0.5 no-scrollbar -mx-margin px-margin">
+<button class="chip-filter flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-container/20 text-primary font-label-sm text-label-sm shadow-sm transition-transform active:scale-95" type="button">
+<span class="material-symbols-outlined text-[15px]">apartment</span>
+<span>Engineering Quad</span>
+<span class="w-4 h-4 rounded-full bg-primary-container text-on-primary font-caption text-caption flex items-center justify-center font-bold">4</span>
+</button>
+<button class="chip-filter flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high/80 text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-transform active:scale-95" type="button">
+<span class="material-symbols-outlined text-[15px]">local_library</span>
+<span>Main Library</span>
+<span class="text-on-surface-variant font-caption text-caption">3</span>
+</button>
+<button class="chip-filter flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high/80 text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-transform active:scale-95" type="button">
+<span class="material-symbols-outlined text-[15px]">diversity_3</span>
+<span>Student Union</span>
+<span class="text-on-surface-variant font-caption text-caption">2</span>
+</button>
+<button class="chip-filter flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high/80 text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-transform active:scale-95" type="button">
+<span class="material-symbols-outlined text-[15px]">science</span>
+<span>Science Concourse</span>
+<span class="text-on-surface-variant font-caption text-caption">3</span>
+</button>
+<button class="chip-filter flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high/80 text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-transform active:scale-95" type="button">
+<span class="material-symbols-outlined text-[15px]">sports_volleyball</span>
+<span>Athletics Arena</span>
+<span class="text-on-surface-variant font-caption text-caption">1</span>
+</button>
+</div>
+</div>
+<!-- 2. Proximity & Walking Range -->
+<div class="p-4 rounded-2xl bg-surface-container/70 flex flex-col gap-3 shadow-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">directions_walk</span>
+<span class="font-label-md text-label-md text-on-surface">Max Walking Distance</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary px-2.5 py-1 rounded-full bg-primary-container/20" id="walkingDistanceLabel">
+            &lt; 5 mins (350m)
+          </span>
+</div>
+<!-- Custom Tactile Glass Slider Track -->
+<div class="relative flex items-center py-2">
+<div class="w-full h-2 rounded-full bg-surface-container-highest relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-[45%] bg-gradient-to-r from-primary via-primary-container to-tertiary rounded-full" id="sliderFill"></div>
+</div>
+<input class="absolute inset-0 w-full opacity-0 cursor-pointer h-8" id="distanceRange" max="4" min="1" step="1" type="range" value="2"/>
+<!-- Tactile Thumb Simulation Floating Over 45% Mark -->
+<div class="absolute left-[45%] -translate-x-1/2 w-6 h-6 rounded-full bg-surface-container-lowest shadow-[0_2px_8px_rgba(0,0,0,0.5)] flex items-center justify-center pointer-events-none transition-all" id="sliderThumb">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container shadow-[0_0_8px_rgba(0,229,255,0.8)]"></span>
+</div>
+</div>
+<!-- Segmented Quick Distance Pills -->
+<div class="grid grid-cols-4 gap-1.5 p-1 rounded-xl bg-surface-container-high/80">
+<button class="dist-pill py-1.5 rounded-lg text-center font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all" data-dist="1" type="button">
+            Near (1m)
+          </button>
+<button class="dist-pill py-1.5 rounded-lg text-center font-label-sm text-label-sm bg-primary-container/20 text-primary shadow-sm font-semibold transition-all" data-dist="2" type="button">
+            5 mins
+          </button>
+<button class="dist-pill py-1.5 rounded-lg text-center font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all" data-dist="3" type="button">
+            10 mins
+          </button>
+<button class="dist-pill py-1.5 rounded-lg text-center font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all" data-dist="4" type="button">
+            Any
+          </button>
+</div>
+<!-- Sort by Nearest First Toggle -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Sort by nearest first</span>
+<span class="font-caption text-caption text-on-surface-variant">Prioritize shortest walking route</span>
+</div>
+<button aria-checked="true" class="w-12 h-7 rounded-full bg-primary-container/30 p-1 flex items-center justify-end transition-colors cursor-pointer shadow-inner" id="toggleNearest" role="switch" type="button">
+<span class="w-5 h-5 rounded-full bg-primary shadow-md transform transition-transform"></span>
+</button>
+</div>
+</div>
+<!-- 3. Water Specifications (Temperature & Stream Velocity) -->
+<div class="flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Water Specifications</span>
+<span class="font-caption text-caption text-tertiary">Real-time telemetry</span>
+</div>
+<div class="grid grid-cols-2 gap-2.5">
+<!-- Chilled Water (Active) -->
+<div class="active-card flex flex-col justify-between p-3.5 rounded-2xl bg-surface-container/90 cursor-pointer select-none transition-all active:scale-[0.98]" data-toggle-card="">
+<div class="flex items-start justify-between">
+<div class="w-9 h-9 rounded-xl bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">ac_unit</span>
+</div>
+<span class="check-icon material-symbols-outlined text-[20px] text-primary">check_circle</span>
+</div>
+<div class="mt-3">
+<h2 class="font-headline-sm text-[15px] leading-5 text-on-surface font-semibold">Chilled Stream</h2>
+<p class="font-caption text-caption text-primary mt-0.5">≤ 10°C Refreshed</p>
+</div>
+</div>
+<!-- Rapid Refill Bottle Sensor (Active) -->
+<div class="active-card flex flex-col justify-between p-3.5 rounded-2xl bg-surface-container/90 cursor-pointer select-none transition-all active:scale-[0.98]" data-toggle-card="">
+<div class="flex items-start justify-between">
+<div class="w-9 h-9 rounded-xl bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">speed</span>
+</div>
+<span class="check-icon material-symbols-outlined text-[20px] text-primary">check_circle</span>
+</div>
+<div class="mt-3">
+<h2 class="font-headline-sm text-[15px] leading-5 text-on-surface font-semibold">Rapid Refill</h2>
+<p class="font-caption text-caption text-primary mt-0.5">&gt; 2.2 L/min Jet</p>
+</div>
+</div>
+<!-- Room Temperature Ambient (Inactive) -->
+<div class="flex flex-col justify-between p-3.5 rounded-2xl bg-surface-container/50 hover:bg-surface-container/80 cursor-pointer select-none transition-all active:scale-[0.98]" data-toggle-card="">
+<div class="flex items-start justify-between">
+<div class="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">water_drop</span>
+</div>
+<span class="check-icon material-symbols-outlined text-[20px] text-outline-variant">radio_button_unchecked</span>
+</div>
+<div class="mt-3">
+<h2 class="font-headline-sm text-[15px] leading-5 text-on-surface-variant font-semibold">Ambient Temp</h2>
+<p class="font-caption text-caption text-on-surface-variant/70 mt-0.5">18°C - 21°C Normal</p>
+</div>
+</div>
+<!-- Sparkling / Micro-Bubbles (Trial) -->
+<div class="flex flex-col justify-between p-3.5 rounded-2xl bg-surface-container/50 hover:bg-surface-container/80 cursor-pointer select-none transition-all active:scale-[0.98]" data-toggle-card="">
+<div class="flex items-start justify-between">
+<div class="w-9 h-9 rounded-xl bg-secondary-container/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[20px]">bubble_chart</span>
+</div>
+<span class="px-1.5 py-0.5 rounded-md bg-secondary-container/40 text-secondary-fixed font-caption text-[10px]">Union Pilot</span>
+</div>
+<div class="mt-3">
+<h2 class="font-headline-sm text-[15px] leading-5 text-on-surface font-semibold">Sparkling Infused</h2>
+<p class="font-caption text-caption text-on-surface-variant mt-0.5">CO2 Carbonated</p>
+</div>
+</div>
+</div>
+</div>
+<!-- 4. Accessibility & Hygiene Integrity -->
+<div class="p-4 rounded-2xl bg-surface-container/70 flex flex-col gap-3.5 shadow-md">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Accessibility &amp; Campus Health</span>
+<!-- ADA Accessible Touchless Switch -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-tertiary-container/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[20px]">accessible_forward</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-medium">ADA &amp; Touchless Sensor</span>
+<span class="font-caption text-caption text-on-surface-variant">Hands-free infrared fill aperture</span>
+</div>
+</div>
+<button aria-checked="true" class="w-12 h-7 rounded-full bg-primary-container/30 p-1 flex items-center justify-end transition-colors cursor-pointer shadow-inner" id="toggleAda" role="switch" type="button">
+<span class="w-5 h-5 rounded-full bg-primary shadow-md"></span>
+</button>
+</div>
+<div class="h-px w-full bg-surface-variant/40"></div>
+<!-- Filter Out Maintenance Stations -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">verified_user</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-medium">Hide Offline &amp; Servicing</span>
+<span class="font-caption text-caption text-on-surface-variant">Show 100% verified dispense hubs</span>
+</div>
+</div>
+<button aria-checked="true" class="w-12 h-7 rounded-full bg-primary-container/30 p-1 flex items-center justify-end transition-colors cursor-pointer shadow-inner" id="toggleOffline" role="switch" type="button">
+<span class="w-5 h-5 rounded-full bg-primary shadow-md"></span>
+</button>
+</div>
+<div class="h-px w-full bg-surface-variant/40"></div>
+<!-- Filter Grade Pristine Only -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-tertiary/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-medium">Ultra-Pure Filter Life (&gt; 90%)</span>
+<span class="font-caption text-caption text-on-surface-variant">TDS &lt; 25 ppm, UV-C sterilized</span>
+</div>
+</div>
+<button aria-checked="false" class="w-12 h-7 rounded-full bg-surface-variant p-1 flex items-center justify-start transition-colors cursor-pointer shadow-inner" id="toggleFilterLife" role="switch" type="button">
+<span class="w-5 h-5 rounded-full bg-on-surface-variant shadow-md"></span>
+</button>
+</div>
+</div>
+<!-- 5. Hygiene Rating / Student Review Threshold -->
+<div class="flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Minimum Community Cleanliness</span>
+<span class="font-caption text-caption text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">reviews</span> Verified Student Logs
+          </span>
+</div>
+<div class="grid grid-cols-4 gap-1.5 p-1 rounded-2xl bg-surface-container/70 shadow-sm">
+<button class="rating-btn py-2.5 rounded-xl text-center font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all" type="button">
+            Any
+          </button>
+<button class="rating-btn py-2.5 rounded-xl text-center font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all" type="button">
+            ★ 4.0+
+          </button>
+<button class="rating-btn py-2.5 rounded-xl text-center font-label-sm text-label-sm bg-primary-container/25 text-primary shadow-sm font-semibold transition-all" type="button">
+            ★ 4.5+
+          </button>
+<button class="rating-btn py-2.5 rounded-xl text-center font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all" type="button">
+            Pristine 4.8+
+          </button>
+</div>
+</div>
+<!-- 6. Bottom Sticky Modal Action Bar -->
+<div class="sticky bottom-0 pt-3 pb-2 -mx-margin px-margin bg-gradient-to-t from-surface-container-low via-surface-container-low/95 to-transparent backdrop-blur-md flex flex-col gap-2">
+<button class="w-full h-14 rounded-2xl bg-gradient-to-r from-primary-fixed-dim via-primary-container to-tertiary-container text-on-primary font-headline-sm text-[16px] font-bold shadow-[0_8px_24px_rgba(0,229,255,0.35)] flex items-center justify-center gap-2 active:scale-[0.98] transition-all" id="applyFiltersBtn" type="button">
+<span class="material-symbols-outlined text-[20px]">filter_alt</span>
+<span>Show 14 Filtered Stations</span>
+</button>
+<p class="text-center font-caption text-caption text-on-surface-variant/70">
+          Syncs with AquaCampus IoT network sensors updated 45s ago
+        </p>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    // Interactive Distance Range Slider
+    const rangeInput = document.getElementById('distanceRange');
+    const sliderFill = document.getElementById('sliderFill');
+    const sliderThumb = document.getElementById('sliderThumb');
+    const distLabel = document.getElementById('walkingDistanceLabel');
+    const distPills = document.querySelectorAll('.dist-pill');
+
+    const distValues = {
+      '1': { label: '< 2 mins (150m)', pct: '15%', count: 8 },
+      '2': { label: '< 5 mins (350m)', pct: '45%', count: 14 },
+      '3': { label: '< 10 mins (750m)', pct: '75%', count: 26 },
+      '4': { label: 'Any Campus Zone', pct: '100%', count: 38 }
+    };
+
+    function updateDistance(val) {
+      const data = distValues[val];
+      if (!data) return;
+      sliderFill.style.width = data.pct;
+      sliderThumb.style.left = data.pct;
+      distLabel.textContent = data.label;
+
+      // Update pills
+      distPills.forEach(p => {
+        if (p.getAttribute('data-dist') === val) {
+          p.className = 'dist-pill py-1.5 rounded-lg text-center font-label-sm text-label-sm bg-primary-container/20 text-primary shadow-sm font-semibold transition-all';
+        } else {
+          p.className = 'dist-pill py-1.5 rounded-lg text-center font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all';
+        }
+      });
+
+      // Update CTA button count
+      const btn = document.getElementById('applyFiltersBtn');
+      if (btn) {
+        btn.onclick = () => window.location.href = 'Nearby Water Stations.html';
+        btn.querySelector('span:last-child').textContent = `Show ${data.count} Filtered Stations`;
+      }
+      const matchCounter = document.getElementById('matchCounter');
+      if (matchCounter) {
+        matchCounter.textContent = `${data.count} stations matching filters`;
+      }
+    }
+
+    if (rangeInput) {
+      rangeInput.addEventListener('input', (e) => {
+        updateDistance(e.target.value);
+      });
+    }
+
+    distPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        const val = pill.getAttribute('data-dist');
+        if (rangeInput) rangeInput.value = val;
+        updateDistance(val);
+      });
+    });
+
+    // Toggle Cards
+    const toggleCards = document.querySelectorAll('[data-toggle-card]');
+    toggleCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const isSelected = card.classList.contains('active-card');
+        const checkIcon = card.querySelector('.check-icon');
+        
+        if (isSelected) {
+          card.classList.remove('active-card');
+          card.className = 'flex flex-col justify-between p-3.5 rounded-2xl bg-surface-container/50 hover:bg-surface-container/80 cursor-pointer select-none transition-all active:scale-[0.98]';
+          if (checkIcon) {
+            checkIcon.textContent = 'radio_button_unchecked';
+            checkIcon.className = 'check-icon material-symbols-outlined text-[20px] text-outline-variant';
+          }
+        } else {
+          card.classList.add('active-card');
+          card.className = 'active-card flex flex-col justify-between p-3.5 rounded-2xl bg-surface-container/90 cursor-pointer select-none transition-all active:scale-[0.98]';
+          if (checkIcon) {
+            checkIcon.textContent = 'check_circle';
+            checkIcon.className = 'check-icon material-symbols-outlined text-[20px] text-primary';
+          }
+        }
+      });
+    });
+
+    // Generic Toggle Switch Handler
+    function bindSwitch(id) {
+      const sw = document.getElementById(id);
+      if (!sw) return;
+      sw.addEventListener('click', () => {
+        const active = sw.getAttribute('aria-checked') === 'true';
+        sw.setAttribute('aria-checked', !active);
+        const knob = sw.querySelector('span');
+        if (!active) {
+          sw.className = 'w-12 h-7 rounded-full bg-primary-container/30 p-1 flex items-center justify-end transition-colors cursor-pointer shadow-inner';
+          knob.className = 'w-5 h-5 rounded-full bg-primary shadow-md transform transition-transform';
+        } else {
+          sw.className = 'w-12 h-7 rounded-full bg-surface-variant p-1 flex items-center justify-start transition-colors cursor-pointer shadow-inner';
+          knob.className = 'w-5 h-5 rounded-full bg-on-surface-variant shadow-md transform transition-transform';
+        }
+      });
+    }
+
+    bindSwitch('toggleNearest');
+    bindSwitch('toggleAda');
+    bindSwitch('toggleOffline');
+    bindSwitch('toggleFilterLife');
+
+    // Rating Segment Selection
+    const ratingBtns = document.querySelectorAll('.rating-btn');
+    ratingBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        ratingBtns.forEach(b => {
+          b.className = 'rating-btn py-2.5 rounded-xl text-center font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all';
+        });
+        btn.className = 'rating-btn py-2.5 rounded-xl text-center font-label-sm text-label-sm bg-primary-container/25 text-primary shadow-sm font-semibold transition-all';
+      });
+    });
+
+    // Reset Button
+    const resetBtn = document.getElementById('resetAllBtn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        const search = document.getElementById('campusSearch');
+        if (search) search.value = '';
+        if (rangeInput) rangeInput.value = 4;
+        updateDistance('4');
+      });
+    }
+
+    // Clear Search Input
+    const clearSearch = document.getElementById('clearSearchInput');
+    if (clearSearch) {
+      clearSearch.addEventListener('click', () => {
+        const search = document.getElementById('campusSearch');
+        if (search) {
+          search.value = '';
+          search.focus();
+        }
+      });
+    }
+  })();
+</script></main><div class="fixed bottom-0 inset-x-0 z-50 pb-safe pointer-events-none flex justify-center"><nav class="pointer-events-auto mb-4 mx-margin w-full max-w-sm h-16 rounded-full bg-surface-container-high/65 backdrop-blur-2xl shadow-[0_12px_36px_rgba(0,0,0,0.45)] px-space-md flex items-center justify-around glass-nav" data-active-classes="text-primary font-label-md bg-white/10 shadow-[0_2px_12px_rgba(0,218,243,0.2)]"><a aria-current="page" class="flex flex-col items-center justify-center gap-1 min-w-[56px] h-12 rounded-full transition-all active:scale-95 text-primary font-label-md bg-white/10 shadow-[0_2px_12px_rgba(0,218,243,0.2)]" data-path="campus-map" href="index.html"><span class="material-symbols-outlined text-[22px]">map</span><span class="font-label-sm text-label-sm">Map</span></a><a class="flex flex-col items-center justify-center gap-1 min-w-[56px] h-12 rounded-full text-on-surface-variant hover:text-on-surface transition-all active:scale-95 relative" data-path="notifications" href="Campus Alerts.html"><div class="relative flex items-center justify-center"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-primary-container ring-2 ring-surface"></span></div><span class="font-label-sm text-label-sm">Alerts</span></a><a class="flex flex-col items-center justify-center gap-1 min-w-[56px] h-12 rounded-full text-on-surface-variant hover:text-on-surface transition-all active:scale-95" data-path="student-profile" href="Profile and Settings.html"><span class="material-symbols-outlined text-[22px]">account_circle</span><span class="font-label-sm text-label-sm">Profile</span></a></nav></div></body></html>

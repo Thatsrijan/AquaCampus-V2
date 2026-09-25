@@ -1,0 +1,57 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/map"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/home"
+  to = "/Homepage.html"
+  status = 200
+
+[[redirects]]
+  from = "/alerts"
+  to = "/Campus Alerts.html"
+  status = 200
+
+[[redirects]]
+  from = "/profile"
+  to = "/Profile and Settings.html"
+  status = 200
+
+[[redirects]]
+  from = "/filter"
+  to = "/Filter Stations.html"
+  status = 200
+
+[[redirects]]
+  from = "/nearby"
+  to = "/Nearby Water Stations.html"
+  status = 200
+
+[[redirects]]
+  from = "/search"
+  to = "/Search Buildings.html"
+  status = 200
+
+[[redirects]]
+  from = "/ar"
+  to = "/AR Navigation.html"
+  status = 200
+
+[[redirects]]
+  from = "/telemetry"
+  to = "/Water Quality Telemetry.html"
+  status = 200
+
+[[redirects]]
+  from = "/capacity"
+  to = "/Water Quality and Capacity.html"
+  status = 200

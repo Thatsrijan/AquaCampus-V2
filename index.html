@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AquaCampus Command Center | Smart Water Quality & 3D Navigation</title>
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Anime.js for smooth physics, 3D camera transitions, and route tracing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <!-- Leaflet CSS & JS for Real OpenStreetMap of LPU Phagwara, Punjab -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Left Vertical Floating Rail -->
+    <aside class="side-rail" aria-label="Primary Navigation">
+      <div class="brand-monogram" title="AquaCampus Command Hub" onclick="switchView('grid')">
+        AC
+      </div>
+
+      <nav class="rail-nav">
+        <!-- 01: Hydro-Grid Overview -->
+        <button type="button" class="rail-btn active" data-view="grid" title="Hydro-Grid Command Center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+        </button>
+
+        <!-- 02: Campus Map -->
+        <button type="button" class="rail-btn" data-view="map" title="LPU Campus Map">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+            <line x1="8" y1="2" x2="8" y2="18"></line>
+            <line x1="16" y1="6" x2="16" y2="22"></line>
+          </svg>
+        </button>
+
+        <!-- 03: AR Navigation -->
+        <button type="button" class="rail-btn" data-view="ar" title="AR Spatial Navigation">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 12a10 10 0 0 1 18-6"></path>
+            <path d="M22 12a10 10 0 0 1-18 6"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M12 2v2"></path>
+            <path d="M12 20v2"></path>
+          </svg>
+        </button>
+
+        <!-- 04: Nearby Stations -->
+        <button type="button" class="rail-btn" data-view="nearby" title="Nearby Water Stations">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+          </svg>
+        </button>
+
+        <!-- 05: Campus Alerts -->
+        <button type="button" class="rail-btn" data-view="alerts" title="Campus Alerts & Logs">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="badge">2</span>
+        </button>
+
+        <!-- 06: Student Profile & Hydration -->
+        <button type="button" class="rail-btn" data-view="profile" title="Student Profile & Hydration">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </button>
+      </nav>
+
+      <!-- Action Button: Open Report Modal -->
+      <button type="button" class="rail-action" id="openReportModalBtn" title="Report Water Station Issue">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </button>
+    </aside>
+
+    <!-- Main Dashboard Floating Shell -->
+    <main class="dashboard-shell">
+      
+      <!-- Top Navigation Bar -->
+      <header class="topbar">
+        <div class="segmented-tabs" role="tablist">
+          <button type="button" class="tab-btn active" data-view="grid" role="tab">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+            </svg>
+            Hydro-Grid
+          </button>
+          <button type="button" class="tab-btn" data-view="map" role="tab">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+            </svg>
+            Campus Map
+          </button>
+          <button type="button" class="tab-btn" data-view="ar" role="tab">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M2 12a10 10 0 0 1 18-6"></path>
+            </svg>
+            AR View
+          </button>
+          <button type="button" class="tab-btn" data-view="nearby" role="tab">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+            </svg>
+            Nearby
+          </button>
+          <button type="button" class="tab-btn" data-view="alerts" role="tab">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            </svg>
+            Alerts
+            <span class="tab-badge">2</span>
+          </button>
+        </div>
+
+        <div class="topbar-right">
+          <div class="search-pill">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="stationSearchInput" placeholder="Search station or quad..." autocomplete="off">
+            <kbd>⌘K</kbd>
+          </div>
+
+          <button type="button" class="icon-pill-btn" title="Submit Dispenser Report" onclick="openReportModal()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2.4">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+          </button>
+
+          <!-- User Profile Pill -->
+          <div class="profile-pill" id="headerProfilePill">
+            <div class="profile-avatar-wrap">
+              <img src="Profile.jpg" alt="Profile" class="profile-avatar" onerror="this.src='logo.svg'">
+              <span class="profile-badge">2</span>
+            </div>
+            <div class="profile-info">
+              <span class="profile-name">Srijan Gupta</span>
+              <span class="profile-tag">@AquaCampus</span>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8E959E" stroke-width="2.5" style="margin-left: 2px;">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </div>
+      </header>
+
+      <!-- ========================================================
+           VIEW 1: HYDRO-GRID (DASHBOARD)
+           ======================================================== -->
+      <section class="view-panel active-view" id="view-grid">
+        <div class="heading-row">
+          <div class="title-wrap">
+            <div class="live-indicator">
+              <span class="live-pulse"></span>
+              <span>Live system • Sep 24, 2026 • LoRa 868MHz Mesh</span>
+            </div>
+            <h1 class="main-title">CAMPUS HYDRO<br><span>METRICS</span></h1>
+          </div>
+
+          <div class="filters-bar">
+            <div class="filter-select">
+              <span>Quad:</span>
+              <select id="quadSelect">
+                <option value="All Quads">Main Quad</option>
+                <option value="North Campus">North Campus</option>
+                <option value="Athletics">Athletics</option>
+                <option value="All Quads">All Quads</option>
+              </select>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+
+            <div class="filter-select">
+              <span>Block:</span>
+              <select id="blockSelect">
+                <option value="All Blocks">All Blocks</option>
+                <option value="Academic">Academic</option>
+                <option value="Residential">Residential</option>
+                <option value="Dining">Dining</option>
+              </select>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+
+            <div class="filter-select">
+              <span>Status:</span>
+              <select id="statusSelect">
+                <option value="Active">Active</option>
+                <option value="Service Due">Service Due</option>
+                <option value="All Status">All Status</option>
+              </select>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+
+            <button type="button" class="icon-pill-btn" title="Report Water Issue" onclick="openReportModal()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="left-stack">
+            <div class="metrics-row">
+              <!-- Card 1: Water Purity & TDS -->
+              <article class="data-card">
+                <div class="card-header">
+                  <div class="card-title-group">
+                    <div class="card-icon-pill">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M10 2v7.31"></path>
+                        <path d="M14 9.3V2"></path>
+                        <path d="M8.5 2h7"></path>
+                        <path d="M14 9.3a6.5 6.5 0 1 1-4 0"></path>
+                        <path d="M5.52 16h12.96"></path>
+                      </svg>
+                    </div>
+                    <div class="card-labels">
+                      <span class="card-tag">LIVE ANALYSIS</span>
+                      <h2 class="card-name">Water Purity & TDS</h2>
+                    </div>
+                  </div>
+                  <button type="button" class="card-menu-btn" title="Options" onclick="showToast('Purity Index nominal')">•••</button>
+                </div>
+
+                <div class="stat-duo">
+                  <div>
+                    <span class="stat-trend lime-trend">▲ 1.2%</span>
+                    <div class="stat-val" id="livePurityVal">98.4<small>%</small></div>
+                    <div class="stat-label">Bio Purity Index</div>
+                  </div>
+                  <div>
+                    <span class="stat-trend amber-trend">▼ 3 ppm</span>
+                    <div class="stat-val">42<small>ppm</small></div>
+                    <div class="stat-label">TDS Level</div>
+                  </div>
+                </div>
+
+                <div class="chart-container">
+                  <svg class="chart-svg" viewBox="0 0 520 120" preserveAspectRatio="none">
+                    <line x1="0" y1="20" x2="520" y2="20" class="chart-grid-line"/>
+                    <line x1="0" y1="55" x2="520" y2="55" class="chart-grid-line"/>
+                    <line x1="0" y1="90" x2="520" y2="90" class="chart-grid-line"/>
+                    <path d="M0,82 C50,75 70,30 110,38 C160,48 180,82 220,55 C270,22 310,32 350,30 C400,68 440,40 520,25" class="purity-line-path"/>
+                    <path d="M0,105 C50,110 70,82 110,92 C160,105 190,80 230,75 C275,65 310,78 350,75 C390,95 440,75 520,65" class="tds-line-path"/>
+                    <circle cx="350" cy="30" r="7" fill="#9FE870" class="chart-marker"/>
+                    <circle cx="350" cy="30" r="2.5" fill="#121316"/>
+                    <circle cx="230" cy="75" r="6" fill="#FFA41B" class="chart-marker"/>
+                    <circle cx="230" cy="75" r="2" fill="#121316"/>
+                  </svg>
+                  <div class="chart-x-axis">
+                    <span>06:00</span>
+                    <span>10:00</span>
+                    <span>14:00</span>
+                    <span>18:00</span>
+                    <span style="color: var(--lime); font-weight: 700;">NOW</span>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Card 2: Dispenser Flow & pH Matrix -->
+              <article class="data-card">
+                <div class="card-header">
+                  <div class="card-title-group">
+                    <div class="card-icon-pill amber-icon">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"></path>
+                        <path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"></path>
+                      </svg>
+                    </div>
+                    <div class="card-labels">
+                      <span class="card-tag">LORA NODE MESH</span>
+                      <h2 class="card-name">Dispenser Flow & pH</h2>
+                    </div>
+                  </div>
+                  <button type="button" class="card-menu-btn" title="Options" onclick="showToast('50 nodes active')">•••</button>
+                </div>
+
+                <div class="stat-duo">
+                  <div>
+                    <span class="stat-trend lime-trend">▲ 0.2 pH</span>
+                    <div class="stat-val">7.4<small>pH</small></div>
+                    <div class="stat-label">Optimal Alkaline</div>
+                  </div>
+                  <div>
+                    <span class="stat-trend amber-trend">▼ 0.1</span>
+                    <div class="stat-val" id="liveFlowVal">2.1<small>L/min</small></div>
+                    <div class="stat-label">Flow Velocity</div>
+                  </div>
+                </div>
+
+                <div class="sensor-panel">
+                  <div class="sensor-grid" id="sensorGrid"></div>
+                  <div class="sensor-summary">
+                    <span class="sensor-summary-num">50</span>
+                    <span class="sensor-summary-lbl">NODES</span>
+                    <span class="sensor-summary-rate">94%</span>
+                    <span class="sensor-summary-lbl">HEALTH</span>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <!-- Bottom Card: Capsule Bar Chart -->
+            <article class="data-card capacity-card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <div class="card-icon-pill">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polyline points="12 6 12 12 14 14"></polyline>
+                    </svg>
+                  </div>
+                  <div class="card-labels">
+                    <span class="card-tag">9 ACTIVE STATIONS</span>
+                    <h2 class="card-name">Station Capacity & Dispenser Levels</h2>
+                  </div>
+                </div>
+                <button type="button" class="card-menu-btn" title="Options" onclick="showToast('Station overview')">•••</button>
+              </div>
+
+              <div class="station-capsule-grid" id="capsuleGrid"></div>
+
+              <div class="capacity-footer">
+                <div class="legend-group">
+                  <div class="legend-item"><span class="legend-pip lime-pip"></span><span>Available</span></div>
+                  <div class="legend-item"><span class="legend-pip white-pip"></span><span>Pristine 98%+</span></div>
+                  <div class="legend-item"><span class="legend-pip amber-pip"></span><span>Needs Filter</span></div>
+                </div>
+                <div class="total-stat">
+                  <span class="total-stat-lbl">TOTAL DISPENSED</span>
+                  <span class="total-stat-val">12,450 <small>L</small></span>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <!-- Right Column: Timeline Gantt Widget -->
+          <article class="data-card timeline-card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <div class="card-icon-pill">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                </div>
+                <div class="card-labels">
+                  <span class="card-tag">30 DAY WINDOW</span>
+                  <h2 class="card-name">Campus Stations Timeline</h2>
+                </div>
+              </div>
+              <button type="button" class="card-menu-btn" title="Options" onclick="showToast('Timeline schedule')">•••</button>
+            </div>
+
+            <div class="timeline-summary">
+              <div class="timeline-stat-item">
+                <span class="timeline-stat-num lime-text">07</span>
+                <span class="timeline-stat-lbl">Operational</span>
+              </div>
+              <div class="timeline-stat-item">
+                <span class="timeline-stat-num amber-text">02</span>
+                <span class="timeline-stat-lbl">Service due</span>
+              </div>
+              <div class="timeline-sync-tag">
+                <span class="dot"></span>
+                <span id="liveSyncText">SYNCED NOW</span>
+              </div>
+            </div>
+
+            <div class="timeline-stage">
+              <div class="timeline-scale-bar">
+                <span class="scale-mark" style="left: 0%;">00</span>
+                <span class="scale-mark" style="left: 16.6%;">05</span>
+                <span class="scale-mark" style="left: 33.3%;">10</span>
+                <span class="scale-mark" style="left: 50%;">15</span>
+                <span class="scale-mark" style="left: 66.6%;">20</span>
+                <span class="scale-mark" style="left: 83.3%;">25</span>
+                <span class="scale-mark" style="left: 100%;">30</span>
+              </div>
+              <div class="timeline-grid-lines">
+                <span class="grid-guideline" style="left: 0%;"></span>
+                <span class="grid-guideline" style="left: 16.6%;"></span>
+                <span class="grid-guideline" style="left: 33.3%;"></span>
+                <span class="grid-guideline" style="left: 50%;"></span>
+                <span class="grid-guideline" style="left: 66.6%;"></span>
+                <span class="grid-guideline" style="left: 83.3%;"></span>
+                <span class="grid-guideline" style="left: 100%;"></span>
+              </div>
+              <div class="timeline-rows" id="timelineRows"></div>
+            </div>
+
+            <div class="timeline-footer">
+              <div class="legend-group">
+                <div class="legend-item"><span class="legend-pip lime-pip"></span><span>Operational</span></div>
+                <div class="legend-item"><span class="legend-pip amber-pip"></span><span>Servicing</span></div>
+                <div class="legend-item"><span class="legend-pip muted-pip"></span><span>Standby</span></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           VIEW 2: LPU 3D CAMPUS HYDRO-MAP & REAL MAP
+           ======================================================== -->
+      <section class="view-panel" id="view-map">
+        <div class="heading-row">
+          <div class="title-wrap">
+            <div class="live-indicator">
+              <span class="live-pulse"></span>
+              <span>Lovely Professional University • Phagwara • Campus Grid Live</span>
+            </div>
+            <h1 class="main-title">LPU CAMPUS<br><span>HYDRO-MAP</span></h1>
+          </div>
+
+          <div class="map-filter-ribbon">
+            <button type="button" class="map-chip active" data-filter="cse">💻 Block 34 CSE</button>
+            <button type="button" class="map-chip" data-filter="chilled">❄️ Chilled</button>
+            <button type="button" class="map-chip" data-filter="alert">⚠️ Alerts</button>
+
+            <!-- Mode Switcher: Live Map vs 3D Digital Twin -->
+            <div class="map-mode-switch">
+              <button type="button" class="mode-btn active" id="btnModeLeaflet" title="Live Interactive Map of LPU Phagwara">🗺️ Live Map</button>
+              <button type="button" class="mode-btn" id="btnMode3D" title="3D Campus Digital Twin">🏢 3D Twin</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="map-view-layout">
+          <!-- Campus Map Viewport (Houses both OpenStreetMap and 3D World) -->
+          <div class="map-card-wrapper">
+            <div class="apple-map-container" id="appleMapContainer">
+              
+              <!-- Real OpenStreetMap Leaflet Container for LPU Phagwara -->
+              <div id="realLpuLeafletMap" style="display: block;"></div>
+
+              <!-- Floating Map Controls -->
+              <div class="apple-map-controls">
+                <button type="button" class="map-ctrl-btn active" id="btnToggle3D" title="Toggle 3D / 2D Perspective">3D</button>
+                <button type="button" class="map-ctrl-btn" id="btnToggleOsmDark" title="Toggle Map Dark Theme">🌙</button>
+                <button type="button" class="map-ctrl-btn" id="btnCompassReset" title="Reset North">🧭</button>
+                <button type="button" class="map-ctrl-btn" id="btnMapZoomIn" title="Zoom In">+</button>
+                <button type="button" class="map-ctrl-btn" id="btnMapZoomOut" title="Zoom Out">−</button>
+                <button type="button" class="map-ctrl-btn" id="btnRecenterUser" title="Recenter to You">🎯</button>
+              </div>
+
+              <!-- Live Walking Navigation HUD Banner (LPU Turn-by-Turn) -->
+              <div class="apple-nav-hud" id="appleNavHud">
+                <div class="nav-turn-disc">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+                <div class="nav-instruction">
+                  <span class="nav-primary-text" id="navPrimaryText">In 45m: Take Central Promenade to Block 34 CSE</span>
+                  <span class="nav-sub-text" id="navSubText">Proceed towards Block 34 CSE • Floor 4 Coding Wing • Speed: 1.2 m/s</span>
+                </div>
+                <button type="button" class="nav-end-btn" id="btnEndNav" title="End Route Guidance">✕ End</button>
+              </div>
+
+              <!-- The 3D World Stage (LPU Phagwara Campus Layout) -->
+              <div class="map-3d-world" id="map3dWorld" style="display: none;">
+                
+                <!-- Ground Plane & Roads SVG Canvas -->
+                <div class="map-ground-plane">
+                  <svg width="100%" height="100%" viewBox="0 0 900 640" preserveAspectRatio="none">
+                    <defs>
+                      <linearGradient id="roadGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#1E2838"/>
+                        <stop offset="100%" stop-color="#2D3A50"/>
+                      </linearGradient>
+                      <linearGradient id="navPathGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#00E5FF"/>
+                        <stop offset="100%" stop-color="#007AFF"/>
+                      </linearGradient>
+                      <filter id="cyanNeonGlow">
+                        <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                        <feMerge>
+                          <feMergeNode in="coloredBlur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                    </defs>
+
+                    <!-- LPU Campus Base Ground -->
+                    <rect x="0" y="0" width="900" height="640" fill="#0D111A"/>
+
+                    <!-- NH-1 Jalandhar-Delhi GT Road Arterial Frontage -->
+                    <rect x="0" y="0" width="900" height="28" fill="#18202E"/>
+                    <line x1="0" y1="14" x2="900" y2="14" stroke="#FFA41B" stroke-dasharray="14 10" stroke-width="2"/>
+                    <text x="24" y="20" fill="#8E959E" font-family="Plus Jakarta Sans" font-size="9" font-weight="700" letter-spacing="1">NH-1 / GT ROAD (JALANDHAR — DELHI HIGHWAY)</text>
+
+                    <!-- LPU Main Gate 1 Entrance Plaza -->
+                    <path d="M 450 28 L 450 100" stroke="#9FE870" stroke-width="20" opacity="0.7"/>
+                    <text x="465" y="60" fill="#9FE870" font-family="Plus Jakarta Sans" font-size="9" font-weight="800">GATE 1</text>
+                    
+                    <!-- LPU Central Lawn & Musical Lake Basin -->
+                    <ellipse cx="450" cy="320" rx="140" ry="90" fill="#0E2318" stroke="#1B422D" stroke-width="2"/>
+                    <circle cx="450" cy="320" r="32" fill="#143522"/>
+                    <text x="420" y="324" fill="#9FE870" font-family="Plus Jakarta Sans" font-size="8" font-weight="700">CENTRAL LAWNS</text>
+
+                    <!-- LPU Boulevard Roads connecting Blocks -->
+                    <path d="M 60 320 C 220 300, 320 340, 450 320 C 580 300, 720 280, 840 260" fill="none" stroke="url(#roadGlow)" stroke-width="26" stroke-linecap="round"/>
+                    <path d="M 450 40 C 440 180, 460 260, 450 320 C 440 440, 430 520, 450 600" fill="none" stroke="url(#roadGlow)" stroke-width="22" stroke-linecap="round"/>
+                    <path d="M 180 150 L 400 270" stroke="url(#roadGlow)" stroke-width="16" stroke-linecap="round"/>
+                    <path d="M 520 370 L 760 480" stroke="url(#roadGlow)" stroke-width="16" stroke-linecap="round"/>
+
+                    <!-- Active Glowing Walking Route Path (Drawn by anime.js when Walk is clicked) -->
+                    <path id="activeWalkingRoute" d="M 550 430 C 510 390, 470 360, 450 320 C 430 280, 470 240, 520 200 C 570 160, 610 170, 660 155" fill="none" stroke="url(#navPathGradient)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" filter="url(#cyanNeonGlow)" stroke-dasharray="8 6" style="opacity: 0;"/>
+                  </svg>
+                </div>
+
+                <!-- 3D Extruded Buildings of Lovely Professional University (LPU) -->
+                
+                <!-- 1. FEATURED: Block 34 (School of Computer Science & Engineering - CSE) -->
+                <div class="bldg-3d bldg-3d-cse" style="top: 70px; right: 80px; width: 260px; height: 160px;" onclick="selectCseFloor('LPU-CSE-2F')">
+                  <div class="bldg-roof" style="background: #18283E; border-color: var(--cyan); transform: translateZ(65px); border-width: 2px;">
+                    <span class="bldg-name" style="color: var(--cyan);">BLOCK 34 • CSE</span>
+                    <span class="bldg-sub" style="color: var(--lime); font-weight: 700;">School of Computer Science • Even Floors 2, 4, 6, 8</span>
+                  </div>
+                </div>
+
+                <!-- 2. Block 33 (CSE AI & Robotics Research Pods) -->
+                <div class="bldg-3d" style="top: 70px; right: 350px; width: 140px; height: 110px;" onclick="selectCseFloor('LPU-CSE-2F')">
+                  <div class="bldg-roof" style="transform: translateZ(45px);">
+                    <span class="bldg-name">BLOCK 33</span>
+                    <span class="bldg-sub">CSE AI Labs</span>
+                  </div>
+                </div>
+
+                <!-- 3. Central Library (Block 30 - Dr. APJ Abdul Kalam Central Library) -->
+                <div class="bldg-3d" style="top: 80px; left: 80px; width: 220px; height: 130px;" onclick="selectMapStation('LPU-LIB-2F')">
+                  <div class="bldg-roof" style="background: #25334D; border-color: rgba(159,232,112,0.4); transform: translateZ(50px);">
+                    <span class="bldg-name">CENTRAL LIBRARY</span>
+                    <span class="bldg-sub" style="color: var(--lime);">Block 30 • Floor 2 Point</span>
+                  </div>
+                </div>
+
+                <!-- 4. UniMall (Central Student Mall & Food Court) -->
+                <div class="bldg-3d" style="bottom: 90px; left: 90px; width: 220px; height: 140px;" onclick="selectMapStation('LPU-MALL-2F')">
+                  <div class="bldg-roof" style="border-color: rgba(255,164,27,0.4); transform: translateZ(45px);">
+                    <span class="bldg-name">UNIMALL</span>
+                    <span class="bldg-sub" style="color: var(--amber);">Student Mall • 2F Food Plaza</span>
+                  </div>
+                </div>
+
+                <!-- 5. Baldev Raj Mittal Unipolis (Huge Covered Amphitheatre) -->
+                <div class="bldg-3d" style="top: 240px; left: 340px; width: 180px; height: 130px;" onclick="selectMapStation('LPU-UNIPOLIS')">
+                  <div class="bldg-roof" style="background: #1B2433; border-style: dashed; transform: translateZ(25px);">
+                    <span class="bldg-name">UNIPOLIS</span>
+                    <span class="bldg-sub" style="color: var(--cyan);">Canopy Amphitheater • G</span>
+                  </div>
+                </div>
+
+                <!-- 6. Block 38 (Mittal School of Business) -->
+                <div class="bldg-3d" style="bottom: 80px; right: 80px; width: 230px; height: 130px;" onclick="selectMapStation('LPU-MSB-2F')">
+                  <div class="bldg-roof" style="transform: translateZ(45px);">
+                    <span class="bldg-name">BLOCK 38 • MSB</span>
+                    <span class="bldg-sub">Business School • Floor 2</span>
+                  </div>
+                </div>
+
+                <!-- 7. Block 25-28 (Polytechnic & Mechanical Eng) -->
+                <div class="bldg-3d" style="top: 230px; left: 80px; width: 180px; height: 95px;" onclick="selectMapStation('LPU-ENG-2F')">
+                  <div class="bldg-roof" style="border-color: rgba(255,164,27,0.4); transform: translateZ(35px);">
+                    <span class="bldg-name">BLOCK 26 • ENG</span>
+                    <span class="bldg-sub" style="color: var(--amber);">Polytechnic • Floor 2</span>
+                  </div>
+                </div>
+
+                <!-- 8. Indoor Sports Stadium & Olympic Pool -->
+                <div class="bldg-3d" style="bottom: 30px; left: 340px; width: 200px; height: 85px;" onclick="selectMapStation('LPU-SPORT-2F')">
+                  <div class="bldg-roof" style="transform: translateZ(35px);">
+                    <span class="bldg-name">SPORTS STADIUM</span>
+                    <span class="bldg-sub" style="color: var(--cyan);">Olympic Deck • Floor 2</span>
+                  </div>
+                </div>
+
+                <!-- 9. Boys Hostels Zone (BH-1 to BH-7) - Peripheral Residential -->
+                <div class="bldg-3d" style="top: 35px; right: 20px; width: 140px; height: 60px; pointer-events: none;" title="BH Hostels: Internal Mess Filtration">
+                  <div class="bldg-roof" style="background: #141822; opacity: 0.65; transform: translateZ(20px);">
+                    <span class="bldg-name" style="font-size: 11px;">BH-1 to BH-7</span>
+                    <span class="bldg-sub" style="font-size: 7px; color: #8E959E;">Hostel Mess R.O.</span>
+                  </div>
+                </div>
+
+                <!-- 10. Girls Hostels Zone (GH-1 to GH-6) - Peripheral Residential -->
+                <div class="bldg-3d" style="bottom: 30px; left: 70px; width: 140px; height: 55px; pointer-events: none;" title="GH Hostels: Internal Mess Filtration">
+                  <div class="bldg-roof" style="background: #141822; opacity: 0.65; transform: translateZ(20px);">
+                    <span class="bldg-name" style="font-size: 11px;">GH-1 to GH-6</span>
+                    <span class="bldg-sub" style="font-size: 7px; color: #8E959E;">Hostel Mess R.O.</span>
+                  </div>
+                </div>
+
+                <!-- 3D Floating Station Pins for Even Floors (Except Hostels) -->
+                
+                <!-- Pin 1: Block 34 CSE Floor 2 (IoT & AI) -->
+                <div class="station-pin-3d active-pin" id="pin-LPU-CSE-2F" data-station-id="LPU-CSE-2F" style="top: 110px; right: 260px;" onclick="selectCseFloor('LPU-CSE-2F')">
+                  <div class="pin-head">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                    <span>CSE 2F • 99%</span>
+                  </div>
+                  <div class="pin-stem"></div>
+                  <div class="pin-shadow"></div>
+                </div>
+
+                <!-- Pin 2: Block 34 CSE Floor 4 (Coding Concourse) -->
+                <div class="station-pin-3d" id="pin-LPU-CSE-4F" data-station-id="LPU-CSE-4F" style="top: 140px; right: 210px;" onclick="selectCseFloor('LPU-CSE-4F')">
+                  <div class="pin-head">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                    <span>CSE 4F • 98%</span>
+                  </div>
+                  <div class="pin-stem"></div>
+                  <div class="pin-shadow"></div>
+                </div>
+
+                <!-- Pin 3: Block 34 CSE Floor 6 (Cloud & Cyber) -->
+                <div class="station-pin-3d" id="pin-LPU-CSE-6F" data-station-id="LPU-CSE-6F" style="top: 90px; right: 170px;" onclick="selectCseFloor('LPU-CSE-6F')">
+                  <div class="pin-head">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                    <span>CSE 6F • 99%</span>
+                  </div>
+                  <div class="pin-stem"></div>
+                  <div class="pin-shadow"></div>
+                </div>
+
+                <!-- Pin 4: Block 34 CSE Floor 8 (Research & Dean) -->
+                <div class="station-pin-3d" id="pin-LPU-CSE-8F" data-station-id="LPU-CSE-8F" style="top: 125px; right: 120px;" onclick="selectCseFloor('LPU-CSE-8F')">
+                  <div class="pin-head">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                    <span>CSE 8F • 99%</span>
+                  </div>
+                  <div class="pin-stem"></div>
+                  <div class="pin-shadow"></div>
+                </div>
+
+                <!-- Pin 5: Central Library Floor 2 -->
+                <div class="station-pin-3d" id="pin-LPU-LIB-2F" data-station-id="LPU-LIB-2F" style="top: 135px; left: 180px;" onclick="selectMapStation('LPU-LIB-2F')">
+                  <div class="pin-head">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                    <span>LIB 2F • 99%</span>
+                  </div>
+                  <div class="pin-stem"></div>
+                  <div class="pin-shadow"></div>
+                </div>
+
+                <!-- Pin 6: UniMall Floor 2 -->
+                <div class="station-pin-3d" id="pin-LPU-MALL-2F" data-station-id="LPU-MALL-2F" style="bottom: 145px; left: 190px;" onclick="selectMapStation('LPU-MALL-2F')">
+                  <div class="pin-head">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                    <span>MALL 2F • 98%</span>
+                  </div>
+                  <div class="pin-stem"></div>
+                  <div class="pin-shadow"></div>
+                </div>
+
+                <!-- Pin 7: Block 38 Business Floor 2 -->
+                <div class="station-pin-3d" id="pin-LPU-MSB-2F" data-station-id="LPU-MSB-2F" style="bottom: 135px; right: 190px;" onclick="selectMapStation('LPU-MSB-2F')">
+                  <div class="pin-head">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                    <span>MSB 2F • 98%</span>
+                  </div>
+                  <div class="pin-stem"></div>
+                  <div class="pin-shadow"></div>
+                </div>
+
+                <!-- Pin 8: Block 26 Polytechnic Floor 2 (Alert) -->
+                <div class="station-pin-3d" id="pin-LPU-ENG-2F" data-station-id="LPU-ENG-2F" style="top: 290px; left: 160px;" onclick="selectMapStation('LPU-ENG-2F')">
+                  <div class="pin-head amber-head">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <span>ENG 2F • FILTER</span>
+                  </div>
+                  <div class="pin-stem"></div>
+                  <div class="pin-shadow"></div>
+                </div>
+
+                <!-- Pin 9: Sports Stadium Floor 2 -->
+                <div class="station-pin-3d" id="pin-LPU-SPORT-2F" data-station-id="LPU-SPORT-2F" style="bottom: 75px; left: 430px;" onclick="selectMapStation('LPU-SPORT-2F')">
+                  <div class="pin-head">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                    <span>SPORT 2F • 99%</span>
+                  </div>
+                  <div class="pin-stem"></div>
+                  <div class="pin-shadow"></div>
+                </div>
+
+                <!-- Pin 10: Unipolis Ground Promenade (Alert) -->
+                <div class="station-pin-3d" id="pin-LPU-UNIPOLIS" data-station-id="LPU-UNIPOLIS" style="top: 300px; left: 420px;" onclick="selectMapStation('LPU-UNIPOLIS')">
+                  <div class="pin-head alert-head">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <span>UNIPOLIS • SERVICE</span>
+                  </div>
+                  <div class="pin-stem"></div>
+                  <div class="pin-shadow"></div>
+                </div>
+
+                <!-- User Location 3D Pulsing Marker ("You Are Here" on Central Lawns) -->
+                <div class="user-location-3d" style="bottom: 200px; right: 340px;">
+                  <div class="user-pulse-disc" title="Your Live GPS Anchor at LPU"></div>
+                  <span style="font-size: 9px; font-weight: 800; color: #fff; background: var(--blue-nav); padding: 2px 6px; border-radius: 6px; margin-top: 5px; white-space: nowrap;">You are here (LPU Lawns)</span>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Station Live Inspection Card -->
+          <div class="station-inspect-card">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <div>
+                <span class="station-inspect-badge" id="mapInspectBadge">Pristine Grade • 98% Pure</span>
+                <h2 style="font-family: var(--font-display); font-size: 28px; font-weight: 800; margin-top: 6px;" id="mapInspectName">Library 2F HydroStation</h2>
+                <p style="font-size: 12px; color: var(--text-muted);" id="mapInspectLoc">East Wing • Silent Study Pods</p>
+              </div>
+              <span style="font-size: 11px; color: var(--text-muted);" id="mapInspectSanitized">Sanitized 24m ago</span>
+            </div>
+
+            <!-- Bento Mini Parameters -->
+            <div class="station-metrics-bento">
+              <div class="bento-mini">
+                <span style="font-size: 11px; color: var(--text-muted);">Temperature</span>
+                <span class="bento-mini-val" style="color: var(--cyan);" id="mapInspectTemp">10.2°C</span>
+                <span class="bento-mini-lbl">Chilled</span>
+              </div>
+              <div class="bento-mini">
+                <span style="font-size: 11px; color: var(--text-muted);">TDS Purity</span>
+                <span class="bento-mini-val" id="mapInspectTds">38 ppm</span>
+                <span class="bento-mini-lbl">Alpine Std</span>
+              </div>
+              <div class="bento-mini">
+                <span style="font-size: 11px; color: var(--text-muted);">Flow Velocity</span>
+                <span class="bento-mini-val" style="color: var(--lime);" id="mapInspectFlow">2.4 L/m</span>
+                <span class="bento-mini-lbl">Jet Stream</span>
+              </div>
+            </div>
+
+            <!-- Block 34 CSE Even-Floor Navigator (For quick switching between 2F, 4F, 6F, 8F) -->
+            <div class="cse-floor-bar" id="cseFloorBar">
+              <div class="cse-floor-lbl">
+                <span>💻 Block 34 (CSE) • Even-Floor Points</span>
+                <span style="color: var(--text-muted); font-size: 9px; font-weight: 600;">Tap floor to view</span>
+              </div>
+              <div class="cse-floor-buttons">
+                <button type="button" class="cse-floor-btn active" id="cseBtn2F" onclick="selectCseFloor('LPU-CSE-2F')">
+                  <span>2F</span>
+                  <small>IoT & AI</small>
+                </button>
+                <button type="button" class="cse-floor-btn" id="cseBtn4F" onclick="selectCseFloor('LPU-CSE-4F')">
+                  <span>4F</span>
+                  <small>Coding</small>
+                </button>
+                <button type="button" class="cse-floor-btn" id="cseBtn6F" onclick="selectCseFloor('LPU-CSE-6F')">
+                  <span>6F</span>
+                  <small>Cloud</small>
+                </button>
+                <button type="button" class="cse-floor-btn" id="cseBtn8F" onclick="selectCseFloor('LPU-CSE-8F')">
+                  <span>8F</span>
+                  <small>Research</small>
+                </button>
+              </div>
+            </div>
+
+            <!-- LPU Campus Even-Floor Rule Tag -->
+            <div class="lpu-rule-tag">
+              <span>🏛️</span>
+              <span><strong>LPU Rule:</strong> Academic blocks feature smart water points on <em>even floors only (2F, 4F, 6F, 8F)</em>. Hostels have dedicated internal mess filtration.</span>
+            </div>
+
+            <!-- Nano Filter Lifespan Track -->
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <div style="display: flex; justify-content: space-between; font-size: 11px;">
+                <span style="color: var(--text-muted);">Nano-Filter Lifespan</span>
+                <span style="color: var(--lime); font-weight: 700;" id="mapInspectFilter">94% (Optimal)</span>
+              </div>
+              <div style="height: 6px; background: var(--panel-bg); border-radius: 3px; overflow: hidden;">
+                <div style="height: 100%; width: 94%; background: var(--lime); border-radius: 3px;" id="mapInspectFilterBar"></div>
+              </div>
+            </div>
+
+            <!-- Quick Action Row -->
+            <div class="card-action-row">
+              <button type="button" class="primary-action-btn" id="mapBtnDirections">
+                Start Walk (1 min)
+              </button>
+              <button type="button" class="secondary-action-btn" id="mapBtnAr" style="color: var(--cyan);">
+                Launch AR View
+              </button>
+              <button type="button" class="secondary-action-btn" id="mapBtnTelemetry">
+                Full Telemetry
+              </button>
+              <button type="button" class="secondary-action-btn" id="mapBtnReport" style="color: var(--amber);">
+                Report Issue
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           VIEW 3: AR VIEW (SPATIAL NAVIGATION)
+           ======================================================== -->
+      <section class="view-panel" id="view-ar">
+        <div class="heading-row">
+          <div class="title-wrap">
+            <div class="live-indicator">
+              <span class="live-pulse"></span>
+              <span>Spatial Compass Active • RTK Dual-GPS ±1.2m</span>
+            </div>
+            <h1 class="main-title">AR SPATIAL<br><span>NAVIGATION</span></h1>
+          </div>
+
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="tab-btn active" id="btnArLiveCam" style="background: var(--pill-bg); border: 1px solid var(--card-border);">
+              📹 AR Live Cam
+            </button>
+            <button type="button" class="tab-btn" id="btnAr3dMesh" style="background: var(--pill-bg); border: 1px solid var(--card-border);">
+              📐 3D Mesh
+            </button>
+          </div>
+        </div>
+
+        <div class="ar-view-layout">
+          <div class="ar-viewport-card">
+            <div class="ar-viewport">
+              <div class="ar-reticle-corners">
+                <div class="corner-row">
+                  <div class="corner-bracket tl"></div>
+                  <div class="corner-bracket tr"></div>
+                </div>
+                <div class="corner-row">
+                  <div class="corner-bracket bl"></div>
+                  <div class="corner-bracket br"></div>
+                </div>
+              </div>
+
+              <div class="ar-hud-pill">
+                <div class="ar-turn-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                </div>
+                <div>
+                  <strong style="font-size: 13px; display: block;" id="arTurnTitle">In 45m: Turn Right</strong>
+                  <span style="font-size: 11px; color: var(--text-muted);" id="arTurnSub">Pass Central Science Atrium archway</span>
+                </div>
+              </div>
+
+              <!-- Perspective Graphic -->
+              <svg style="width: 100%; height: 100%;" viewBox="0 0 700 480">
+                <defs>
+                  <linearGradient id="arSplineGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#00daf3" stop-opacity="0.9"/>
+                    <stop offset="100%" stop-color="#9FE870" stop-opacity="1"/>
+                  </linearGradient>
+                  <radialGradient id="meshFloorGrad" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#141D2D" stop-opacity="0.8"/>
+                    <stop offset="100%" stop-color="#070B12" stop-opacity="0"/>
+                  </radialGradient>
+                </defs>
+
+                <ellipse cx="350" cy="340" rx="340" ry="140" fill="url(#meshFloorGrad)"/>
+                <g opacity="0.25" stroke="#4B566E" stroke-dasharray="3 3">
+                  <path d="M50 350 L650 350"/>
+                  <path d="M100 400 L600 400"/>
+                  <path d="M350 200 L50 440"/>
+                  <path d="M350 200 L200 440"/>
+                  <path d="M350 200 L350 440"/>
+                  <path d="M350 200 L500 440"/>
+                  <path d="M350 200 L650 440"/>
+                </g>
+
+                <g transform="translate(100, 210)" opacity="0.7">
+                  <polygon points="60,0 120,25 60,50 0,25" fill="#1F283B"/>
+                  <polygon points="0,25 60,50 60,110 0,85" fill="#141B29"/>
+                  <polygon points="60,50 120,25 120,85 60,110" fill="#29354E"/>
+                </g>
+
+                <g transform="translate(460, 110)">
+                  <polygon points="70,0 140,30 70,60 0,30" fill="#29354E"/>
+                  <polygon points="0,30 70,60 70,140 0,110" fill="#171E2E"/>
+                  <polygon points="70,60 140,30 140,110 70,140" fill="#364566"/>
+                  <circle cx="70" cy="40" r="14" fill="#00E5FF" opacity="0.25"/>
+                  <circle cx="70" cy="40" r="6" fill="#00E5FF"/>
+                </g>
+
+                <path d="M350 450 C 340 380, 260 340, 270 290 C 280 230, 370 220, 420 180 C 470 140, 500 160, 530 145" fill="none" stroke="url(#arSplineGrad)" stroke-width="7" stroke-linecap="round"/>
+                <path d="M350 450 C 340 380, 260 340, 270 290 C 280 230, 370 220, 420 180 C 470 140, 500 160, 530 145" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+
+                <circle cx="280" cy="275" r="9" fill="#00E5FF">
+                  <animate attributeName="r" values="6;11;6" dur="2s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
+                </circle>
+
+                <g transform="translate(480, 90)">
+                  <rect x="0" y="0" width="160" height="42" rx="12" fill="#121316" stroke="#00E5FF" stroke-width="1.5"/>
+                  <text x="14" y="18" fill="#FFFFFF" font-family="Plus Jakarta Sans" font-size="11" font-weight="700">Library 2F Station</text>
+                  <text x="14" y="32" fill="#9FE870" font-family="Plus Jakarta Sans" font-size="10">Pristine • Chilled 10.2°C</text>
+                </g>
+              </svg>
+
+              <div class="ar-compass-bar">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="color: var(--cyan); font-weight: 700; font-size: 13px;">🧭 Heading NE 42°</span>
+                  <span style="font-size: 11px; color: var(--text-muted);">Walking pace: 1.2 m/s</span>
+                </div>
+                <div style="display: flex; gap: 6px;">
+                  <span style="background: var(--pill-bg); padding: 4px 10px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 700;">Floor: G → 2F</span>
+                  <button type="button" class="icon-pill-btn" id="arRecenterBtn" title="Recalibrate Heading" style="width: 30px; height: 30px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="station-inspect-card">
+            <div>
+              <span class="station-inspect-badge">Target Waypoint Locked</span>
+              <h2 style="font-family: var(--font-display); font-size: 28px; font-weight: 800; margin-top: 6px;" id="arTargetStationName">Library 2F HydroStation</h2>
+              <p style="font-size: 12px; color: var(--cyan); font-weight: 700;" id="arTargetStationDist">45m (1 min walk)</p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Change Destination Dispenser:</label>
+              <select class="form-select" id="arStationSelect">
+                <option value="LPU-CSE-2F" selected>Block 34 CSE • Floor 2 (IoT & AI) (65m)</option>
+                <option value="LPU-CSE-4F">Block 34 CSE • Floor 4 (Coding Concourse) (85m)</option>
+                <option value="LPU-CSE-6F">Block 34 CSE • Floor 6 (Cloud & Cyber) (110m)</option>
+                <option value="LPU-CSE-8F">Block 34 CSE • Floor 8 (Research Wing) (140m)</option>
+                <option value="LPU-LIB-2F">Central Library Block 30 • Floor 2 (180m)</option>
+                <option value="LPU-MALL-2F">UniMall Student Hub • Floor 2 (290m)</option>
+                <option value="LPU-MSB-2F">Block 38 Mittal School of Business • Floor 2 (260m)</option>
+                <option value="LPU-SPORT-2F">Indoor Sports Complex • Floor 2 (380m)</option>
+              </select>
+            </div>
+
+            <div style="background: var(--panel-bg); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px;">
+              <span style="font-size: 11px; font-weight: 700; color: var(--lime); text-transform: uppercase;">Route Highlights:</span>
+              <p style="font-size: 12px; color: var(--text-muted); line-height: 1.4;">
+                Take the East Walkway past Science Quad. Enter through the Glass Skybridge portal, take stairs or elevator to Floor 2. Station is opposite the Silent Study lounge.
+              </p>
+            </div>
+
+            <button type="button" class="primary-action-btn" onclick="showToast('AR Guidance Active: Follow glowing waypoint trail')">
+              Start Turn-by-Turn Guidance
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           VIEW 4: NEARBY STATIONS (LOCATION FINDER)
+           ======================================================== -->
+      <section class="view-panel" id="view-nearby">
+        <div class="heading-row">
+          <div class="title-wrap">
+            <div class="live-indicator">
+              <span class="live-pulse"></span>
+              <span>Live Location Anchor • Science Quad North</span>
+            </div>
+            <h1 class="main-title">NEARBY WATER<br><span>STATIONS</span></h1>
+          </div>
+
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="map-chip nearby-filter-chip active" data-filter="all">Nearest First</button>
+            <button type="button" class="map-chip nearby-filter-chip" data-filter="chilled">❄️ Chilled (≤10°C)</button>
+            <button type="button" class="map-chip nearby-filter-chip" data-filter="pristine">✨ Pristine (≥95)</button>
+            <button type="button" class="map-chip nearby-filter-chip" data-filter="fast">⚡ High Flow (&gt;2L/m)</button>
+          </div>
+        </div>
+
+        <div class="nearby-layout">
+          <div class="nearby-list-grid" id="nearbyListGrid"></div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           VIEW 5: CAMPUS ALERTS & LOGS
+           ======================================================== -->
+      <section class="view-panel" id="view-alerts">
+        <div class="heading-row">
+          <div class="title-wrap">
+            <div class="live-indicator">
+              <span class="live-pulse" style="background: var(--red-alert); box-shadow: 0 0 10px var(--red-alert);"></span>
+              <span>2 Active Anomalies • LoRa Mesh Sync: 8s ago</span>
+            </div>
+            <h1 class="main-title">CAMPUS ALERTS<br><span>& INCIDENT LOG</span></h1>
+          </div>
+
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="map-chip alerts-filter-chip active" data-filter="all">All Alerts</button>
+            <button type="button" class="map-chip alerts-filter-chip" data-filter="critical">🚨 Critical (1)</button>
+            <button type="button" class="map-chip alerts-filter-chip" data-filter="maintenance">🔧 Maintenance (2)</button>
+            <button type="button" class="map-chip alerts-filter-chip" data-filter="community">💬 Student Reviews</button>
+            <button type="button" class="secondary-action-btn" id="markAllReadBtn" style="height: 34px; padding: 0 14px; font-size: 11px;">
+              Mark All Read
+            </button>
+            <button type="button" class="primary-action-btn" id="reportNewAlertBtn" style="height: 34px; padding: 0 14px; font-size: 11px;">
+              + Report Issue
+            </button>
+          </div>
+        </div>
+
+        <div class="alerts-layout">
+          <div class="alerts-summary-banner">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <span style="font-size: 11px; font-weight: 700; color: var(--lime); text-transform: uppercase; letter-spacing: 0.1em;">CAMPUS HYDRO-GRID HEALTH</span>
+                <h3 style="font-family: var(--font-display); font-size: 26px; font-weight: 800; margin-top: 4px;">38 of 42 Dispensers Nominal</h3>
+              </div>
+              <span style="font-family: var(--font-display); font-size: 32px; font-weight: 800; color: var(--lime);">90.4% OK</span>
+            </div>
+            <div style="height: 8px; background: var(--panel-bg); border-radius: 4px; overflow: hidden; display: flex; gap: 2px;">
+              <div style="width: 90.4%; background: var(--lime);"></div>
+              <div style="width: 4.8%; background: var(--amber);"></div>
+              <div style="width: 4.8%; background: var(--red-alert);"></div>
+            </div>
+          </div>
+          <div class="alerts-feed-stack" id="alertsFeedStack"></div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           VIEW 6: STUDENT PROFILE & HYDRATION TRACKER
+           ======================================================== -->
+      <section class="view-panel" id="view-profile">
+        <div class="heading-row">
+          <div class="title-wrap">
+            <div class="live-indicator">
+              <span class="live-pulse"></span>
+              <span>LPU Student Verified • Lovely Professional University • Phagwara</span>
+            </div>
+            <h1 class="main-title">STUDENT PROFILE<br><span>& HYDRATION</span></h1>
+          </div>
+        </div>
+
+        <div class="profile-view-layout">
+          <div class="profile-card-left">
+            <div class="profile-hero">
+              <img src="Profile.jpg" alt="Srijan Gupta" class="profile-hero-avatar" onerror="this.src='logo.svg'">
+              <div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <h2 style="font-family: var(--font-display); font-size: 32px; font-weight: 800;">Srijan Gupta</h2>
+                  <span style="background: rgba(159,232,112,0.2); color: var(--lime); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px;">VERIFIED</span>
+                </div>
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">B.Tech Computer Science & Engineering • Block 34</p>
+                <span style="font-family: var(--font-mono); font-size: 11px; color: var(--cyan); display: block; margin-top: 4px;">LPU Reg No: 12408921 • CSE Wing</span>
+              </div>
+            </div>
+
+            <div class="impact-matrix">
+              <div class="impact-box">
+                <span class="impact-num" id="userRefillsCount">487</span>
+                <span class="impact-lbl">Refills (~146L)</span>
+              </div>
+              <div class="impact-box">
+                <span class="impact-num" style="color: var(--lime);">18</span>
+                <span class="impact-lbl">Top Scout Rank</span>
+              </div>
+              <div class="impact-box">
+                <span class="impact-num" style="color: var(--cyan);" id="userPlasticCount">4.2 kg</span>
+                <span class="impact-lbl">Plastic Saved</span>
+              </div>
+            </div>
+
+            <div style="background: var(--panel-bg); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px;">
+              <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Dispenser Preferences</span>
+              <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                <span>Water Temperature</span>
+                <strong style="color: var(--cyan);">Extra Chilled (≤10°C)</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                <span>Purity Standard</span>
+                <strong style="color: var(--lime);">Ultra-Pure TDS &lt;50ppm</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                <span>Telemetry Notifications</span>
+                <strong style="color: var(--lime);">Enabled</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="hydration-card">
+            <div>
+              <span style="font-size: 11px; font-weight: 700; color: var(--lime); text-transform: uppercase;">DAILY HYDRATION TELEMETRY</span>
+              <h3 style="font-family: var(--font-display); font-size: 26px; font-weight: 800; margin-top: 4px;">Campus Hydration Target</h3>
+            </div>
+
+            <div class="hydration-radial-wrap">
+              <div class="hydration-gauge-box">
+                <svg class="hydration-svg" viewBox="0 0 80 80">
+                  <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="7"/>
+                  <circle id="hydrationCircle" cx="40" cy="40" r="34" fill="none" stroke="var(--cyan)" stroke-width="7" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="49"/>
+                </svg>
+                <span style="position: absolute; font-family: var(--font-display); font-size: 24px; font-weight: 800;" id="userHydrationPct">77%</span>
+              </div>
+
+              <div style="flex: 1;">
+                <span style="font-family: var(--font-display); font-size: 36px; font-weight: 800; line-height: 1;" id="userDrankAmount">1,850 / 2,400 ml</span>
+                <p style="font-size: 12px; color: var(--lime); margin-top: 4px; font-weight: 600;">⚡ +250 ml above campus student average</p>
+              </div>
+
+              <button type="button" class="primary-action-btn" id="logDrinkBtn" style="padding: 0 18px; font-size: 13px;">
+                + Log Drink (250 ml)
+              </button>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Saved Favorite Fountains</span>
+              <div style="background: var(--panel-bg); border-radius: 12px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <strong style="font-size: 13px;">Library 2F HydroStation</strong>
+                  <span style="display: block; font-size: 11px; color: var(--lime);">99.4% Purity • Chilled 10.2°C</span>
+                </div>
+                <span style="color: var(--amber); font-size: 16px;">★★★★★</span>
+              </div>
+              <div style="background: var(--panel-bg); border-radius: 12px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <strong style="font-size: 13px;">Engineering Quad Wing B</strong>
+                  <span style="display: block; font-size: 11px; color: var(--lime);">98.2% Purity • Flow 2.2 L/m</span>
+                </div>
+                <span style="color: var(--amber); font-size: 16px;">★★★★★</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ========================================================
+       SLIDE-OVER STATION DETAIL DRAWER (FOR STUDENTS)
+       Note: "Log Nano-Filter Replacement" has been removed
+       as requested, since students do not replace filters.
+       ======================================================== -->
+  <div class="drawer-backdrop" id="stationDrawerBackdrop" role="dialog" aria-modal="true">
+    <aside class="station-drawer">
+      <div class="drawer-header">
+        <div class="card-icon-pill">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+          </svg>
+        </div>
+        <button type="button" class="drawer-close-btn" id="drawerCloseBtn" aria-label="Close Drawer">✕</button>
+      </div>
+
+      <div class="live-indicator">
+        <span class="live-pulse"></span>
+        <span>Reporting Live Sensor Telemetry</span>
+      </div>
+
+      <div>
+        <h2 class="drawer-station-name" id="drawerStationName">Library 2F HydroStation</h2>
+        <p class="drawer-station-sub" id="drawerStationId">STATION AC-101 • MAIN QUAD • ACADEMIC</p>
+      </div>
+
+      <!-- Circular Reservoir Gauge -->
+      <div class="gauge-box">
+        <div class="circular-progress" id="drawerGauge" style="--gauge-pct: 96;">
+          <div class="gauge-content">
+            <div class="gauge-val"><span id="drawerGaugeVal">96</span><small>%</small></div>
+            <div class="gauge-lbl">RESERVOIR CAPACITY</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Telemetry Parameters List -->
+      <div class="drawer-metric-list">
+        <div class="drawer-metric-item">
+          <span class="drawer-metric-lbl">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Water Bio-Purity
+          </span>
+          <span class="drawer-metric-val" id="drawerPurity">99.4% (Pristine Grade)</span>
+        </div>
+
+        <div class="drawer-metric-item">
+          <span class="drawer-metric-lbl">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/></svg>
+            Total Dissolved Solids (TDS)
+          </span>
+          <span class="drawer-metric-val" id="drawerTDS">38 ppm</span>
+        </div>
+
+        <div class="drawer-metric-item">
+          <span class="drawer-metric-lbl">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            pH Balance Target
+          </span>
+          <span class="drawer-metric-val" id="drawerPH">7.42 (Alkaline)</span>
+        </div>
+
+        <div class="drawer-metric-item">
+          <span class="drawer-metric-lbl">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Current Flow Rate
+          </span>
+          <span class="drawer-metric-val" id="drawerFlow">2.4 L/min</span>
+        </div>
+
+        <div class="drawer-metric-item">
+          <span class="drawer-metric-lbl">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Nano-Filter Health
+          </span>
+          <span class="drawer-metric-val" id="drawerFilterHealth">94% (Optimal)</span>
+        </div>
+
+        <div class="drawer-metric-item">
+          <span class="drawer-metric-lbl">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            UV-C Chamber Sterilization
+          </span>
+          <span class="drawer-metric-val" id="drawerUv">Active (100%)</span>
+        </div>
+
+        <div class="drawer-metric-item">
+          <span class="drawer-metric-lbl">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Last Manual Sanitation
+          </span>
+          <span class="drawer-metric-val" id="drawerSanitized">24m ago</span>
+        </div>
+
+        <div class="drawer-metric-item">
+          <span class="drawer-metric-lbl">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            Total Dispensed Today
+          </span>
+          <span class="drawer-metric-val" id="drawerDispensed">2,450 L</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons for Students (Filter replacement button removed) -->
+      <div class="drawer-actions">
+        <button type="button" class="primary-action-btn" id="drawerActionNavWalk">
+          Start 3D Walk Navigation
+        </button>
+        <button type="button" class="secondary-action-btn" id="drawerActionAr" style="color: var(--cyan);">
+          Navigate via AR Cam
+        </button>
+        <button type="button" class="secondary-action-btn" id="drawerActionFav">
+          ★ Save to Favorite Fountains
+        </button>
+        <button type="button" class="secondary-action-btn" id="drawerActionReport" style="color: var(--amber);">
+          Report Dispenser Issue
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ========================================================
+       INTERACTIVE REPORT / TICKET MODAL (GLOBAL)
+       ======================================================== -->
+  <div class="modal-backdrop" id="reportModalBackdrop" role="dialog" aria-modal="true">
+    <div class="report-modal">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="card-icon-pill amber-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <h2 class="modal-title">Report Dispenser Issue</h2>
+        </div>
+        <button type="button" class="drawer-close-btn" id="closeReportModalBtn">✕</button>
+      </div>
+
+      <form id="reportIssueForm" style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="form-group">
+          <label class="form-label">Water Station:</label>
+          <select class="form-select" id="reportStationSelect" required>
+            <option value="Library 2F HydroStation">Library 2F HydroStation</option>
+            <option value="Engineering Quad Wing B">Engineering Quad Wing B</option>
+            <option value="Student Union Hub Food Court">Student Union Hub Food Court</option>
+            <option value="Science Concourse Bio Atrium">Science Concourse Bio Atrium</option>
+            <option value="Bio-Chem Laboratories Atrium">Bio-Chem Laboratories Atrium</option>
+            <option value="North Residences Dorm Hall">North Residences Dorm Hall</option>
+            <option value="Sports Complex Aquatics Gym">Sports Complex Aquatics Gym</option>
+            <option value="Central Dining Commons">Central Dining Commons</option>
+            <option value="Arts Pavilion Plaza Fountain">Arts Pavilion Plaza Fountain</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Issue Category:</label>
+          <select class="form-select" id="reportIssueCategory" required>
+            <option value="Quality">Water Quality / Bad Taste / Cloudiness</option>
+            <option value="Pressure">Low Water Pressure / Slow Flow</option>
+            <option value="Leak">Physical Leak / Sensor Hardware Damaged</option>
+            <option value="Filter">Filter Replacement Warning Overdue</option>
+            <option value="Temperature">Water Not Chilled (Warm/Ambient)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Station Cleanliness / Condition Rating:</label>
+          <div class="star-rating-row" id="reportStarRating">
+            <span class="star-icon filled" data-value="1">★</span>
+            <span class="star-icon filled" data-value="2">★</span>
+            <span class="star-icon filled" data-value="3">★</span>
+            <span class="star-icon filled" data-value="4">★</span>
+            <span class="star-icon filled" data-value="5">★</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description / Problem Details:</label>
+          <textarea class="form-textarea" id="reportDescription" placeholder="Describe the water taste, flow problem, or dispenser anomaly..." required></textarea>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 6px;">
+          <button type="submit" class="primary-action-btn" style="flex: 1;">
+            Submit Maintenance Ticket
+          </button>
+          <button type="button" class="secondary-action-btn" id="cancelReportBtn" style="padding: 0 18px;">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Real-Time Floating Toast Alert -->
+  <div class="toast-msg" id="toastMsg">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2.5">
+      <polyline points="20 6 9 17 4 12"></polyline>
+    </svg>
+    <span id="toastText">Action completed successfully</span>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
