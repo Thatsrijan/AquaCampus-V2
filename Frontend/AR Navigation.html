@@ -41,10 +41,13 @@
 <!-- AR / 3D Isometric Spatial Viewport -->
 <section class="relative px-margin">
 <div class="relative w-full h-[330px] rounded-3xl overflow-hidden bg-surface-container-lowest shadow-[0_16px_40px_rgba(0,0,0,0.5)]">
+<!-- Real Camera Stream Feed (Toggled via AR Live Cam) -->
+<video id="feArVideo" playsinline autoplay muted class="absolute inset-0 w-full h-full object-cover z-0 hidden rounded-3xl"></video>
+
 <!-- Simulated Camera Scrim & Spatial Grid -->
 <div class="absolute inset-0 bg-gradient-to-b from-surface-container-lowest/60 via-transparent to-surface-container-lowest/90 z-10 pointer-events-none"></div>
 <!-- Living Campus Canvas Background -->
-<div class="absolute inset-0 z-0 opacity-80 mix-blend-screen scale-105">
+<div class="absolute inset-0 z-0 opacity-80 mix-blend-screen scale-105" id="feArCanvasWrap">
 <svg class="w-full h-full" fill="none" viewbox="0 0 380 340" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <lineargradient id="neonPath" x1="0%" x2="100%" y1="100%" y2="0%">
@@ -74,14 +77,12 @@
 <path d="M190 120 L340 310"></path>
 </g>
 <!-- Stylized Isometric Low-Poly Building Blocks -->
-<!-- Science Block (Left) -->
 <g opacity="0.65" transform="translate(45, 145)">
 <polygon fill="#222a3d" points="40,0 80,18 40,36 0,18"></polygon>
 <polygon fill="#171f33" points="0,18 40,36 40,75 0,57"></polygon>
 <polygon fill="#2d3449" points="40,36 80,18 80,57 40,75"></polygon>
 <path d="M15 28 L35 38" opacity="0.6" stroke="#00daf3" stroke-width="1.5"></path>
 </g>
-<!-- Library 2F Destination Hub (Right Elevated) -->
 <g opacity="0.9" transform="translate(240, 70)">
 <polygon fill="#2d3449" points="50,0 100,22 50,44 0,22"></polygon>
 <polygon fill="#171f33" points="0,22 50,44 50,95 0,73"></polygon>
@@ -89,18 +90,18 @@
 <polygon fill="#3626ce" opacity="0.3" points="40,25 75,40 40,55 5,40"></polygon>
 <circle cx="50" cy="40" fill="#00e5ff" opacity="0.15" r="16"></circle>
 </g>
-<!-- Glowing Spline Route (Snaking perspective trajectory) -->
+<!-- Glowing Spline Route -->
 <path d="M190 320 C185 270, 150 240, 155 200 C160 160, 210 150, 230 130 C245 115, 275 125, 290 110" filter="url(#cyanGlow)" stroke="url(#neonPath)" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"></path>
 <path d="M190 320 C185 270, 150 240, 155 200 C160 160, 210 150, 230 130 C245 115, 275 125, 290 110" opacity="0.8" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
 <!-- Real-Time Walking Pulse Orb -->
-<circle cx="160" cy="190" fill="#00e5ff" r="5">
+<circle cx="160" cy="190" fill="#00e5ff" r="5" id="feWalkerPulse">
 <animate attributename="r" dur="2s" repeatcount="indefinite" values="4;8;4"></animate>
 <animate attributename="opacity" dur="2s" repeatcount="indefinite" values="1;0.4;1"></animate>
 </circle>
 </svg>
 </div>
 <!-- AR HUD Reticle / Viewfinder Corner Brackets -->
-<div class="absolute inset-4 pointer-events-none z-20 flex flex-col justify-between">
+<div class="absolute inset-4 pointer-events-none z-20 flex flex-col justify-between" id="feReticle">
 <div class="flex justify-between">
 <div class="w-4 h-4 border-l-2 border-t-2 border-primary/50 rounded-tl-lg"></div>
 <div class="w-4 h-4 border-r-2 border-t-2 border-primary/50 rounded-tr-lg"></div>
@@ -110,21 +111,21 @@
 <div class="w-4 h-4 border-r-2 border-b-2 border-primary/50 rounded-br-lg"></div>
 </div>
 </div>
-<!-- Floating Waypoint Marker 1 (Atrium) -->
+<!-- Floating Waypoint Marker 1 -->
 <div class="absolute top-[52%] left-[28%] z-20 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-none">
 <div class="px-2.5 py-1 rounded-full bg-surface-container-highest/90 backdrop-blur-md shadow-lg flex items-center gap-1.5 animate-bounce" style="animation-duration: 3s;">
 <span class="material-symbols-outlined text-primary text-[13px]">turn_right</span>
-<span class="font-caption text-caption text-on-surface font-semibold tracking-tight">Turn at Atrium (45m)</span>
+<span class="font-caption text-caption text-on-surface font-semibold tracking-tight" id="feWaypointPrompt">Turn in 25m</span>
 </div>
 <div class="w-1.5 h-1.5 rounded-full bg-primary mt-1 shadow-[0_0_8px_#00e5ff]"></div>
 </div>
-<!-- Destination Floating Pin Marker 2 (Target HydroStation) -->
+<!-- Destination Floating Pin Marker 2 -->
 <div class="absolute top-[22%] right-[14%] z-20 flex flex-col items-center">
 <div class="px-3 py-1.5 rounded-2xl bg-primary/20 backdrop-blur-xl shadow-[0_8px_20px_rgba(0,229,255,0.35)] flex items-center gap-2">
 <div class="w-2 h-2 rounded-full bg-primary-container shadow-[0_0_10px_#00daf3] animate-ping"></div>
 <div class="flex flex-col">
-<span class="font-label-sm text-label-sm font-bold text-on-primary-container leading-none">Library 2F Station</span>
-<span class="font-caption text-caption text-primary leading-none mt-0.5">Pristine • Chilled</span>
+<span class="font-label-sm text-label-sm font-bold text-on-primary-container leading-none" id="feArPinTitle">CSE 2F Station</span>
+<span class="font-caption text-caption text-primary leading-none mt-0.5" id="feArPinSub">Pristine • Chilled 9.8°C</span>
 </div>
 </div>
 <span class="material-symbols-outlined text-primary text-[24px] -mt-1 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">arrow_drop_down</span>
@@ -136,24 +137,24 @@
 <span class="material-symbols-outlined text-[16px] font-bold">turn_slight_right</span>
 </div>
 <div class="flex flex-col">
-<span class="font-label-sm text-label-sm font-semibold text-on-surface">In 45m: Turn Right</span>
-<span class="font-caption text-caption text-on-surface-variant">Pass Central Atrium arch</span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface" id="feArTurnPrompt">In 25m: Turn Right</span>
+<span class="font-caption text-caption text-on-surface-variant" id="feArTurnPromptSub">Enter Block 34 East Lobby</span>
 </div>
 </div>
 <!-- Dynamic Pitch / Speed Badge -->
 <div class="px-2.5 py-1 rounded-full bg-surface-container-high/80 backdrop-blur-md flex items-center gap-1.5">
 <span class="material-symbols-outlined text-[13px] text-tertiary">speed</span>
-<span class="font-caption text-caption font-semibold text-on-surface">1.2 m/s</span>
+<span class="font-caption text-caption font-semibold text-on-surface" id="feArSpeed">1.2 m/s</span>
 </div>
 </div>
-<!-- Bottom Overlay: Vertical Level Switcher Badge (G -> 2F) -->
+<!-- Bottom Overlay: Vertical Level Switcher Badge -->
 <div class="absolute bottom-3 left-3 z-20 flex items-center gap-1 p-1 rounded-full bg-surface-container-lowest/80 backdrop-blur-xl">
 <span class="px-2 py-0.5 rounded-full text-on-surface-variant font-caption text-caption">G</span>
 <span class="material-symbols-outlined text-[12px] text-on-surface-variant">arrow_forward</span>
-<span class="px-2 py-0.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm font-bold shadow-sm">2F</span>
+<span class="px-2 py-0.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm font-bold shadow-sm" id="feArFloorBadge">2F</span>
 </div>
 <!-- Re-center Reticle Quick Action -->
-<button aria-label="Recenter Camera" class="absolute bottom-3 right-3 z-20 w-8 h-8 rounded-full bg-surface-container-high/80 backdrop-blur-xl flex items-center justify-center text-on-surface active:scale-90 transition-transform" type="button">
+<button id="feRecenterBtn" aria-label="Recenter Camera" class="absolute bottom-3 right-3 z-20 w-8 h-8 rounded-full bg-surface-container-high/80 backdrop-blur-xl flex items-center justify-center text-on-surface active:scale-90 transition-transform" type="button">
 <span class="material-symbols-outlined text-[18px]">my_location</span>
 </button>
 </div>
@@ -163,24 +164,41 @@
 <div class="w-full rounded-3xl p-5 bg-surface-container/85 backdrop-blur-2xl shadow-[0_16px_48px_rgba(0,0,0,0.4)] flex flex-col gap-4">
 <!-- Pull Bar Indicator -->
 <div class="w-10 h-1 rounded-full bg-outline-variant/60 mx-auto -mt-1"></div>
+
+<!-- Destination Station Changer Dropdown -->
+<div class="flex flex-col gap-1">
+  <label class="text-caption text-on-surface-variant font-semibold uppercase tracking-wider">Select Campus Water Station:</label>
+  <select id="feStationSelector" class="w-full bg-surface-container-high/90 text-on-surface text-label-sm font-semibold rounded-xl px-3 py-2.5 border border-white/10 outline-none focus:border-primary transition-all">
+    <option value="LPU-CSE-2F">Block 34 CSE • Floor 2 (IoT & AI) (65m)</option>
+    <option value="LPU-CSE-4F">Block 34 CSE • Floor 4 (Coding Concourse) (85m)</option>
+    <option value="LPU-CSE-6F">Block 34 CSE • Floor 6 (Cloud & Cyber) (110m)</option>
+    <option value="LPU-CSE-8F">Block 34 CSE • Floor 8 (Research Wing) (140m)</option>
+    <option value="LPU-LIB-2F">Central Library Block 30 • Floor 2 (180m)</option>
+    <option value="LPU-MALL-2F">UniMall Student Hub • Floor 2 (290m)</option>
+    <option value="LPU-MSB-2F">Block 38 Mittal School of Business • Floor 2 (260m)</option>
+    <option value="LPU-ENG-2F">Block 26 Polytechnic & Mech • Floor 2 (220m)</option>
+    <option value="LPU-SPORT-2F">Indoor Sports Complex • Floor 2 (380m)</option>
+  </select>
+</div>
+
 <!-- Metrics Triad (Distance / Walk Time / Estimated Arrival) -->
 <div class="grid grid-cols-3 gap-2 text-center pb-1">
 <div class="flex flex-col items-center justify-center p-2 rounded-2xl bg-surface-container-low/60">
 <span class="font-caption text-caption text-on-surface-variant uppercase tracking-wider">Distance</span>
-<span class="font-metric-stat text-metric-stat font-extrabold text-primary tracking-tight">180<span class="font-label-md text-label-md font-medium text-on-surface-variant ml-0.5">m</span></span>
+<span class="font-metric-stat text-metric-stat font-extrabold text-primary tracking-tight" id="feArDistVal">65<span class="font-label-md text-label-md font-medium text-on-surface-variant ml-0.5">m</span></span>
 <span class="font-caption text-caption text-tertiary font-medium">Clear corridor</span>
 </div>
 <div class="flex flex-col items-center justify-center p-2 rounded-2xl bg-surface-container-low/60">
 <span class="font-caption text-caption text-on-surface-variant uppercase tracking-wider">Walk Time</span>
-<span class="font-metric-stat text-metric-stat font-extrabold text-on-surface tracking-tight">2.5<span class="font-label-md text-label-md font-medium text-on-surface-variant ml-0.5">m</span></span>
+<span class="font-metric-stat text-metric-stat font-extrabold text-on-surface tracking-tight" id="feArTimeVal">1.0<span class="font-label-md text-label-md font-medium text-on-surface-variant ml-0.5">m</span></span>
 <div class="flex items-center gap-1 font-caption text-caption text-on-surface-variant">
 <span class="material-symbols-outlined text-[12px]">footprint</span>
-<span>~230 steps</span>
+<span id="feArStepVal">~80 steps</span>
 </div>
 </div>
 <div class="flex flex-col items-center justify-center p-2 rounded-2xl bg-surface-container-low/60">
 <span class="font-caption text-caption text-on-surface-variant uppercase tracking-wider">Arrival</span>
-<span class="font-metric-stat text-metric-stat font-extrabold text-on-surface tracking-tight">11:42</span>
+<span class="font-metric-stat text-metric-stat font-extrabold text-on-surface tracking-tight" id="feArArrivalVal">11:42</span>
 <span class="font-caption text-caption text-primary font-medium">On pace</span>
 </div>
 </div>
@@ -190,10 +208,10 @@
 <span class="material-symbols-outlined text-[20px]">stairs</span>
 </div>
 <div class="flex flex-col min-w-0">
-<span class="font-label-md text-label-md font-semibold text-on-surface">Step 1: North Science Walkway</span>
-<p class="font-body-md text-body-md text-on-surface-variant leading-snug mt-0.5">
-            Continue 45m through Science Archway, then take East Glass Staircase to Level 2.
-          </p>
+<span class="font-label-md text-label-md font-semibold text-on-surface" id="feArStepTitle">Step 1: North Science Walkway</span>
+<p class="font-body-md text-body-md text-on-surface-variant leading-snug mt-0.5" id="feArStepDesc">
+Walk 25m northeast past the Science Quad courtyard, enter Block 34 via East Automated Glass Doors.
+</p>
 </div>
 </div>
 <!-- Destination Water Station Live Vital Snapshot -->
@@ -201,7 +219,7 @@
 <div class="flex items-center justify-between">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-primary text-[18px]">water_bottle</span>
-<span class="font-label-md text-label-md font-bold text-on-surface">Library 2F • West Alcove</span>
+<span class="font-label-md text-label-md font-bold text-on-surface" id="feArDestName">Block 34 CSE • 2nd Floor (IoT & AI)</span>
 </div>
 <div class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-tertiary/15 text-tertiary">
 <span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
@@ -214,21 +232,21 @@
 <span class="material-symbols-outlined text-primary text-[15px]">ac_unit</span>
 <div class="flex flex-col">
 <span class="font-caption text-caption text-on-surface-variant">Temp</span>
-<span class="font-label-sm text-label-sm font-semibold text-on-surface">14°C Chilled</span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface" id="feArTemp">9.8°C Chilled</span>
 </div>
 </div>
 <div class="flex items-center gap-1.5 px-2 py-1.5 rounded-xl bg-surface-container-low">
 <span class="material-symbols-outlined text-tertiary text-[15px]">verified</span>
 <div class="flex flex-col">
 <span class="font-caption text-caption text-on-surface-variant">Filter</span>
-<span class="font-label-sm text-label-sm font-semibold text-on-surface">98% Pure</span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface" id="feArFilter">99% Pure</span>
 </div>
 </div>
 <div class="flex items-center gap-1.5 px-2 py-1.5 rounded-xl bg-surface-container-low">
 <span class="material-symbols-outlined text-secondary-fixed-dim text-[15px]">group</span>
 <div class="flex flex-col">
 <span class="font-caption text-caption text-on-surface-variant">Wait</span>
-<span class="font-label-sm text-label-sm font-semibold text-on-surface">0 in line</span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface" id="feArWait">0 in line</span>
 </div>
 </div>
 </div>
@@ -247,7 +265,7 @@
 <span class="material-symbols-outlined text-[18px] text-primary" id="voiceIcon">volume_up</span>
 <span id="voiceText">Audio Voice: On</span>
 </button>
-<button class="h-11 rounded-xl bg-surface-container-high/80 hover:bg-surface-container-highest active:scale-95 text-on-surface font-label-md text-label-md font-semibold flex items-center justify-center gap-1.5 transition-all" type="button">
+<button class="h-11 rounded-xl bg-surface-container-high/80 hover:bg-surface-container-highest active:scale-95 text-on-surface font-label-md text-label-md font-semibold flex items-center justify-center gap-1.5 transition-all" id="shareWalkBtn" type="button">
 <span class="material-symbols-outlined text-[18px] text-secondary">share</span>
 <span>Share Walk</span>
 </button>
@@ -258,6 +276,153 @@
 <!-- Interactive State Controller Script -->
 <script>
     (function initWayfindingInteractions() {
+      const STATIONS = {
+        'LPU-CSE-2F': {
+          name: 'Block 34 CSE • 2nd Floor (IoT & AI)',
+          short: 'CSE 2F',
+          floor: '2F',
+          distance: 65,
+          walkTime: '1.0',
+          stepsCount: 80,
+          turnPrompt: 'In 25m: Turn Right',
+          turnPromptSub: 'Enter Block 34 East Lobby',
+          stepTitle: 'Step 1: Science Quad Walkway',
+          stepDesc: 'Walk 25m northeast past the Science Quad courtyard. Enter Block 34 via East Automated Glass Doors to Floor 2.',
+          temp: '9.8°C Chilled',
+          purity: '99% Pure',
+          wait: '0 in line',
+          heading: 'NE 42°'
+        },
+        'LPU-CSE-4F': {
+          name: 'Block 34 CSE • 4th Floor (Coding Concourse)',
+          short: 'CSE 4F',
+          floor: '4F',
+          distance: 85,
+          walkTime: '1.5',
+          stepsCount: 110,
+          turnPrompt: 'In 30m: Enter Block 34 Atrium',
+          turnPromptSub: 'Take Central Express Elevators to Floor 4',
+          stepTitle: 'Step 1: Block 34 Entrance',
+          stepDesc: 'Head 30m northeast toward Block 34 main glass canopy. Take Central High-Speed Elevator to Floor 4, station is next to Lab 402.',
+          temp: '10.2°C Chilled',
+          purity: '99% Pure',
+          wait: '1 in line',
+          heading: 'NE 45°'
+        },
+        'LPU-CSE-6F': {
+          name: 'Block 34 CSE • 6th Floor (Cloud & Cyber)',
+          short: 'CSE 6F',
+          floor: '6F',
+          distance: 110,
+          walkTime: '2.0',
+          stepsCount: 145,
+          turnPrompt: 'In 35m: Head to North Wing',
+          turnPromptSub: 'Take North elevator up to Floor 6',
+          stepTitle: 'Step 1: Academic Gateway',
+          stepDesc: 'Enter Block 34 through North academic gateway. Take North elevator to Floor 6, station is outside Cloud Pod 608.',
+          temp: '9.6°C Chilled',
+          purity: '99% Pure',
+          wait: '0 in line',
+          heading: 'NE 40°'
+        },
+        'LPU-CSE-8F': {
+          name: 'Block 34 CSE • 8th Floor (Dean & Research)',
+          short: 'CSE 8F',
+          floor: '8F',
+          distance: 140,
+          walkTime: '2.5',
+          stepsCount: 180,
+          turnPrompt: 'In 35m: Board High-Rise Lift',
+          turnPromptSub: 'Direct to Executive Floor 8',
+          stepTitle: 'Step 1: Central Foyer',
+          stepDesc: 'Proceed into Block 34 elevator foyer, take high-speed lift to Floor 8 (Top level). Station is opposite Dean Conference Hall.',
+          temp: '9.2°C Chilled',
+          purity: '99% Pure',
+          wait: '0 in line',
+          heading: 'NE 38°'
+        },
+        'LPU-LIB-2F': {
+          name: 'Central Library Block 30 • 2nd Floor',
+          short: 'Library 2F',
+          floor: '2F',
+          distance: 180,
+          walkTime: '2.5',
+          stepsCount: 230,
+          turnPrompt: 'In 45m: Cross Science Walkway',
+          turnPromptSub: 'Enter Central Library Block 30 Rotunda',
+          stepTitle: 'Step 1: West Walkway toward Block 30',
+          stepDesc: 'Follow the tree-lined West Walkway toward Block 30. Take central escalator to Level 2; station is in West Quiet Study alcove.',
+          temp: '8.2°C Chilled',
+          purity: '98% Pure',
+          wait: '0 in line',
+          heading: 'NW 315°'
+        },
+        'LPU-MALL-2F': {
+          name: 'UniMall Student Hub • 2nd Floor Food Plaza',
+          short: 'UniMall 2F',
+          floor: '2F',
+          distance: 290,
+          walkTime: '4.0',
+          stepsCount: 380,
+          turnPrompt: 'In 80m: Head to UniMall Arcade',
+          turnPromptSub: 'Ascend central escalator to Food Court',
+          stepTitle: 'Step 1: South-East Boulevard',
+          stepDesc: 'Take the South-East boulevard toward UniMall. Ascend central glass escalator to Floor 2 Food Plaza between Subway & Helpdesk.',
+          temp: '10.8°C Chilled',
+          purity: '98% Pure',
+          wait: '2 in line',
+          heading: 'SE 135°'
+        },
+        'LPU-MSB-2F': {
+          name: 'Block 38 Mittal School of Business • 2nd Floor',
+          short: 'MSB 2F',
+          floor: '2F',
+          distance: 260,
+          walkTime: '3.5',
+          stepsCount: 340,
+          turnPrompt: 'In 70m: Enter MSB Grand Atrium',
+          turnPromptSub: 'Ascend marble staircase to Floor 2',
+          stepTitle: 'Step 1: Academic Boulevard East',
+          stepDesc: 'Walk east along Academic Boulevard toward Block 38. Take stairs to Floor 2; station is between Case Study Halls 204 & 206.',
+          temp: '10.5°C Chilled',
+          purity: '98% Pure',
+          wait: '0 in line',
+          heading: 'SE 120°'
+        },
+        'LPU-ENG-2F': {
+          name: 'Block 26 Polytechnic & Mech • 2nd Floor',
+          short: 'Polytechnic 2F',
+          floor: '2F',
+          distance: 220,
+          walkTime: '3.0',
+          stepsCount: 290,
+          turnPrompt: 'In 55m: Enter Block 26 Workshop Wing',
+          turnPromptSub: 'Pass CAD & Robotics Prototyping Labs',
+          stepTitle: 'Step 1: West Workshop Arcade',
+          stepDesc: 'Head west toward Block 26. Enter main workshop wing and take west stairs to 2nd Floor; dispenser is outside CAD Studio 215.',
+          temp: '9.8°C Chilled',
+          purity: '94% Pure',
+          wait: '1 in line',
+          heading: 'W 270°'
+        },
+        'LPU-SPORT-2F': {
+          name: 'Indoor Sports Complex • 2nd Floor Mezzanine',
+          short: 'Sports Arena 2F',
+          floor: '2F',
+          distance: 380,
+          walkTime: '5.0',
+          stepsCount: 490,
+          turnPrompt: 'In 120m: Head to Indoor Sports Arena',
+          turnPromptSub: 'Ascend to Arena Viewing Gallery',
+          stepTitle: 'Step 1: Sports Promenade',
+          stepDesc: 'Follow sports promenade toward Shanti Devi Mittal Arena. Take north lobby stairs to Mezzanine 2F next to Gymnasium.',
+          temp: '8.4°C Chilled',
+          purity: '98% Pure',
+          wait: '0 in line',
+          heading: 'SW 220°'
+        }
+      };
+
       const btnAr = document.getElementById('btnArCam');
       const btn3d = document.getElementById('btn3dMesh');
       const startBtn = document.getElementById('startWalkBtn');
@@ -265,35 +430,140 @@
       const voiceBtn = document.getElementById('voiceGuidanceBtn');
       const voiceIcon = document.getElementById('voiceIcon');
       const voiceText = document.getElementById('voiceText');
+      const selector = document.getElementById('feStationSelector');
+      const video = document.getElementById('feArVideo');
+      const canvasWrap = document.getElementById('feArCanvasWrap');
 
+      let currentStationKey = 'LPU-CSE-2F';
       let isNavigating = false;
       let isVoiceActive = true;
+      let cameraStream = null;
+      let navTimer = null;
 
+      // Read URL parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const paramStation = urlParams.get('station');
+      if (paramStation && STATIONS[paramStation]) {
+        currentStationKey = paramStation;
+      }
+
+      function updateStationView(key) {
+        currentStationKey = key;
+        const s = STATIONS[key] || STATIONS['LPU-CSE-2F'];
+        if (selector) selector.value = key;
+
+        document.getElementById('feArPinTitle').textContent = `${s.short} Station`;
+        document.getElementById('feArPinSub').textContent = `Pristine • ${s.temp.split(' ')[0]}`;
+        document.getElementById('feWaypointPrompt').textContent = s.turnPrompt;
+        document.getElementById('feArTurnPrompt').textContent = s.turnPrompt;
+        document.getElementById('feArTurnPromptSub').textContent = s.turnPromptSub;
+        document.getElementById('feArFloorBadge').textContent = s.floor;
+
+        document.getElementById('feArDistVal').innerHTML = `${s.distance}<span class="font-label-md text-label-md font-medium text-on-surface-variant ml-0.5">m</span>`;
+        document.getElementById('feArTimeVal').innerHTML = `${s.walkTime}<span class="font-label-md text-label-md font-medium text-on-surface-variant ml-0.5">m</span>`;
+        document.getElementById('feArStepVal').textContent = `~${s.stepsCount} steps`;
+
+        document.getElementById('feArStepTitle').textContent = s.stepTitle;
+        document.getElementById('feArStepDesc').textContent = s.stepDesc;
+        document.getElementById('feArDestName').textContent = s.name;
+
+        document.getElementById('feArTemp').textContent = s.temp;
+        document.getElementById('feArFilter').textContent = s.purity;
+        document.getElementById('feArWait').textContent = s.wait;
+      }
+
+      selector?.addEventListener('change', (e) => {
+        updateStationView(e.target.value);
+      });
+
+      // Camera toggle
       if (btnAr && btn3d) {
         btnAr.addEventListener('click', () => {
           btnAr.className = "px-3 py-1 rounded-full text-primary font-label-sm text-label-sm font-semibold bg-surface-container-highest shadow-[0_2px_12px_rgba(0,218,243,0.25)] transition-all";
           btn3d.className = "px-3 py-1 rounded-full text-on-surface-variant font-label-sm text-label-sm font-medium hover:text-on-surface transition-all";
+
+          if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } } })
+              .then(stream => {
+                cameraStream = stream;
+                if (video) {
+                  video.srcObject = stream;
+                  video.classList.remove('hidden');
+                }
+              }).catch(() => {
+                if (video) video.classList.add('hidden');
+              });
+          }
         });
 
         btn3d.addEventListener('click', () => {
           btn3d.className = "px-3 py-1 rounded-full text-primary font-label-sm text-label-sm font-semibold bg-surface-container-highest shadow-[0_2px_12px_rgba(0,218,243,0.25)] transition-all";
           btnAr.className = "px-3 py-1 rounded-full text-on-surface-variant font-label-sm text-label-sm font-medium hover:text-on-surface transition-all";
-        });
-      }
 
-      if (startBtn && walkBtnText) {
-        startBtn.addEventListener('click', () => {
-          isNavigating = !isNavigating;
-          if (isNavigating) {
-            walkBtnText.textContent = "Active Guidance &bull; 180m";
-            startBtn.classList.add("shadow-[0_0_32px_rgba(0,229,255,0.6)]");
-          } else {
-            walkBtnText.textContent = "Start AR Walk";
-            startBtn.classList.remove("shadow-[0_0_32px_rgba(0,229,255,0.6)]");
+          if (cameraStream) {
+            cameraStream.getTracks().forEach(t => t.stop());
+            cameraStream = null;
+          }
+          if (video) {
+            video.srcObject = null;
+            video.classList.add('hidden');
           }
         });
       }
 
+      // Voice guidance speak function
+      function speakPrompt(text) {
+        if (!('speechSynthesis' in window) || !isVoiceActive) return;
+        try {
+          window.speechSynthesis.cancel();
+          const ut = new SpeechSynthesisUtterance(text);
+          ut.rate = 1.05;
+          window.speechSynthesis.speak(ut);
+        } catch {}
+      }
+
+      // Turn by turn navigation
+      if (startBtn && walkBtnText) {
+        startBtn.addEventListener('click', () => {
+          const s = STATIONS[currentStationKey] || STATIONS['LPU-CSE-2F'];
+          isNavigating = !isNavigating;
+
+          if (isNavigating) {
+            walkBtnText.textContent = `Active Guidance • ${s.distance}m`;
+            startBtn.classList.add("shadow-[0_0_32px_rgba(0,229,255,0.7)]");
+            speakPrompt(`Starting walking guidance to ${s.short}. ${s.turnPrompt}`);
+
+            let remDist = s.distance;
+            let steps = 0;
+            clearInterval(navTimer);
+            navTimer = setInterval(() => {
+              steps += Math.floor(Math.random() * 5) + 6;
+              remDist = Math.max(0, remDist - 15);
+
+              document.getElementById('feArDistVal').innerHTML = `${remDist}<span class="font-label-md text-label-md font-medium text-on-surface-variant ml-0.5">m</span>`;
+              document.getElementById('feArStepVal').textContent = `${steps} steps taken`;
+              walkBtnText.textContent = `Pacing • ${remDist}m left`;
+
+              if (remDist <= 0) {
+                clearInterval(navTimer);
+                isNavigating = false;
+                walkBtnText.textContent = "Start AR Walk";
+                startBtn.classList.remove("shadow-[0_0_32px_rgba(0,229,255,0.7)]");
+                document.getElementById('feArTurnPrompt').textContent = "🎉 Arrived!";
+                document.getElementById('feArTurnPromptSub').textContent = `${s.name} ready for pure refill.`;
+                speakPrompt(`You have arrived at ${s.short}. Water is pure and chilled.`);
+              }
+            }, 1800);
+          } else {
+            clearInterval(navTimer);
+            walkBtnText.textContent = "Start AR Walk";
+            startBtn.classList.remove("shadow-[0_0_32px_rgba(0,229,255,0.7)]");
+            updateStationView(currentStationKey);
+          }
+        });
+      }
+
+      // Voice guidance button
       if (voiceBtn && voiceIcon && voiceText) {
         voiceBtn.addEventListener('click', () => {
           isVoiceActive = !isVoiceActive;
@@ -302,6 +572,7 @@
             voiceIcon.classList.add("text-primary");
             voiceIcon.classList.remove("text-outline");
             voiceText.textContent = "Audio Voice: On";
+            speakPrompt("Audio guidance active.");
           } else {
             voiceIcon.textContent = "volume_off";
             voiceIcon.classList.remove("text-primary");
@@ -310,6 +581,36 @@
           }
         });
       }
+
+      // Share walk button
+      document.getElementById('shareWalkBtn')?.addEventListener('click', () => {
+        const s = STATIONS[currentStationKey] || STATIONS['LPU-CSE-2F'];
+        const shareData = {
+          title: `AquaCampus - ${s.name}`,
+          text: `Walking to ${s.name} (${s.distance}m, ${s.temp}) via AquaCampus AR!`,
+          url: window.location.href
+        };
+        if (navigator.share) {
+          navigator.share(shareData).catch(() => {});
+        } else {
+          navigator.clipboard.writeText(window.location.href);
+          alert(`Link copied to clipboard: ${s.name}`);
+        }
+      });
+
+      // Recenter compass button
+      document.getElementById('feRecenterBtn')?.addEventListener('click', () => {
+        const s = STATIONS[currentStationKey] || STATIONS['LPU-CSE-2F'];
+        const ret = document.getElementById('feReticle');
+        if (ret) {
+          ret.style.transform = 'scale(1.1)';
+          setTimeout(() => ret.style.transform = 'scale(1)', 250);
+        }
+        alert(`Compass calibrated: Locked onto ${s.heading} (Dual RTK GPS)`);
+      });
+
+      // Initial render
+      updateStationView(currentStationKey);
     })();
   </script>
 </div></main><div class="fixed bottom-0 inset-x-0 z-50 pb-safe pointer-events-none flex justify-center"><nav class="pointer-events-auto mb-4 mx-margin w-full max-w-sm h-16 rounded-full bg-surface-container-high/65 backdrop-blur-2xl shadow-[0_12px_36px_rgba(0,0,0,0.45)] px-space-md flex items-center justify-around glass-nav" data-active-classes="text-primary font-label-md bg-white/10 shadow-[0_2px_12px_rgba(0,218,243,0.2)]"><a aria-current="page" class="flex flex-col items-center justify-center gap-1 min-w-[56px] h-12 rounded-full transition-all active:scale-95 text-primary font-label-md bg-white/10 shadow-[0_2px_12px_rgba(0,218,243,0.2)]" data-path="campus-map" href="index.html"><span class="material-symbols-outlined text-[22px]">map</span><span class="font-label-sm text-label-sm">Map</span></a><a class="flex flex-col items-center justify-center gap-1 min-w-[56px] h-12 rounded-full text-on-surface-variant hover:text-on-surface transition-all active:scale-95 relative" data-path="notifications" href="Campus Alerts.html"><div class="relative flex items-center justify-center"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-primary-container ring-2 ring-surface"></span></div><span class="font-label-sm text-label-sm">Alerts</span></a><a class="flex flex-col items-center justify-center gap-1 min-w-[56px] h-12 rounded-full text-on-surface-variant hover:text-on-surface transition-all active:scale-95" data-path="student-profile" href="Profile and Settings.html"><span class="material-symbols-outlined text-[22px]">account_circle</span><span class="font-label-sm text-label-sm">Profile</span></a></nav></div></body></html>

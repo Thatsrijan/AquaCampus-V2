@@ -935,11 +935,7 @@ function initMapComponent() {
 
   document.getElementById('mapBtnAr')?.addEventListener('click', () => {
     switchView('ar');
-    const select = document.getElementById('arStationSelect');
-    if (select) select.value = activeMapStation.id;
-    document.getElementById('arTargetStationName').textContent = activeMapStation.name;
-    document.getElementById('arTargetStationDist').textContent = `${activeMapStation.distance}m (${activeMapStation.walkTime})`;
-    showToast(`AR Navigation locked to ${activeMapStation.name}`);
+    setArStation(activeMapStation.id);
   });
 
   document.getElementById('mapBtnReport')?.addEventListener('click', () => {
@@ -1278,30 +1274,458 @@ function stopWalkingNavigation() {
 }
 
 // ========================================================
-// 4. VIEW 3: AR NAVIGATION LOGIC
+// 4. VIEW 3: AR NAVIGATION ENGINE (PROPER DYNAMIC GUIDANCE)
 // ========================================================
+
+const AR_STATION_GUIDANCE = {
+  'LPU-CSE-2F': {
+    heading: 'NE 42°',
+    turnTitle: 'In 25m: Turn Right',
+    turnSub: 'Enter Block 34 East Lobby',
+    steps: [
+      'Walk 25m northeast past the Science Quad courtyard.',
+      'Enter Block 34 via East Automated Glass Doors.',
+      'Take stairs or express elevator to Floor 2.',
+      'Arrive at IoT & AI Lab corridor; station is on left alcove.'
+    ]
+  },
+  'LPU-CSE-4F': {
+    heading: 'NE 45°',
+    turnTitle: 'In 30m: Enter Block 34 Atrium',
+    turnSub: 'Proceed to Central Lift Bank',
+    steps: [
+      'Head 30m northeast toward Block 34 main glass canopy.',
+      'Take Central High-Speed Elevator to Floor 4.',
+      'Turn right into Coding Concourse corridor.',
+      'Water station is positioned between Labs 402 & 404.'
+    ]
+  },
+  'LPU-CSE-6F': {
+    heading: 'NE 40°',
+    turnTitle: 'In 35m: Head to Block 34 North Wing',
+    turnSub: 'Ascend to Cloud & Cyber Wing',
+    steps: [
+      'Enter Block 34 through North academic gateway.',
+      'Take North elevator up to Floor 6.',
+      'Follow cyber lab illuminated corridor signs.',
+      'Station is active adjacent to Cloud Pod 608.'
+    ]
+  },
+  'LPU-CSE-8F': {
+    heading: 'NE 38°',
+    turnTitle: 'In 35m: Board High-Rise Lift',
+    turnSub: 'Direct express to Research & Dean Suite',
+    steps: [
+      'Proceed into Block 34 central elevator foyer.',
+      'Take high-speed elevator to Floor 8 (Top Level).',
+      'Turn left towards Faculty Research Commons.',
+      'Executive HydroPoint is located opposite Dean Conference Hall.'
+    ]
+  },
+  'LPU-LIB-2F': {
+    heading: 'NW 315°',
+    turnTitle: 'In 45m: Cross Science Walkway',
+    turnSub: 'Enter Central Library Block 30 Grand Rotunda',
+    steps: [
+      'Follow the tree-lined West Walkway toward Block 30.',
+      'Pass security turnstiles and take central escalator to Level 2.',
+      'Head past digital periodicals lounge.',
+      'Station is located in West Quiet Study alcove.'
+    ]
+  },
+  'LPU-MALL-2F': {
+    heading: 'SE 135°',
+    turnTitle: 'In 80m: Head to UniMall Arcade',
+    turnSub: 'Ascend central escalator to Food Court',
+    steps: [
+      'Take the South-East boulevard toward UniMall Complex.',
+      'Enter through main revolving glass entrance.',
+      'Ascend central glass escalator to Floor 2 Food Plaza.',
+      'Dispenser is located between Subway and Student Helpdesk.'
+    ]
+  },
+  'LPU-MSB-2F': {
+    heading: 'SE 120°',
+    turnTitle: 'In 70m: Enter MSB Grand Atrium',
+    turnSub: 'Take marble staircase to Floor 2',
+    steps: [
+      'Walk east along Academic Boulevard toward Block 38 (MSB).',
+      'Enter ground atrium and ascend to Floor 2.',
+      'Follow the Corporate Case Study corridor.',
+      'Station is positioned between Case Study Halls 204 & 206.'
+    ]
+  },
+  'LPU-ENG-2F': {
+    heading: 'W 270°',
+    turnTitle: 'In 55m: Enter Block 26 Polytechnic',
+    turnSub: 'Pass CAD & Robotics Prototyping Labs',
+    steps: [
+      'Head west toward Block 26 Mechanical & Polytechnic.',
+      'Enter main workshop wing and take west stairs to 2nd Floor.',
+      'Follow the Mechatronics laboratory hall.',
+      'Dispenser is situated outside CAD Studio 215.'
+    ]
+  },
+  'LPU-SPORT-2F': {
+    heading: 'SW 220°',
+    turnTitle: 'In 120m: Head to Indoor Sports Arena',
+    turnSub: 'Ascend to Arena Viewing Gallery',
+    steps: [
+      'Follow sports promenade toward Shanti Devi Mittal Arena.',
+      'Enter north sports lobby and take stairs to Mezzanine Floor 2.',
+      'Walk past indoor Olympic pool observation gallery.',
+      'Rapid chilled dispenser is next to Gymnasium entrance.'
+    ]
+  }
+};
+
+let arActiveStationId = 'LPU-CSE-2F';
+let arCameraStream = null;
+let isArCamActive = true;
+let isArVoiceActive = true;
+let isArNavigating = false;
+let arNavInterval = null;
+let arCurrentStepIndex = 0;
+let arRemainingDist = 65;
+let arStepCount = 0;
+
 function initArComponent() {
-  document.getElementById('btnArLiveCam')?.addEventListener('click', () => {
-    document.getElementById('btnArLiveCam').classList.add('active');
-    document.getElementById('btnAr3dMesh').classList.remove('active');
-    showToast('AR Live Cam Mode: Reticle tracking engaged');
+  const btnArCam = document.getElementById('btnArLiveCam');
+  const btn3dMesh = document.getElementById('btnAr3dMesh');
+  const btnVoice = document.getElementById('btnArVoiceToggle');
+  const select = document.getElementById('arStationSelect');
+  const startBtn = document.getElementById('startArGuidanceBtn');
+  const recenterBtn = document.getElementById('arRecenterBtn');
+  const recalSensorBtn = document.getElementById('btnArRecalibrateSensor');
+
+  // Camera Mode Toggle
+  btnArCam?.addEventListener('click', () => {
+    btnArCam.classList.add('active');
+    btn3dMesh?.classList.remove('active');
+    isArCamActive = true;
+    startCameraFeed();
+    showToast('📹 AR Live Cam Mode: Optical reticle tracking engaged');
   });
 
-  document.getElementById('btnAr3dMesh')?.addEventListener('click', () => {
-    document.getElementById('btnAr3dMesh').classList.add('active');
-    document.getElementById('btnArLiveCam').classList.remove('active');
-    showToast('3D Spatial Perspective Mesh Active');
+  // 3D Mesh Mode Toggle
+  btn3dMesh?.addEventListener('click', () => {
+    btn3dMesh.classList.add('active');
+    btnArCam?.classList.remove('active');
+    isArCamActive = false;
+    stopCameraFeed();
+    showToast('📐 3D Spatial Vector Corridor Active');
   });
 
-  document.getElementById('arRecenterBtn')?.addEventListener('click', () => {
-    showToast('Compass heading calibrated to NE 42° (RTK Dual-GPS lock)');
+  // Spoken Voice Guidance Toggle
+  btnVoice?.addEventListener('click', () => {
+    isArVoiceActive = !isArVoiceActive;
+    btnVoice.textContent = isArVoiceActive ? '🔊 Voice: On' : '🔇 Voice: Muted';
+    btnVoice.classList.toggle('active', isArVoiceActive);
+    showToast(isArVoiceActive ? '🔊 Audio Voice Guidance Enabled' : '🔇 Audio Voice Guidance Muted');
+    if (isArVoiceActive) {
+      speakArPrompt('Audio guidance active. Follow glowing waypoint path.');
+    }
   });
 
-  document.getElementById('arStationSelect')?.addEventListener('change', (e) => {
-    const selected = CAMPUS_STATIONS.find(s => s.id === e.target.value) || CAMPUS_STATIONS[0];
-    document.getElementById('arTargetStationName').textContent = selected.name;
-    document.getElementById('arTargetStationDist').textContent = `${selected.distance}m (${selected.walkTime})`;
-    showToast(`AR route recalculated to ${selected.name}`);
+  // Recenter / Recalibrate Compass Button
+  recenterBtn?.addEventListener('click', () => {
+    recalibrateCompass();
+  });
+
+  recalSensorBtn?.addEventListener('click', () => {
+    recalibrateCompass();
+    showToast('🎯 RTK Dual-GPS sensor calibrated (Accuracy ±0.8m)');
+  });
+
+  // Dropdown station change
+  select?.addEventListener('change', (e) => {
+    setArStation(e.target.value);
+  });
+
+  // Start Turn-by-Turn Guidance CTA
+  startBtn?.addEventListener('click', () => {
+    toggleArTurnByTurnGuidance();
+  });
+
+  // Initialize initial station UI
+  updateArStationUI(arActiveStationId);
+}
+
+function setArStation(stationId) {
+  const station = CAMPUS_STATIONS.find(s => s.id === stationId) || CAMPUS_STATIONS[0];
+  arActiveStationId = station.id;
+
+  const select = document.getElementById('arStationSelect');
+  if (select && select.value !== station.id) {
+    select.value = station.id;
+  }
+
+  updateArStationUI(station.id);
+  showToast(`🎯 AR Navigation waypoint locked: ${station.name}`);
+}
+
+function updateArStationUI(stationId) {
+  const st = CAMPUS_STATIONS.find(s => s.id === stationId) || CAMPUS_STATIONS[0];
+  const guide = AR_STATION_GUIDANCE[st.id] || AR_STATION_GUIDANCE['LPU-CSE-2F'];
+
+  arRemainingDist = st.distance;
+  arCurrentStepIndex = 0;
+  arStepCount = 0;
+
+  // Station info
+  const nameEl = document.getElementById('arTargetStationName');
+  if (nameEl) nameEl.textContent = st.name;
+
+  const distEl = document.getElementById('arTargetStationDist');
+  if (distEl) distEl.textContent = `${st.distance}m (${st.walkTime} walk)`;
+
+  const floorEl = document.getElementById('arFloorBadge');
+  if (floorEl) floorEl.textContent = `Floor: G → ${st.floor}F`;
+
+  const headEl = document.getElementById('arHeadingText');
+  if (headEl) headEl.textContent = `🧭 Heading ${guide.heading}`;
+
+  const paceEl = document.getElementById('arPaceText');
+  if (paceEl) paceEl.textContent = `Pace: 1.2 m/s • 0 steps`;
+
+  // HUD Prompts
+  const turnTitleEl = document.getElementById('arTurnTitle');
+  if (turnTitleEl) turnTitleEl.textContent = guide.turnTitle;
+
+  const turnSubEl = document.getElementById('arTurnSub');
+  if (turnSubEl) turnSubEl.textContent = guide.turnSub;
+
+  // Floating SVG Target
+  const svgTitle = document.getElementById('arSvgDestTitle');
+  if (svgTitle) svgTitle.textContent = `${st.short} Station`;
+
+  const svgSub = document.getElementById('arSvgDestSub');
+  if (svgSub) svgSub.textContent = `Pristine • Chilled ${st.temp}`;
+
+  // Vitals
+  const vTemp = document.getElementById('arVitalTemp');
+  if (vTemp) vTemp.textContent = st.temp;
+
+  const vPurity = document.getElementById('arVitalPurity');
+  if (vPurity) vPurity.textContent = `${st.purity}%`;
+
+  const vTds = document.getElementById('arVitalTds');
+  if (vTds) vTds.textContent = `${st.tds} ppm`;
+
+  const vFlow = document.getElementById('arVitalFlow');
+  if (vFlow) vFlow.textContent = st.flow.split(' ')[0] + ' L/m';
+
+  // Render Steps
+  renderArStepsList(guide.steps, 0);
+
+  // Animate reticle pulse
+  animateReticleLock();
+}
+
+function renderArStepsList(steps, activeIdx) {
+  const container = document.getElementById('arStepsList');
+  if (!container) return;
+
+  container.innerHTML = '';
+  steps.forEach((step, idx) => {
+    const item = document.createElement('div');
+    item.className = `ar-step-item ${idx === activeIdx ? 'active-step' : ''}`;
+    item.innerHTML = `
+      <div class="ar-step-num">${idx + 1}</div>
+      <div class="ar-step-text">${step}</div>
+    `;
+    container.appendChild(item);
+  });
+
+  const progEl = document.getElementById('arProgressPercent');
+  if (progEl) {
+    if (activeIdx >= steps.length) {
+      progEl.textContent = '🎉 Arrived!';
+      progEl.style.color = 'var(--lime)';
+    } else {
+      progEl.textContent = `Step ${activeIdx + 1} of ${steps.length}`;
+      progEl.style.color = 'var(--cyan)';
+    }
+  }
+}
+
+function startCameraFeed() {
+  const video = document.getElementById('arVideoElement');
+  const scanBeam = document.getElementById('arScanBeam');
+  if (!video) return;
+
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: 'environment' } },
+      audio: false
+    }).then(stream => {
+      arCameraStream = stream;
+      video.srcObject = stream;
+      video.classList.add('active-feed');
+      if (scanBeam) scanBeam.style.display = 'block';
+    }).catch(() => {
+      // In simulator / browser without camera, show laser beam and high-tech optical scrim
+      video.classList.remove('active-feed');
+      if (scanBeam) scanBeam.style.display = 'block';
+    });
+  } else {
+    if (scanBeam) scanBeam.style.display = 'block';
+  }
+}
+
+function stopCameraFeed() {
+  const video = document.getElementById('arVideoElement');
+  const scanBeam = document.getElementById('arScanBeam');
+
+  if (arCameraStream) {
+    arCameraStream.getTracks().forEach(track => track.stop());
+    arCameraStream = null;
+  }
+  if (video) {
+    video.srcObject = null;
+    video.classList.remove('active-feed');
+  }
+  if (scanBeam) scanBeam.style.display = 'none';
+}
+
+function recalibrateCompass() {
+  const reticle = document.getElementById('arReticleCorners');
+  const headingEl = document.getElementById('arHeadingText');
+  const st = CAMPUS_STATIONS.find(s => s.id === arActiveStationId) || CAMPUS_STATIONS[0];
+  const guide = AR_STATION_GUIDANCE[st.id] || AR_STATION_GUIDANCE['LPU-CSE-2F'];
+
+  if (reticle && typeof anime !== 'undefined') {
+    anime({
+      targets: '.corner-bracket',
+      scale: [1, 1.25, 1],
+      opacity: [0.7, 1, 0.7],
+      duration: 500,
+      easing: 'easeInOutQuad'
+    });
+  }
+
+  if (headingEl) {
+    headingEl.textContent = `🧭 Calibrated: ${guide.heading}`;
+  }
+  showToast(`Compass heading locked to ${guide.heading} (RTK Dual-GPS lock)`);
+}
+
+function toggleArTurnByTurnGuidance() {
+  const btn = document.getElementById('startArGuidanceBtn');
+  const st = CAMPUS_STATIONS.find(s => s.id === arActiveStationId) || CAMPUS_STATIONS[0];
+  const guide = AR_STATION_GUIDANCE[st.id] || AR_STATION_GUIDANCE['LPU-CSE-2F'];
+
+  if (isArNavigating) {
+    // Stop Navigation
+    clearInterval(arNavInterval);
+    isArNavigating = false;
+    if (btn) {
+      btn.textContent = '🚀 Start Turn-by-Turn Guidance';
+      btn.classList.remove('ar-guidance-active');
+    }
+    showToast('AR Guidance Paused');
+    return;
+  }
+
+  // Start Navigation
+  isArNavigating = true;
+  if (btn) {
+    btn.textContent = '⏹️ Stop Guidance (Navigating...)';
+    btn.classList.add('ar-guidance-active');
+  }
+
+  showToast(`🚶 AR Turn-by-Turn Guidance Active to ${st.short}`);
+  if (isArVoiceActive) {
+    speakArPrompt(`Starting walking guidance to ${st.name}. ${guide.steps[0]}`);
+  }
+
+  const totalSteps = guide.steps.length;
+  arCurrentStepIndex = 0;
+  arRemainingDist = st.distance;
+  arStepCount = 0;
+
+  arNavInterval = setInterval(() => {
+    arStepCount += Math.floor(Math.random() * 5) + 6;
+    arRemainingDist = Math.max(0, arRemainingDist - 15);
+
+    // Update Pace Text
+    const paceEl = document.getElementById('arPaceText');
+    if (paceEl) paceEl.textContent = `Pace: 1.3 m/s • ${arStepCount} steps`;
+
+    // Update Distance
+    const distEl = document.getElementById('arTargetStationDist');
+    if (distEl) distEl.textContent = `${arRemainingDist}m remaining`;
+
+    // Advance step
+    if (arRemainingDist <= 0) {
+      // Arrived!
+      clearInterval(arNavInterval);
+      isArNavigating = false;
+      if (btn) {
+        btn.textContent = '🚀 Start Turn-by-Turn Guidance';
+        btn.classList.remove('ar-guidance-active');
+      }
+      renderArStepsList(guide.steps, totalSteps);
+
+      const turnTitleEl = document.getElementById('arTurnTitle');
+      if (turnTitleEl) turnTitleEl.textContent = '🎉 Arrived at Water Station!';
+      const turnSubEl = document.getElementById('arTurnSub');
+      if (turnSubEl) turnSubEl.textContent = 'Pure chilled water ready for refill.';
+
+      showToast(`🎉 You have reached ${st.name}! Ready for refill.`);
+      if (isArVoiceActive) {
+        speakArPrompt(`You have arrived at ${st.name}. Pure chilled water is ready.`);
+      }
+
+      // Add 250ml to student intake upon completing a walk
+      if (typeof userHydration !== 'undefined') {
+        userHydration.currentIntakeMl = Math.min(userHydration.dailyGoalMl, userHydration.currentIntakeMl + 250);
+        userHydration.refillsToday += 1;
+        updateHydrationUI(true);
+      }
+      return;
+    }
+
+    // Step index calculation
+    const progress = 1 - (arRemainingDist / st.distance);
+    const nextStepIdx = Math.min(totalSteps - 1, Math.floor(progress * totalSteps));
+
+    if (nextStepIdx !== arCurrentStepIndex) {
+      arCurrentStepIndex = nextStepIdx;
+      renderArStepsList(guide.steps, arCurrentStepIndex);
+
+      const turnTitleEl = document.getElementById('arTurnTitle');
+      if (turnTitleEl) turnTitleEl.textContent = `In ${arRemainingDist}m: Follow Path`;
+      const turnSubEl = document.getElementById('arTurnSub');
+      if (turnSubEl) turnSubEl.textContent = guide.steps[arCurrentStepIndex];
+
+      if (isArVoiceActive) {
+        speakArPrompt(guide.steps[arCurrentStepIndex]);
+      }
+    }
+  }, 1800);
+}
+
+function speakArPrompt(text) {
+  if (!('speechSynthesis' in window) || !isArVoiceActive) return;
+  try {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1.05;
+    utterance.pitch = 1.0;
+    window.speechSynthesis.speak(utterance);
+  } catch {
+    // Ignore speech failure
+  }
+}
+
+function animateReticleLock() {
+  if (typeof anime === 'undefined') return;
+  anime({
+    targets: '#arSpatialSvg #arWalkerPulse',
+    scale: [0.8, 1.25, 1],
+    duration: 600,
+    easing: 'easeOutElastic(1, .6)'
   });
 }
 
@@ -1399,11 +1823,7 @@ function renderNearbyList() {
     card.querySelector('.nearby-ar-btn').addEventListener('click', (e) => {
       e.stopPropagation();
       switchView('ar');
-      const select = document.getElementById('arStationSelect');
-      if (select) select.value = st.id;
-      document.getElementById('arTargetStationName').textContent = st.name;
-      document.getElementById('arTargetStationDist').textContent = `${st.distance}m (${st.walkTime})`;
-      showToast(`AR Navigation locked onto ${st.name}`);
+      setArStation(st.id);
     });
 
     // Report Button
@@ -1679,11 +2099,7 @@ function initDrawer() {
       const st = activeDrawerStation;
       closeStationDrawer();
       switchView('ar');
-      const select = document.getElementById('arStationSelect');
-      if (select) select.value = st.id;
-      document.getElementById('arTargetStationName').textContent = st.name;
-      document.getElementById('arTargetStationDist').textContent = `${st.distance}m (${st.walkTime})`;
-      showToast(`AR Navigation targeted to ${st.name}`);
+      setArStation(st.id);
     }
   });
 

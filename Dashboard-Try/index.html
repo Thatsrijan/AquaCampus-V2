@@ -832,20 +832,30 @@
             <h1 class="main-title">AR SPATIAL<br><span>NAVIGATION</span></h1>
           </div>
 
-          <div style="display: flex; gap: 8px;">
-            <button type="button" class="tab-btn active" id="btnArLiveCam" style="background: var(--pill-bg); border: 1px solid var(--card-border);">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="tab-btn active" id="btnArLiveCam" title="Activate Device Live Camera Viewfinder">
               📹 AR Live Cam
             </button>
-            <button type="button" class="tab-btn" id="btnAr3dMesh" style="background: var(--pill-bg); border: 1px solid var(--card-border);">
+            <button type="button" class="tab-btn" id="btnAr3dMesh" title="View 3D Spatial Vector Corridor">
               📐 3D Mesh
+            </button>
+            <button type="button" class="tab-btn" id="btnArVoiceToggle" title="Toggle Spoken Audio Guidance">
+              🔊 Voice: On
             </button>
           </div>
         </div>
 
         <div class="ar-view-layout">
-          <div class="ar-viewport-card">
-            <div class="ar-viewport">
-              <div class="ar-reticle-corners">
+          <div class="ar-viewport-card" id="arViewportCard">
+            <div class="ar-viewport" id="arViewport">
+              
+              <!-- Real Device Camera Feed (Auto-activated in AR Cam Mode) -->
+              <video id="arVideoElement" playsinline autoplay muted></video>
+
+              <!-- Laser Scanning Beam -->
+              <div class="ar-scan-beam" id="arScanBeam"></div>
+
+              <div class="ar-reticle-corners" id="arReticleCorners">
                 <div class="corner-row">
                   <div class="corner-bracket tl"></div>
                   <div class="corner-bracket tr"></div>
@@ -856,18 +866,18 @@
                 </div>
               </div>
 
-              <div class="ar-hud-pill">
-                <div class="ar-turn-icon">
+              <div class="ar-hud-pill" id="arHudPill">
+                <div class="ar-turn-icon" id="arTurnIcon">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
                 </div>
                 <div>
-                  <strong style="font-size: 13px; display: block;" id="arTurnTitle">In 45m: Turn Right</strong>
-                  <span style="font-size: 11px; color: var(--text-muted);" id="arTurnSub">Pass Central Science Atrium archway</span>
+                  <strong style="font-size: 13px; display: block;" id="arTurnTitle">In 25m: Turn Right</strong>
+                  <span style="font-size: 11px; color: var(--text-muted);" id="arTurnSub">Toward Block 34 East Lobby</span>
                 </div>
               </div>
 
-              <!-- Perspective Graphic -->
-              <svg style="width: 100%; height: 100%;" viewBox="0 0 700 480">
+              <!-- Perspective Graphic / Spatial Corridor -->
+              <svg id="arSpatialSvg" style="width: 100%; height: 100%; position: relative; z-index: 5;" viewBox="0 0 700 480">
                 <defs>
                   <linearGradient id="arSplineGrad" x1="0%" y1="100%" x2="100%" y2="0%">
                     <stop offset="0%" stop-color="#00daf3" stop-opacity="0.9"/>
@@ -904,29 +914,30 @@
                   <circle cx="70" cy="40" r="6" fill="#00E5FF"/>
                 </g>
 
-                <path d="M350 450 C 340 380, 260 340, 270 290 C 280 230, 370 220, 420 180 C 470 140, 500 160, 530 145" fill="none" stroke="url(#arSplineGrad)" stroke-width="7" stroke-linecap="round"/>
+                <path id="arNavTrail" d="M350 450 C 340 380, 260 340, 270 290 C 280 230, 370 220, 420 180 C 470 140, 500 160, 530 145" fill="none" stroke="url(#arSplineGrad)" stroke-width="7" stroke-linecap="round"/>
                 <path d="M350 450 C 340 380, 260 340, 270 290 C 280 230, 370 220, 420 180 C 470 140, 500 160, 530 145" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
 
-                <circle cx="280" cy="275" r="9" fill="#00E5FF">
+                <circle id="arWalkerPulse" cx="280" cy="275" r="9" fill="#00E5FF">
                   <animate attributeName="r" values="6;11;6" dur="2s" repeatCount="indefinite"/>
                   <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
                 </circle>
 
-                <g transform="translate(480, 90)">
-                  <rect x="0" y="0" width="160" height="42" rx="12" fill="#121316" stroke="#00E5FF" stroke-width="1.5"/>
-                  <text x="14" y="18" fill="#FFFFFF" font-family="Plus Jakarta Sans" font-size="11" font-weight="700">Library 2F Station</text>
-                  <text x="14" y="32" fill="#9FE870" font-family="Plus Jakarta Sans" font-size="10">Pristine • Chilled 10.2°C</text>
+                <!-- Dynamic Floating Target Station Tag in AR -->
+                <g transform="translate(470, 90)">
+                  <rect x="0" y="0" width="180" height="44" rx="12" fill="#121316" stroke="#00E5FF" stroke-width="1.5"/>
+                  <text id="arSvgDestTitle" x="14" y="20" fill="#FFFFFF" font-family="Plus Jakarta Sans" font-size="12" font-weight="700">CSE 2F Station</text>
+                  <text id="arSvgDestSub" x="14" y="34" fill="#9FE870" font-family="Plus Jakarta Sans" font-size="10">Pristine • Chilled 9.8°C</text>
                 </g>
               </svg>
 
               <div class="ar-compass-bar">
                 <div style="display: flex; align-items: center; gap: 8px;">
-                  <span style="color: var(--cyan); font-weight: 700; font-size: 13px;">🧭 Heading NE 42°</span>
-                  <span style="font-size: 11px; color: var(--text-muted);">Walking pace: 1.2 m/s</span>
+                  <span id="arHeadingText" style="color: var(--cyan); font-weight: 700; font-size: 13px;">🧭 Heading NE 42°</span>
+                  <span id="arPaceText" style="font-size: 11px; color: var(--text-muted);">Pace: 1.2 m/s • 0 steps</span>
                 </div>
                 <div style="display: flex; gap: 6px;">
-                  <span style="background: var(--pill-bg); padding: 4px 10px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 700;">Floor: G → 2F</span>
-                  <button type="button" class="icon-pill-btn" id="arRecenterBtn" title="Recalibrate Heading" style="width: 30px; height: 30px;">
+                  <span id="arFloorBadge" style="background: var(--pill-bg); padding: 4px 10px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 700;">Floor: G → 2F</span>
+                  <button type="button" class="icon-pill-btn" id="arRecenterBtn" title="Recalibrate Spatial Compass" style="width: 30px; height: 30px;">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
                   </button>
                 </div>
@@ -936,9 +947,9 @@
 
           <div class="station-inspect-card">
             <div>
-              <span class="station-inspect-badge">Target Waypoint Locked</span>
-              <h2 style="font-family: var(--font-display); font-size: 28px; font-weight: 800; margin-top: 6px;" id="arTargetStationName">Library 2F HydroStation</h2>
-              <p style="font-size: 12px; color: var(--cyan); font-weight: 700;" id="arTargetStationDist">45m (1 min walk)</p>
+              <span class="station-inspect-badge" id="arStatusBadge">Target Waypoint Locked</span>
+              <h2 style="font-family: var(--font-display); font-size: 26px; font-weight: 800; margin-top: 6px; line-height: 1.1;" id="arTargetStationName">Block 34 CSE • 2nd Floor</h2>
+              <p style="font-size: 12px; color: var(--cyan); font-weight: 700; margin-top: 2px;" id="arTargetStationDist">65m (1 min walk)</p>
             </div>
 
             <div class="form-group">
@@ -951,20 +962,50 @@
                 <option value="LPU-LIB-2F">Central Library Block 30 • Floor 2 (180m)</option>
                 <option value="LPU-MALL-2F">UniMall Student Hub • Floor 2 (290m)</option>
                 <option value="LPU-MSB-2F">Block 38 Mittal School of Business • Floor 2 (260m)</option>
+                <option value="LPU-ENG-2F">Block 26 Polytechnic & Mech • Floor 2 (220m)</option>
                 <option value="LPU-SPORT-2F">Indoor Sports Complex • Floor 2 (380m)</option>
               </select>
             </div>
 
-            <div style="background: var(--panel-bg); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px;">
-              <span style="font-size: 11px; font-weight: 700; color: var(--lime); text-transform: uppercase;">Route Highlights:</span>
-              <p style="font-size: 12px; color: var(--text-muted); line-height: 1.4;">
-                Take the East Walkway past Science Quad. Enter through the Glass Skybridge portal, take stairs or elevator to Floor 2. Station is opposite the Silent Study lounge.
-              </p>
+            <!-- Live Station Vitals Mini Grid in AR -->
+            <div class="nearby-stats-row" id="arVitalStatsRow" style="margin-bottom: 4px;">
+              <div class="nearby-stat-cell">
+                <small>TEMP</small>
+                <strong style="color: var(--cyan);" id="arVitalTemp">9.8°C</strong>
+              </div>
+              <div class="nearby-stat-cell">
+                <small>PURITY</small>
+                <strong style="color: var(--lime);" id="arVitalPurity">99.4%</strong>
+              </div>
+              <div class="nearby-stat-cell">
+                <small>TDS</small>
+                <strong id="arVitalTds">36 ppm</strong>
+              </div>
+              <div class="nearby-stat-cell">
+                <small>FLOW</small>
+                <strong id="arVitalFlow">2.5 L/m</strong>
+              </div>
             </div>
 
-            <button type="button" class="primary-action-btn" onclick="showToast('AR Guidance Active: Follow glowing waypoint trail')">
-              Start Turn-by-Turn Guidance
-            </button>
+            <!-- Dynamic Turn-by-Turn Sequential Steps Container -->
+            <div style="background: var(--panel-bg); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 11px; font-weight: 700; color: var(--lime); text-transform: uppercase;">Turn-by-Turn Route:</span>
+                <span id="arProgressPercent" style="font-size: 11px; color: var(--cyan); font-weight: 700;">Ready to start</span>
+              </div>
+              <div id="arStepsList" style="display: flex; flex-direction: column; gap: 6px;">
+                <!-- Generated dynamically by station -->
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <button type="button" class="primary-action-btn" id="startArGuidanceBtn">
+                🚀 Start Turn-by-Turn Guidance
+              </button>
+              <button type="button" class="secondary-action-btn" id="btnArRecalibrateSensor">
+                🎯 Recalibrate Sensor Lock
+              </button>
+            </div>
           </div>
         </div>
       </section>
