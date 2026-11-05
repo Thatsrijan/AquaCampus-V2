@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>AquaCampus • Water Intake & Campus Telemetry</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0C0C0E">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-pitch: #0A0A0C;
+      --bg-dark: #101014;
+      --card-dark: #18181D;
+      --card-dark-subtle: #141418;
+      --card-white: #FFFFFF;
+      --text-white: #FFFFFF;
+      --text-muted: #8E8E93;
+      --text-subtle: #5C5C62;
+      --text-dark: #0E0E12;
+      --text-dark-muted: #6E6E73;
+      --crimson-vibrant: #FF1A35;
+      --crimson-primary: #E50914;
+      --crimson-glow: #FF2B44;
+      --crimson-deep: #7A000D;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-light: rgba(255, 255, 255, 0.15);
+      --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background-color: #070709;
+      color: var(--text-white);
+      font-family: var(--font-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow-x: hidden;
+      padding: 20px 10px 40px;
+    }
+
+    /* Top Studio Controls Bar (for desktop preview & switching modes) */
+    .studio-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1200px;
+      margin-bottom: 24px;
+      padding: 12px 20px;
+      background: rgba(24, 24, 29, 0.7);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 9999px;
+      z-index: 100;
+    }
+
+    .brand-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: -0.3px;
+    }
+
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--crimson-vibrant);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--crimson-vibrant);
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    .mode-switch {
+      display: flex;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 9999px;
+      padding: 3px;
+      gap: 4px;
+    }
+
+    .mode-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-family: var(--font-main);
+    }
+
+    .mode-btn.active {
+      background: #FFFFFF;
+      color: #000000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .back-to-cmd {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .back-to-cmd:hover {
+      color: #FFFFFF;
+    }
+
+    /* Showcase Layout Container */
+    .showcase-container {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      justify-content: center;
+      width: 100%;
+      max-width: 1300px;
+      transition: all 0.4s ease;
+      flex-wrap: wrap;
+    }
+
+    /* Mobile Device Shell */
+    .phone-frame {
+      width: 375px;
+      height: 800px;
+      background: var(--bg-pitch);
+      border-radius: 46px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 0 8px #1E1E24, 0 0 0 9px rgba(255, 255, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+    }
+
+    .phone-frame:hover {
+      box-shadow: 0 30px 80px rgba(229, 9, 20, 0.15), 0 0 0 8px #26262D, 0 0 0 9px rgba(255, 255, 255, 0.12);
+    }
+
+    /* Crimson Top Ambient Glow */
+    .crimson-glow-bg {
+      position: absolute;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 380px;
+      height: 340px;
+      background: radial-gradient(circle at 50% 30%, rgba(229, 9, 20, 0.85) 0%, rgba(150, 0, 16, 0.45) 45%, rgba(10, 10, 12, 0) 75%);
+      filter: blur(28px);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Status Bar */
+    .phone-status-bar {
+      height: 44px;
+      padding: 12px 24px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.9);
+      position: relative;
+      z-index: 10;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Phone Scrollable Body */
+    .phone-body {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 12px 20px 96px;
+      position: relative;
+      z-index: 5;
+      scrollbar-width: none;
+    }
+    .phone-body::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Floating Bottom Navigation Dock */
+    .bottom-dock {
+      position: absolute;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(22, 22, 27, 0.88);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 9999px;
+      height: 58px;
+      padding: 4px 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 250px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+      z-index: 50;
+    }
+
+    .dock-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .dock-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 2.2;
+      transition: all 0.2s;
+    }
+
+    .dock-btn.active {
+      background: #FFFFFF;
+      color: #0E0E12;
+      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.2);
+    }
+    .dock-btn.active svg {
+      stroke: #0E0E12;
+    }
+
+    /* Screen 1: Home View Specifics */
+    .home-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-top: 6px;
+      margin-bottom: 20px;
+    }
+
+    .greeting-sub {
+      font-size: 12px;
+      font-weight: 500;
+      color: #FF9AA4;
+      margin-bottom: 4px;
+      letter-spacing: -0.2px;
+    }
+
+    .greeting-title {
+      font-size: 21px;
+      font-weight: 700;
+      color: #FFFFFF;
+      line-height: 1.25;
+      letter-spacing: -0.5px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .action-circle-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .action-circle-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .avatar-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      color: #0E0E12;
+      font-weight: 700;
+      font-size: 15px;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* Mood Selector Bar */
+    .mood-section {
+      margin-bottom: 20px;
+    }
+
+    .mood-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mood-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    .mood-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #18181D;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .mood-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+
+    .mood-item.active .mood-circle {
+      background: #FFFFFF;
+      color: #0E0E12;
+      border-color: #FFFFFF;
+      box-shadow: 0 4px 16px rgba(255, 255, 255, 0.25);
+      transform: scale(1.05);
+    }
+    .mood-item.active .mood-label {
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    /* Notes Pill */
+    .notes-pill {
+      background: #18181D;
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #FFFFFF;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .notes-pill:hover {
+      background: #202026;
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Stark White Water Intake Hero Card */
+    .hero-water-card {
+      background: var(--card-white);
+      border-radius: 30px;
+      padding: 22px 24px 24px;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+      position: relative;
+    }
+
+    .card-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      color: #111115;
+    }
+
+    .card-timestamp {
+      font-size: 11px;
+      font-weight: 500;
+      color: #8E8E93;
+    }
+
+    /* Semi-Circle SVG Progress Gauge */
+    .gauge-wrapper {
+      position: relative;
+      width: 100%;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 4px;
+    }
+
+    .gauge-svg {
+      width: 250px;
+      height: 130px;
+      overflow: visible;
+    }
+
+    .gauge-track {
+      fill: none;
+      stroke: #F2F2F7;
+      stroke-width: 9;
+      stroke-linecap: round;
+    }
+
+    .gauge-progress {
+      fill: none;
+      stroke: var(--crimson-vibrant);
+      stroke-width: 9;
+      stroke-linecap: round;
+      stroke-dasharray: 283;
+      stroke-dashoffset: 85; /* Dynamic via JS */
+      transition: stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: drop-shadow(0 2px 8px rgba(229, 9, 20, 0.4));
+    }
+
+    .gauge-scrubber {
+      fill: var(--crimson-vibrant);
+      stroke: #FFFFFF;
+      stroke-width: 3;
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .gauge-center-stat {
+      position: absolute;
+      bottom: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .current-liters {
+      font-size: 34px;
+      font-weight: 800;
+      color: #101014;
+      line-height: 1;
+      letter-spacing: -1px;
+    }
+
+    .goal-caption {
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #8E8E93;
+      margin-top: 4px;
+    }
+
+    .add-water-btn {
+      width: 100%;
+      height: 48px;
+      background: var(--crimson-vibrant);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 18px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 8px 20px rgba(255, 26, 53, 0.35);
+    }
+    .add-water-btn:hover {
+      background: #FF2E47;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(255, 26, 53, 0.45);
+    }
+    .add-water-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Hydration Streak Card */
+    .streak-card {
+      background: var(--card-dark);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #FFFFFF;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .streak-card:hover {
+      background: #1F1F26;
+    }
+
+    .streak-title {
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .streak-time {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Campus Station Quick-Telemetry Banner */
+    .campus-station-pill {
+      margin-top: 12px;
+      background: rgba(255, 26, 53, 0.08);
+      border: 1px solid rgba(255, 26, 53, 0.2);
+      border-radius: 16px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .station-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .station-name {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #FF8F9B;
+    }
+    .station-telemetry {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .refill-badge {
+      background: var(--crimson-vibrant);
+      color: #FFFFFF;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 9999px;
+    }
+
+    /* Screen 2: Bottle View Specifics */
+    .screen-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .back-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .screen-title-group {
+      text-align: center;
+      flex: 1;
+      padding-right: 36px; /* Balance back btn */
+    }
+
+    .screen-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: -0.3px;
+    }
+
+    .screen-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* 3D Glossy Water Bottle Stage */
+    .bottle-stage {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: -10px;
+      margin-bottom: 16px;
+    }
+
+    .bottle-svg {
+      height: 360px;
+      filter: drop-shadow(0 15px 35px rgba(229, 9, 20, 0.5));
+      animation: floatBottle 6s ease-in-out infinite;
+    }
+
+    @keyframes floatBottle {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(-1deg); }
+    }
+
+    /* Floating Overlay Card on Bottle */
+    .bottle-overlay-card {
+      position: absolute;
+      right: 12px;
+      bottom: 70px;
+      background: #FFFFFF;
+      color: #0E0E12;
+      border-radius: 20px;
+      padding: 14px 18px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+      z-index: 10;
+      width: 145px;
+    }
+
+    .overlay-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: #8E8E93;
+    }
+
+    .sparkline-svg {
+      width: 100%;
+      height: 32px;
+      margin: 6px 0;
+    }
+
+    .overlay-stat {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0E0E12;
+      letter-spacing: -0.5px;
+    }
+
+    /* Dual Stat Grid */
+    .stat-grid-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .grid-stat-card {
+      background: var(--card-dark);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .grid-stat-label {
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .grid-stat-val {
+      font-size: 24px;
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: -0.5px;
+    }
+
+    /* Screen 3: History View Specifics */
+    .date-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .date-pill {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 68px;
+      border-radius: 26px;
+      background: #18181D;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .date-num {
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .date-day {
+      font-size: 10px;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .date-pill.active {
+      background: #FFFFFF;
+      color: #0E0E12;
+      border-color: #FFFFFF;
+      box-shadow: 0 4px 18px rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    /* History Cards */
+    .history-card {
+      background: var(--card-dark);
+      border: 1px solid var(--border-subtle);
+      border-radius: 22px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      transition: all 0.2s;
+    }
+    .history-card:hover {
+      background: #1D1D23;
+    }
+
+    .history-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .history-badge {
+      background: #FFFFFF;
+      color: #0E0E12;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 9999px;
+      display: inline-block;
+    }
+
+    .history-chart-wrapper {
+      position: relative;
+      width: 100%;
+      height: 60px;
+      margin: 10px 0 6px;
+    }
+
+    .history-chart-svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .chart-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--text-subtle);
+    }
+
+    /* Interactive Add Water Modal Sheet */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(12px);
+      z-index: 200;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 20px;
+      animation: fadeIn 0.2s ease;
+    }
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-sheet {
+      background: #18181D;
+      border: 1px solid var(--border-light);
+      border-radius: 36px;
+      width: 100%;
+      max-width: 375px;
+      padding: 24px 22px 28px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+      animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-handle {
+      width: 40px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 9999px;
+      margin: 0 auto 18px;
+    }
+
+    .preset-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    .preset-btn {
+      background: #22222A;
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 14px 10px;
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .preset-btn:hover {
+      background: rgba(229, 9, 20, 0.2);
+      border-color: var(--crimson-vibrant);
+    }
+    .preset-vol {
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .preset-desc {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    /* Single Device View vs 3-Screens Showcase Switch */
+    body.single-view .phone-frame:not(.current-active-frame) {
+      display: none;
+    }
+    body.single-view .showcase-container {
+      justify-content: center;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.9); }
+    }
+
+    /* Responsive Mobile Mode */
+    @media (max-width: 500px) {
+      body {
+        padding: 0;
+        background: #000000;
+      }
+      .studio-bar {
+        border-radius: 0;
+        margin-bottom: 0;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+      }
+      .phone-frame {
+        width: 100vw;
+        height: 100dvh;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .phone-frame:not(.current-active-frame) {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Studio Bar -->
+  <header class="studio-bar">
+    <div class="brand-pill">
+      <div class="brand-dot"></div>
+      <span>AquaCampus V2 • Crimson Edition</span>
+    </div>
+
+    <div class="mode-switch">
+      <button class="mode-btn active" id="btnShowcaseMode" onclick="setMode('showcase')">All 3 Screens</button>
+      <button class="mode-btn" id="btnSingleMode" onclick="setMode('single')">Interactive Phone</button>
+    </div>
+
+    <a href="../index.html" class="back-to-cmd">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span>Command Center</span>
+    </a>
+  </header>
+
+  <!-- Main Showcase Container -->
+  <main class="showcase-container" id="showcaseWrap">
+
+    <!-- ========================================== -->
+    <!-- SCREEN 1: HOME & WATER INTAKE PROGRESS -->
+    <!-- ========================================== -->
+    <div class="phone-frame current-active-frame" id="frameHome">
+      <div class="crimson-glow-bg"></div>
+
+      <!-- Status Bar -->
+      <div class="phone-status-bar">
+        <span class="status-time" id="statusClock1">9:41</span>
+        <div class="status-icons">
+          <svg width="15" height="11" viewBox="0 0 16 12" fill="currentColor"><path d="M8 2.5c2.8 0 5.3 1.2 7.1 3.1L8 12.8.9 5.6C2.7 3.7 5.2 2.5 8 2.5z"/></svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M0 12h3V8H0v4zm4.3 0h3V5h-3v7zm4.4 0h3V2h-3v10zm4.3 0h3V0h-3v12z"/></svg>
+          <svg width="22" height="11" viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="1" width="18" height="10" rx="3"/><path d="M22 4v4" fill="currentColor"/></svg>
+        </div>
+      </div>
+
+      <!-- Scrollable Phone Body -->
+      <div class="phone-body">
+        
+        <!-- Header -->
+        <div class="home-header">
+          <div>
+            <div class="greeting-sub" id="greetingName">Hello, Alexandra!</div>
+            <h1 class="greeting-title">How do you feel<br>today?</h1>
+          </div>
+          <div class="header-actions">
+            <button class="action-circle-btn" onclick="showNotificationAlert()" title="Alerts">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+            </button>
+            <button class="avatar-btn" onclick="openProfileSettings()" title="Profile">A</button>
+          </div>
+        </div>
+
+        <!-- Mood Selector Row -->
+        <div class="mood-section">
+          <div class="mood-row">
+            <button class="mood-item" data-mood="normal" onclick="setMood(this, 'Normal')">
+              <div class="mood-circle">😐</div>
+              <span class="mood-label">Normal</span>
+            </button>
+            <button class="mood-item active" data-mood="calm" onclick="setMood(this, 'Calm')">
+              <div class="mood-circle">🙂</div>
+              <span class="mood-label">Calm</span>
+            </button>
+            <button class="mood-item" data-mood="sad" onclick="setMood(this, 'Sad')">
+              <div class="mood-circle">🙁</div>
+              <span class="mood-label">Sad</span>
+            </button>
+            <button class="mood-item" data-mood="tired" onclick="setMood(this, 'Tired')">
+              <div class="mood-circle">😑</div>
+              <span class="mood-label">Tired</span>
+            </button>
+            <button class="mood-item" data-mood="happy" onclick="setMood(this, 'Happy')">
+              <div class="mood-circle">😄</div>
+              <span class="mood-label">Happy</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Notes Pill -->
+        <div class="notes-pill" onclick="openNotesModal()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          <span id="notesPreviewText">Notes: Drink 500ml before CSE 4th Floor Lecture</span>
+        </div>
+
+        <!-- Hero Card: Water Intake (Stark White) -->
+        <div class="hero-water-card">
+          <div class="card-top-row">
+            <span class="card-title">Water intake</span>
+            <span class="card-timestamp" id="liveTimestamp">Oct 24, 11:00 pm</span>
+          </div>
+
+          <!-- Semicircular SVG Gauge -->
+          <div class="gauge-wrapper">
+            <svg class="gauge-svg" viewBox="0 0 200 110">
+              <!-- Background Arc -->
+              <path class="gauge-track" d="M 20 100 A 80 80 0 0 1 180 100"/>
+              <!-- Crimson Progress Arc -->
+              <path class="gauge-progress" id="gaugeProgressPath" d="M 20 100 A 80 80 0 0 1 180 100"/>
+              <!-- Scrubber Dot -->
+              <circle class="gauge-scrubber" id="gaugeScrubberDot" cx="140" cy="38" r="7"/>
+            </svg>
+
+            <!-- Center Metric -->
+            <div class="gauge-center-stat">
+              <div class="current-liters" id="displayLiters">1.4 L</div>
+              <div class="goal-caption" id="displayGoalCaption">of 2.0 L daily goal</div>
+            </div>
+          </div>
+
+          <!-- Add Water Action Button -->
+          <button class="add-water-btn" onclick="openAddWaterModal()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Add water</span>
+          </button>
+        </div>
+
+        <!-- Hydration Streak -->
+        <div class="streak-card" onclick="switchPhoneTab('history')">
+          <div class="streak-title">
+            <span>🔥 Hydration streak</span>
+            <span style="font-size:11px; font-weight:700; color:#FF3B53; background:rgba(255,26,53,0.15); padding:2px 8px; border-radius:9999px;">7 Days</span>
+          </div>
+          <span class="streak-time">Oct 24, 10:00 pm</span>
+        </div>
+
+        <!-- AquaCampus V2 Telemetry Quick Station -->
+        <div class="campus-station-pill" onclick="switchPhoneTab('bottle')">
+          <div class="station-info">
+            <span class="station-name">📍 Block 34 CSE • 2nd Floor Dispenser</span>
+            <span class="station-telemetry">Purity: 99.4% • TDS: 36 • 9.8°C</span>
+          </div>
+          <span class="refill-badge">Refill Point</span>
+        </div>
+
+      </div>
+
+      <!-- Floating Dock -->
+      <nav class="bottom-dock">
+        <button class="dock-btn active" onclick="switchPhoneTab('home')" title="Home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        </button>
+        <button class="dock-btn" onclick="switchPhoneTab('bottle')" title="Bottle & Intake">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+        </button>
+        <button class="dock-btn" onclick="switchPhoneTab('history')" title="History">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        </button>
+        <button class="dock-btn" onclick="openProfileSettings()" title="Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </button>
+      </nav>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- SCREEN 2: 3D WATER BOTTLE & INTAKE VIEW -->
+    <!-- ========================================== -->
+    <div class="phone-frame" id="frameBottle">
+      <div class="crimson-glow-bg"></div>
+
+      <!-- Status Bar -->
+      <div class="phone-status-bar">
+        <span class="status-time">9:41</span>
+        <div class="status-icons">
+          <svg width="15" height="11" viewBox="0 0 16 12" fill="currentColor"><path d="M8 2.5c2.8 0 5.3 1.2 7.1 3.1L8 12.8.9 5.6C2.7 3.7 5.2 2.5 8 2.5z"/></svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M0 12h3V8H0v4zm4.3 0h3V5h-3v7zm4.4 0h3V2h-3v10zm4.3 0h3V0h-3v12z"/></svg>
+          <svg width="22" height="11" viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="1" width="18" height="10" rx="3"/><path d="M22 4v4" fill="currentColor"/></svg>
+        </div>
+      </div>
+
+      <!-- Scrollable Body -->
+      <div class="phone-body">
+        
+        <!-- Screen Header -->
+        <div class="screen-header">
+          <button class="back-btn" onclick="switchPhoneTab('home')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <div class="screen-title-group">
+            <h2 class="screen-title">Water Intake</h2>
+            <div class="screen-subtitle">Stay hydrated every day</div>
+          </div>
+        </div>
+
+        <!-- 3D Bottle Showcase Stage -->
+        <div class="bottle-stage">
+          <!-- Procedural SVG 3D Glossy Crimson Water Bottle -->
+          <svg class="bottle-svg" viewBox="0 0 120 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <!-- Glass & Liquid Gradients -->
+              <linearGradient id="bottleCap" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#9E0011"/>
+                <stop offset="35%" stop-color="#FF3850"/>
+                <stop offset="70%" stop-color="#D60017"/>
+                <stop offset="100%" stop-color="#69000C"/>
+              </linearGradient>
+
+              <linearGradient id="bottleBody" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#73000D" stop-opacity="0.95"/>
+                <stop offset="25%" stop-color="#E50914" stop-opacity="0.9"/>
+                <stop offset="60%" stop-color="#FF243D" stop-opacity="0.95"/>
+                <stop offset="85%" stop-color="#B80014" stop-opacity="0.95"/>
+                <stop offset="100%" stop-color="#4A0008" stop-opacity="0.98"/>
+              </linearGradient>
+
+              <linearGradient id="waterFluid" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#FF1A35"/>
+                <stop offset="50%" stop-color="#FF5269"/>
+                <stop offset="100%" stop-color="#C70014"/>
+              </linearGradient>
+
+              <linearGradient id="glossHighlight" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.75"/>
+                <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+              </linearGradient>
+
+              <radialGradient id="dropletGlow" cx="40%" cy="40%" r="50%">
+                <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+                <stop offset="60%" stop-color="#FF6B7D" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#FF1A35" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+
+            <!-- Loop Ring Handle -->
+            <path d="M 46 16 C 46 8, 74 8, 74 16 L 74 28 L 46 28 Z" fill="url(#bottleCap)"/>
+            <path d="M 52 16 C 52 12, 68 12, 68 16 L 68 28 L 52 28 Z" fill="#0C0C0E"/>
+
+            <!-- Cap Collar -->
+            <rect x="42" y="28" width="36" height="18" rx="4" fill="url(#bottleCap)"/>
+            <line x1="42" y1="34" x2="78" y2="34" stroke="#4A0008" stroke-width="1.5"/>
+            <line x1="42" y1="40" x2="78" y2="40" stroke="#4A0008" stroke-width="1.5"/>
+
+            <!-- Bottle Neck -->
+            <path d="M 46 46 L 40 68 C 30 78, 22 92, 22 110 L 22 260 C 22 284, 38 296, 60 296 C 82 296, 98 284, 98 260 L 98 110 C 98 92, 90 78, 80 68 L 74 46 Z" fill="url(#bottleBody)"/>
+
+            <!-- Measurement Ticks -->
+            <g opacity="0.3" stroke="#FFFFFF" stroke-width="1.2">
+              <line x1="30" y1="120" x2="38" y2="120"/><line x1="30" y1="150" x2="44" y2="150"/>
+              <line x1="30" y1="180" x2="38" y2="180"/><line x1="30" y1="210" x2="44" y2="210"/>
+              <line x1="30" y1="240" x2="38" y2="240"/><line x1="30" y1="270" x2="44" y2="270"/>
+            </g>
+
+            <!-- Ergonomic Grips -->
+            <path d="M 22 170 Q 26 185 22 200" stroke="#380006" stroke-width="2" fill="none"/>
+            <path d="M 98 170 Q 94 185 98 200" stroke="#FF5269" stroke-width="2" fill="none" opacity="0.6"/>
+
+            <!-- Condensation Droplets -->
+            <circle cx="48" cy="130" r="2.2" fill="url(#dropletGlow)"/>
+            <circle cx="58" cy="144" r="1.8" fill="url(#dropletGlow)"/>
+            <circle cx="70" cy="120" r="2.5" fill="url(#dropletGlow)"/>
+            <circle cx="36" cy="195" r="2" fill="url(#dropletGlow)"/>
+            <circle cx="82" cy="225" r="2.4" fill="url(#dropletGlow)"/>
+            <circle cx="52" cy="250" r="1.6" fill="url(#dropletGlow)"/>
+            <circle cx="66" cy="270" r="2.2" fill="url(#dropletGlow)"/>
+
+            <!-- Glossy Highlight Reflection Down Left Edge -->
+            <path d="M 32 100 C 28 115, 28 250, 32 275 C 33 275, 36 270, 35 250 C 34 230, 34 115, 36 100 Z" fill="url(#glossHighlight)"/>
+          </svg>
+
+          <!-- Floating White Card (Today's Intake) -->
+          <div class="bottle-overlay-card">
+            <div class="overlay-title">Today's intake</div>
+            <!-- Red Sparkline -->
+            <svg class="sparkline-svg" viewBox="0 0 100 30">
+              <path d="M 2 15 L 15 20 L 25 8 L 35 18 L 48 10 L 60 22 L 72 6 L 85 14 L 98 12" fill="none" stroke="#E50914" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="overlay-stat" id="bottleOverlayStat">1.4 L</div>
+          </div>
+        </div>
+
+        <!-- Stat Grid (Daily Goal & Progress) -->
+        <div class="stat-grid-row">
+          <div class="grid-stat-card">
+            <span class="grid-stat-label">Daily goal</span>
+            <span class="grid-stat-val" id="statDailyGoal">2.0 L</span>
+          </div>
+          <div class="grid-stat-card">
+            <span class="grid-stat-label">Progress</span>
+            <span class="grid-stat-val" id="statProgressPct" style="color:#FF3850;">70%</span>
+          </div>
+        </div>
+
+        <!-- Quick Log Actions -->
+        <button class="add-water-btn" onclick="openAddWaterModal()" style="margin-top:0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          <span>Quick Refill Bottle</span>
+        </button>
+
+      </div>
+
+      <!-- Floating Dock -->
+      <nav class="bottom-dock">
+        <button class="dock-btn" onclick="switchPhoneTab('home')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        </button>
+        <button class="dock-btn active" onclick="switchPhoneTab('bottle')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+        </button>
+        <button class="dock-btn" onclick="switchPhoneTab('history')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        </button>
+        <button class="dock-btn" onclick="openProfileSettings()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </button>
+      </nav>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- SCREEN 3: HISTORY & INTAKE TELEMETRY -->
+    <!-- ========================================== -->
+    <div class="phone-frame" id="frameHistory">
+      <div class="crimson-glow-bg"></div>
+
+      <!-- Status Bar -->
+      <div class="phone-status-bar">
+        <span class="status-time">9:41</span>
+        <div class="status-icons">
+          <svg width="15" height="11" viewBox="0 0 16 12" fill="currentColor"><path d="M8 2.5c2.8 0 5.3 1.2 7.1 3.1L8 12.8.9 5.6C2.7 3.7 5.2 2.5 8 2.5z"/></svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M0 12h3V8H0v4zm4.3 0h3V5h-3v7zm4.4 0h3V2h-3v10zm4.3 0h3V0h-3v12z"/></svg>
+          <svg width="22" height="11" viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="1" width="18" height="10" rx="3"/><path d="M22 4v4" fill="currentColor"/></svg>
+        </div>
+      </div>
+
+      <!-- Scrollable Body -->
+      <div class="phone-body">
+        
+        <!-- Screen Header -->
+        <div class="screen-header">
+          <button class="back-btn" onclick="switchPhoneTab('home')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <div class="screen-title-group">
+            <h2 class="screen-title">History</h2>
+            <div class="screen-subtitle">View past water intake</div>
+          </div>
+        </div>
+
+        <!-- Horizontal Date Strip -->
+        <div class="date-strip">
+          <div class="date-pill" onclick="selectDate(this, '22 Sat', '1.2 L')">
+            <span class="date-num">22</span>
+            <span class="date-day">Sat</span>
+          </div>
+          <div class="date-pill" onclick="selectDate(this, '23 Sun', '1.6 L')">
+            <span class="date-num">23</span>
+            <span class="date-day">Sun</span>
+          </div>
+          <div class="date-pill active" onclick="selectDate(this, '24 Mon', '1.4 L')">
+            <span class="date-num">24</span>
+            <span class="date-day">Mon</span>
+          </div>
+          <div class="date-pill" onclick="selectDate(this, '25 Tue', '1.8 L')">
+            <span class="date-num">25</span>
+            <span class="date-day">Tue</span>
+          </div>
+          <div class="date-pill" onclick="selectDate(this, '26 Wed', '1.5 L')">
+            <span class="date-num">26</span>
+            <span class="date-day">Wed</span>
+          </div>
+        </div>
+
+        <!-- History Log Card 1 -->
+        <div class="history-card">
+          <div class="history-top">
+            <div>
+              <div style="font-size:13px; font-weight:700; color:#FFFFFF;">Water intake</div>
+              <div style="font-size:10.5px; color:#8E8E93; margin-top:2px;">Oct 24, 10:00 pm</div>
+            </div>
+            <div class="history-badge">1.4 L</div>
+          </div>
+
+          <!-- Red ECG-Style Telemetry Waveform -->
+          <div class="history-chart-wrapper">
+            <svg class="history-chart-svg" viewBox="0 0 300 60">
+              <!-- Gradient under line -->
+              <defs>
+                <linearGradient id="chartGrad1" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#FF1A35" stop-opacity="0.25"/>
+                  <stop offset="100%" stop-color="#FF1A35" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M 0 50 L 30 50 L 50 15 L 65 42 L 80 20 L 95 38 L 115 50 L 140 50 L 155 10 L 175 40 L 195 24 L 210 50 L 250 50 L 300 50" fill="none" stroke="#E50914" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="0" y1="52" x2="300" y2="52" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            </svg>
+          </div>
+
+          <div class="chart-labels">
+            <span>8am</span>
+            <span>12pm</span>
+            <span>4pm</span>
+            <span>8pm</span>
+          </div>
+        </div>
+
+        <!-- History Log Card 2 -->
+        <div class="history-card">
+          <div class="history-top">
+            <div>
+              <div style="font-size:13px; font-weight:700; color:#FFFFFF;">Water intake</div>
+              <div style="font-size:10.5px; color:#8E8E93; margin-top:2px;">Oct 23, 11:00 pm</div>
+            </div>
+            <div class="history-badge">1.6 L</div>
+          </div>
+
+          <!-- Red Telemetry Waveform -->
+          <div class="history-chart-wrapper">
+            <svg class="history-chart-svg" viewBox="0 0 300 60">
+              <path d="M 0 50 L 40 50 L 60 22 L 75 48 L 90 12 L 110 50 L 130 50 L 150 20 L 170 35 L 185 15 L 205 50 L 250 50 L 300 50" fill="none" stroke="#E50914" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="0" y1="52" x2="300" y2="52" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            </svg>
+          </div>
+
+          <div class="chart-labels">
+            <span>8am</span>
+            <span>12pm</span>
+            <span>4pm</span>
+            <span>8pm</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Floating Dock -->
+      <nav class="bottom-dock">
+        <button class="dock-btn" onclick="switchPhoneTab('home')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        </button>
+        <button class="dock-btn" onclick="switchPhoneTab('bottle')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+        </button>
+        <button class="dock-btn active" onclick="switchPhoneTab('history')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        </button>
+        <button class="dock-btn" onclick="openProfileSettings()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </button>
+      </nav>
+    </div>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODAL: ADD WATER INTAKE -->
+  <!-- ========================================== -->
+  <div class="modal-backdrop" id="addWaterModal" onclick="closeModalOnBackdrop(event, 'addWaterModal')">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div style="font-size:18px; font-weight:700; color:#FFFFFF; text-align:center;">Log Water Intake</div>
+      <div style="font-size:11.5px; color:#8E8E93; text-align:center; margin-top:2px;">Select amount or campus dispenser</div>
+
+      <!-- Quick Preset Volumes -->
+      <div class="preset-grid">
+        <button class="preset-btn" onclick="addIntake(150, 'Cup of Water')">
+          <span class="preset-vol">+150 ml</span>
+          <span class="preset-desc">Small Cup</span>
+        </button>
+        <button class="preset-btn" onclick="addIntake(250, 'Standard Glass')">
+          <span class="preset-vol">+250 ml</span>
+          <span class="preset-desc">Glass</span>
+        </button>
+        <button class="preset-btn" onclick="addIntake(500, 'Sports Bottle')">
+          <span class="preset-vol">+500 ml</span>
+          <span class="preset-desc">Bottle</span>
+        </button>
+      </div>
+
+      <!-- Campus Refill Station Selector -->
+      <div style="background:#22222A; border:1px solid var(--border-subtle); border-radius:18px; padding:12px 14px; margin-bottom:14px;">
+        <div style="font-size:11px; font-weight:600; color:#FF8F9B; margin-bottom:6px;">LPU Campus Refill Station</div>
+        <select id="stationSelector" style="width:100%; background:#141418; border:1px solid rgba(255,255,255,0.1); border-radius:10px; color:#FFFFFF; padding:8px 10px; font-size:12px; font-family:var(--font-main);">
+          <option value="Block 34 CSE • 2nd Floor">Block 34 CSE • 2nd Floor (TDS 36, 9.8°C)</option>
+          <option value="Block 34 CSE • 4th Floor">Block 34 CSE • 4th Floor (TDS 39, 10.2°C)</option>
+          <option value="Block 34 CSE • 6th Floor">Block 34 CSE • 6th Floor (TDS 35, 9.6°C)</option>
+          <option value="Central Library Plaza">Central Library Plaza • Ground Floor (TDS 42)</option>
+          <option value="UniMall Food Court">UniMall Concourse • Station #1 (TDS 38)</option>
+        </select>
+        <button class="add-water-btn" onclick="refillAtStation()" style="margin-top:10px; height:40px; font-size:12.5px;">
+          <span>Refill 500ml from Station</span>
+        </button>
+      </div>
+
+      <button class="preset-btn" onclick="closeModal('addWaterModal')" style="width:100%; height:42px; background:transparent; border-color:transparent; color:#8E8E93;">
+        Cancel
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: NOTES & REMINDERS -->
+  <!-- ========================================== -->
+  <div class="modal-backdrop" id="notesModal" onclick="closeModalOnBackdrop(event, 'notesModal')">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div style="font-size:18px; font-weight:700; color:#FFFFFF; text-align:center;">Hydration Notes</div>
+      <div style="font-size:11.5px; color:#8E8E93; text-align:center; margin-top:2px;">Quick reminder for lectures & workouts</div>
+
+      <textarea id="notesInput" rows="4" style="width:100%; background:#22222A; border:1px solid var(--border-subtle); border-radius:16px; color:#FFFFFF; padding:14px; font-size:13px; font-family:var(--font-main); margin:18px 0; resize:none;">Drink 500ml before CSE 4th Floor Lecture</textarea>
+
+      <button class="add-water-btn" onclick="saveNotes()" style="margin-top:0;">Save Note</button>
+    </div>
+  </div>
+
+  <script>
+    // State Management with LocalStorage Persistence
+    const STATE = {
+      intakeLiters: 1.4,
+      dailyGoalLiters: 2.0,
+      activeMood: 'Calm',
+      studentName: 'Alexandra',
+      mode: 'showcase' // 'showcase' or 'single'
+    };
+
+    // Load persisted state if exists
+    try {
+      const saved = localStorage.getItem('aquacampus_crimson_state');
+      if (saved) {
+        Object.assign(STATE, JSON.parse(saved));
+      }
+    } catch(e) {}
+
+    // Initialize UI
+    document.addEventListener('DOMContentLoaded', () => {
+      updateUI();
+      updateClock();
+      setInterval(updateClock, 30000);
+      
+      // Auto-set single view on small screen
+      if (window.innerWidth <= 500) {
+        setMode('single');
+      }
+    });
+
+    function saveState() {
+      try {
+        localStorage.setItem('aquacampus_crimson_state', JSON.stringify(STATE));
+      } catch(e) {}
+    }
+
+    function updateUI() {
+      // Liters & Goal
+      const intake = parseFloat(STATE.intakeLiters).toFixed(1);
+      const goal = parseFloat(STATE.dailyGoalLiters).toFixed(1);
+      const pct = Math.min(Math.round((STATE.intakeLiters / STATE.dailyGoalLiters) * 100), 100);
+
+      // Home Screen
+      const displayLiters = document.getElementById('displayLiters');
+      if (displayLiters) displayLiters.innerText = `${intake} L`;
+      
+      const displayGoalCaption = document.getElementById('displayGoalCaption');
+      if (displayGoalCaption) displayGoalCaption.innerText = `of ${goal} L daily goal`;
+
+      // Semicircular Arc Gauge Calculations
+      // Total arc perimeter for semi-circle of r=80 is PI * 80 ~= 251.3
+      const gaugeTotal = 251.3;
+      const progressRatio = Math.min(STATE.intakeLiters / STATE.dailyGoalLiters, 1.0);
+      const strokeOffset = gaugeTotal * (1 - progressRatio);
+      
+      const gaugeProgress = document.getElementById('gaugeProgressPath');
+      if (gaugeProgress) {
+        gaugeProgress.style.strokeDasharray = `${gaugeTotal}`;
+        gaugeProgress.style.strokeDashoffset = `${strokeOffset}`;
+      }
+
+      // Position Scrubber Dot along Arc: angle from PI (left) to 0 (right)
+      const angle = Math.PI - (progressRatio * Math.PI);
+      const cx = 100 + 80 * Math.cos(angle);
+      const cy = 100 - 80 * Math.sin(angle);
+      const scrubber = document.getElementById('gaugeScrubberDot');
+      if (scrubber) {
+        scrubber.setAttribute('cx', cx.toFixed(1));
+        scrubber.setAttribute('cy', cy.toFixed(1));
+      }
+
+      // Bottle Screen
+      const bottleStat = document.getElementById('bottleOverlayStat');
+      if (bottleStat) bottleStat.innerText = `${intake} L`;
+
+      const statGoal = document.getElementById('statDailyGoal');
+      if (statGoal) statGoal.innerText = `${goal} L`;
+
+      const statPct = document.getElementById('statProgressPct');
+      if (statPct) statPct.innerText = `${pct}%`;
+
+      saveState();
+    }
+
+    // Audio chime synthesis using Web Audio API for water droplet feedback
+    function playWaterDropletSound() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(450, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.12);
+        
+        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.22);
+        
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        
+        osc.start();
+        osc.stop(ctx.currentTime + 0.24);
+      } catch(e) {}
+    }
+
+    // Mode Switcher (All 3 Screens vs Interactive Single Phone)
+    function setMode(mode) {
+      STATE.mode = mode;
+      const wrap = document.getElementById('showcaseWrap');
+      const btnShowcase = document.getElementById('btnShowcaseMode');
+      const btnSingle = document.getElementById('btnSingleMode');
+
+      if (mode === 'single') {
+        document.body.classList.add('single-view');
+        btnSingle.classList.add('active');
+        btnShowcase.classList.remove('active');
+      } else {
+        document.body.classList.remove('single-view');
+        btnShowcase.classList.add('active');
+        btnSingle.classList.remove('active');
+      }
+    }
+
+    // Switch Tab in Phone Frame (Home, Bottle, History)
+    function switchPhoneTab(tabName) {
+      const frames = {
+        home: document.getElementById('frameHome'),
+        bottle: document.getElementById('frameBottle'),
+        history: document.getElementById('frameHistory')
+      };
+
+      // Set active frame for single phone view
+      Object.keys(frames).forEach(k => {
+        if (k === tabName) {
+          frames[k].classList.add('current-active-frame');
+        } else {
+          frames[k].classList.remove('current-active-frame');
+        }
+      });
+
+      // Update docks across all frames to match selected tab
+      document.querySelectorAll('.bottom-dock').forEach(dock => {
+        dock.querySelectorAll('.dock-btn').forEach((btn, idx) => {
+          btn.classList.remove('active');
+          if ((tabName === 'home' && idx === 0) ||
+              (tabName === 'bottle' && idx === 1) ||
+              (tabName === 'history' && idx === 2) ||
+              (tabName === 'settings' && idx === 3)) {
+            btn.classList.add('active');
+          }
+        });
+      });
+    }
+
+    // Mood Selector
+    function setMood(buttonEl, moodName) {
+      document.querySelectorAll('.mood-item').forEach(el => el.classList.remove('active'));
+      buttonEl.classList.add('active');
+      STATE.activeMood = moodName;
+      saveState();
+    }
+
+    // Add Intake Function
+    function addIntake(milliliters, label = 'Refill') {
+      const litersToAdd = milliliters / 1000;
+      STATE.intakeLiters = parseFloat((STATE.intakeLiters + litersToAdd).toFixed(2));
+      playWaterDropletSound();
+      updateUI();
+      closeModal('addWaterModal');
+    }
+
+    function refillAtStation() {
+      const station = document.getElementById('stationSelector').value;
+      addIntake(500, station);
+    }
+
+    // Date Carousel Picker in History
+    function selectDate(element, dateStr, volume) {
+      document.querySelectorAll('.date-pill').forEach(el => el.classList.remove('active'));
+      element.classList.add('active');
+    }
+
+    // Modals
+    function openAddWaterModal() {
+      document.getElementById('addWaterModal').classList.add('open');
+    }
+
+    function openNotesModal() {
+      document.getElementById('notesModal').classList.add('open');
+    }
+
+    function saveNotes() {
+      const text = document.getElementById('notesInput').value.trim();
+      if (text) {
+        document.getElementById('notesPreviewText').innerText = `Notes: ${text}`;
+      }
+      closeModal('notesModal');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+    }
+
+    function closeModalOnBackdrop(event, id) {
+      if (event.target.id === id) {
+        closeModal(id);
+      }
+    }
+
+    function showNotificationAlert() {
+      alert("Campus Filter Alert: Block 34 CSE 4th Floor scheduled for UV sanitization at 14:00.");
+    }
+
+    function openProfileSettings() {
+      const newGoal = prompt("Set Daily Hydration Goal (Liters):", STATE.dailyGoalLiters);
+      if (newGoal && !isNaN(newGoal) && parseFloat(newGoal) > 0) {
+        STATE.dailyGoalLiters = parseFloat(newGoal);
+        updateUI();
+      }
+    }
+
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      const mins = String(now.getMinutes()).padStart(2, '0');
+      const timeStr = `${hours % 12 || 12}:${mins}`;
+      document.querySelectorAll('.status-time').forEach(el => el.innerText = timeStr);
+    }
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('sw.js')
+          .then(function(reg) { console.log('Crimson SW active:', reg.scope); })
+          .catch(function(err) { console.warn('Crimson SW reg error:', err); });
+      });
+    }
+  </script>
+</body>
+</html>

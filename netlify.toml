@@ -56,3 +56,9 @@
   to = "/Frontend/Water%20Quality%20and%20Capacity.html"
   status = 200
 
+
+[[redirects]]
+  from = "/app"
+  to = "/app/index.html"
+  status = 200
+

@@ -1,0 +1,71 @@
+{
+  "name": "AquaCampus V2 - LPU Smart Water Monitoring",
+  "short_name": "AquaCampus",
+  "description": "LPU Smart Water Monitoring, Interactive Campus Hydro-Map & AR Navigation System",
+  "id": "/?source=pwa",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0B1326",
+  "theme_color": "#00DAF3",
+  "categories": [
+    "education",
+    "utilities",
+    "lifestyle"
+  ],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Campus Map",
+      "short_name": "Map",
+      "description": "Open LPU Interactive Campus Hydro-Map",
+      "url": "/#view-map",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "AR Navigation",
+      "short_name": "AR",
+      "description": "Open Augmented Reality Water Finder",
+      "url": "/#view-ar",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Crimson Hydration App",
+      "short_name": "Hydrate",
+      "description": "Log Daily Water Intake",
+      "url": "/app/index.html",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
