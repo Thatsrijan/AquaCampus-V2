@@ -1,19 +1,19 @@
-// AquaCampus V2 Service Worker for PWA compliance and offline support
-const CACHE_NAME = 'aquacampus-v2-cache-v2';
+// AquaCampus V2 Service Worker with relative paths for multi-domain support
+const CACHE_NAME = 'aquacampus-v2-cache-v3';
 
 const PRECACHE_RESOURCES = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/dashboard.js',
-  '/logo.svg',
-  '/logo.png',
-  '/icon-192.png',
-  '/icon-512.png',
-  '/screenshot-desktop.png',
-  '/screenshot-mobile.png',
-  '/manifest.json',
-  '/app/index.html'
+  './',
+  './index.html',
+  './style.css',
+  './dashboard.js',
+  './logo.svg',
+  './logo.png',
+  './icon-192.png',
+  './icon-512.png',
+  './screenshot-desktop.png',
+  './screenshot-mobile.png',
+  './manifest.json',
+  './app/index.html'
 ];
 
 self.addEventListener('install', (event) => {
@@ -41,7 +41,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Network-first with cache fallback strategy for real-time telemetry
+// Network-first with cache fallback strategy
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
@@ -60,7 +60,7 @@ self.addEventListener('fetch', (event) => {
         return caches.match(event.request).then((cachedResponse) => {
           if (cachedResponse) return cachedResponse;
           if (event.request.headers.get('accept')?.includes('text/html')) {
-            return caches.match('/index.html');
+            return caches.match('./index.html');
           }
         });
       })
