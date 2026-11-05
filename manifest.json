@@ -9,6 +9,8 @@
   "orientation": "any",
   "background_color": "#0B1326",
   "theme_color": "#00DAF3",
+  "lang": "en",
+  "dir": "ltr",
   "categories": [
     "education",
     "utilities",
@@ -43,6 +45,22 @@
       "src": "/logo.svg",
       "sizes": "any",
       "type": "image/svg+xml"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-desktop.png",
+      "sizes": "1000x667",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "AquaCampus Command Center & Hydration Dashboard"
+    },
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "390x800",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Mobile Hydration & 3D Water Bottle View"
     }
   ],
   "shortcuts": [

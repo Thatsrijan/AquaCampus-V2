@@ -1,5 +1,5 @@
 // AquaCampus V2 Service Worker for PWA compliance and offline support
-const CACHE_NAME = 'aquacampus-v2-cache-v1';
+const CACHE_NAME = 'aquacampus-v2-cache-v2';
 
 const PRECACHE_RESOURCES = [
   '/',
@@ -10,6 +10,8 @@ const PRECACHE_RESOURCES = [
   '/logo.png',
   '/icon-192.png',
   '/icon-512.png',
+  '/screenshot-desktop.png',
+  '/screenshot-mobile.png',
   '/manifest.json',
   '/app/index.html'
 ];
